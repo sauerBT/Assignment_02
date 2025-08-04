@@ -23,7 +23,6 @@ public class Pyramid<K>{
      * *<p>
      *     INVARIANTS:
      *     1. The given deck must have at least as many cards required to fill a full pyramid (e.g. for three rows there must be at least 6 elements in the given deck)
-     *     2. The given number of rows can not exceed 9.
      *     3. The given number of rows can not be zero or negative.
      *  *</p>
      *
