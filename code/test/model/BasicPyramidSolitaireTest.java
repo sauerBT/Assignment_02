@@ -31,25 +31,34 @@ public class BasicPyramidSolitaireTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void builderSetDeckEmpty() {
-        B01.deck(new ArrayList<Card>()); // Not going to work, not going to fail in builder, user should have time to correct initial game state
-        PyramidSolitaireModel<Card> PS00 = B01.build();
-
+        PyramidSolitaireModel<Card> PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new ArrayList<>(), false, 7, 2);
     }
 
+    // Too small means...
     @Test(expected = IllegalArgumentException.class)
     public void builderSetDeckTooSmall() {
-        B01.deck(new ArrayList<Card>()); // Not going to work, not going to fail in builder, user should have time to correct initial game state
+        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
+        PS52.startGame(new DeckOfCards(44).toList(), false, 9, 2);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void builderSetNumOfRowsTooLarge() {
-        B01.numRows(10); // Not going to work, not going to fail in builder, user should have time to correct initial game state
+        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
+        PS52.startGame(new DeckOfCards(52).toList(), false, 10, 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void builderSetNumOfRowsTooSmall() {
-        B01.numRows(-1); // Not going to work, not going to fail in builder, user should have time to correct initial game state
+    public void builderSetNumOfRowsTooSmall01() {
+        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
+        PS52.startGame(new DeckOfCards(52).toList(), false, 0, 2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void builderSetNumOfRowsTooSmall02() {
+        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
+        PS52.startGame(new DeckOfCards(52).toList(), false, -1, 2);
     }
 
     @Test
