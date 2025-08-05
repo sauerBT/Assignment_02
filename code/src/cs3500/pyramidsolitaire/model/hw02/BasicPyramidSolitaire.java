@@ -54,6 +54,13 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     private int numDraw;
 
     /**
+     * The state of the game.
+     *
+     * @since 1.0
+     */
+    private PyramidSolitaireGameState state;
+
+    /**
      * Construct a new Pyramid Solitaire game model with all null fields
      * <P>
      *     NOTE: this constructor is kept to satisfy the HW01TypeChecks file and
@@ -74,14 +81,18 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         this.deck = deck;
         this.numRows = numRows;
         this.numDraw = numDraw;
+        this.state = PyramidSolitaireGameState.Idle;
     }
 
+    // TODO
     @Override
     public List<Card> getDeck() { return this.deck; }
 
+    // TODO
     @Override
     public int getNumRows() { return this.numRows; }
 
+    // TODO
     @Override
     public int getNumDraw() { return this.numDraw; }
 
@@ -129,6 +140,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     @Override
     public String toString() { return ""; }
 
+    // TODO
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -139,6 +151,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
                 this.numDraw == that.numDraw;
     }
 
+    // TODO
     @Override
     public int hashCode() { return Objects.hash(this.numRows, this.numDraw, this.deck); }
     
