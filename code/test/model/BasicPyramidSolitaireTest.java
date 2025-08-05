@@ -17,10 +17,12 @@ public class BasicPyramidSolitaireTest {
     PyramidSolitaireModel<Card> PS01;
     @Before
     public void setupTestFixture() {
+        this.PS00 = new BasicPyramidSolitaire();
         this.B01 = BasicPyramidSolitaire.builder();
         this.PS01 = B01.build();
     }
 
+    // TODO
     @Test
     public void builderConstructorGenerateDeckTest() {
         System.out.println(PS01.getDeck());
@@ -30,41 +32,58 @@ public class BasicPyramidSolitaireTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void builderSetDeckEmpty() {
-        PyramidSolitaireModel<Card> PS00 = new BasicPyramidSolitaire();
+    public void startGameSetDeckEmpty() {
         PS00.startGame(new ArrayList<>(), false, 7, 2);
     }
 
-    // Too small means...
     @Test(expected = IllegalArgumentException.class)
-    public void builderSetDeckTooSmall() {
-        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
-        PS52.startGame(new DeckOfCards(44).toList(), false, 9, 2);
+    public void startGameSetDeckTooSmall() {
+        PS00.startGame(new DeckOfCards(44).toList(), false, 9, 2);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void builderSetNumOfRowsTooLarge() {
-        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
-        PS52.startGame(new DeckOfCards(52).toList(), false, 10, 2);
+    public void startGameSetNumOfRowsTooLarge() {
+        PS00.startGame(new DeckOfCards(52).toList(), false, 10, 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void builderSetNumOfRowsTooSmall01() {
-        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
-        PS52.startGame(new DeckOfCards(52).toList(), false, 0, 2);
+    public void startGameSetNumOfRowsTooSmall01() {
+        PS00.startGame(new DeckOfCards(52).toList(), false, 0, 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void builderSetNumOfRowsTooSmall02() {
-        PyramidSolitaireModel<Card> PS52 = new BasicPyramidSolitaire();
-        PS52.startGame(new DeckOfCards(52).toList(), false, -1, 2);
+    public void startGameSetNumOfRowsTooSmall02() {
+        PS00.startGame(new DeckOfCards(52).toList(), false, -1, 2);
     }
 
     @Test
-    public void builderConstructorTest() {
-        assertEquals(7, PS01.getNumRows());
-        assertEquals(3, PS01.getNumDraw());
+    public void startGameTest() {
+        PS00.startGame(new DeckOfCards(52).toList(), false,7, 2);
+        assertEquals(1, PS00.getRowWidth(0));
+        assertEquals(4, PS00.getRowWidth(3));
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Two, Suit.Spade), PS00.getCardAt(0, 0));
+        assertEquals(new Card(CardType.Seven, Suit.Spade), PS00.getCardAt(6,6));
+        assertEquals(new Card(CardType.Three, Suit.Club), PS00.getCardAt(3,1));
+        assertFalse(PS00.isGameOver());
+        assertEquals(7, PS00.getNumRows());
+        assertEquals(2, PS00.getNumDraw());
+    }
+
+    @Test
+    public void getNumRowsTest() {
+        assertEquals(-1, PS00.getNumRows());
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        assertEquals(7, PS00.getNumRows());
+    }
+
+    // TODO -- do we need to account for the number of draw cards decreasing?
+    @Test
+    public void getNumDrawTest() {
+        assertEquals(-1, PS00.getNumDraw());
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        assertEquals(2, PS00.getNumDraw());
     }
 
     @Test
