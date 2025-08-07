@@ -224,15 +224,58 @@ public class BasicPyramidSolitaireTest {
         PS00.remove(4, 1); // Card value allows removal but the card is covered
     }
 
-    // TODO -- Edge Case
+    // Regular Cases
+    @Test
+    public void getCardAtTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6, 0));
+        assertEquals(new Card(CardType.Two, Suit.Spade), PS00.getCardAt(0, 0));
+    }
+    
+    // Edge Case
     // Position does not exist
-    @Test
-    public void getCardAtInvalidPosTest() {}
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtInvalidPosTest01() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.getCardAt(6, 7);
+    }
 
-    // TODO -- Edge Case
+    // Edge Case
+    // Position does not exist
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtInvalidPosTest02() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.getCardAt(6, -1);
+    }
+
+    // Edge Case
     // Row does not exist
-    @Test
-    public void getCardAtInvalidRowTest() {}
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtInvalidRowTest01() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.getCardAt(7, 0);
+    }
+
+    // Edge Case
+    // Row does not exist
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtInvalidRowTest02() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.getCardAt(-1, 0);
+    }
+
+    // Edge Case
+    // Game not started
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtGameNotStartedTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.getCardAt(6, 0);
+    }
 
     // TODO -- do we need to account for the number of draw cards decreasing?
     @Test
