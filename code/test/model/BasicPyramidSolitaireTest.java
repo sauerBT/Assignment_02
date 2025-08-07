@@ -144,6 +144,95 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalStateException.class)
     public void isGameOverGameNotStartedTest02() { new BasicPyramidSolitaire().isGameOver(); }
 
+    // Regular Cases
+    @Test
+    public void removeTwoTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.remove(5, 0, 5, 5);
+        PS00.remove(6, 2, 6, 4);
+    }
+
+    // Edge Case
+    // Move is invalid, value != 13
+    @Test
+    public void removeTwoInvalidMoveTest01() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(6, 0, 6, 1);
+    }
+
+    // Edge Case
+    // Move is invalid, 1 cards partially covered
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoInvalidMoveTest02() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(6, 0, 4, 4);
+    }
+
+    // Edge Case
+    // Move is invalid, both cards partially covered
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoInvalidMoveTest03() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(5, 5, 5, 0);
+    }
+
+    // Edge Case
+    // Game not started
+    @Test(expected = IllegalStateException.class)
+    public void removeTwoGameNotStartedTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.remove(4, 1, 4, 2); // Card value allows removal but the card is covered
+    }
+
+    // Regular Cases
+    @Test
+    public void removeOneTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(6, 3);
+    }
+
+    // Edge Case
+    // Move is invalid, value != 13
+    @Test(expected = IllegalArgumentException.class)
+    public void removeOneInvalidMoveTest01() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(7, 0);
+    }
+
+    // Edge Case
+    // Move is invalid, card partially covered
+    @Test(expected = IllegalArgumentException.class)
+    public void removeOneInvalidMoveTest02() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.remove(4, 1); // Card value allows removal but the card is covered
+    }
+
+    // Edge Case
+    // Game not started
+    @Test(expected = IllegalStateException.class)
+    public void removeOneGameNotStartedTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.remove(4, 1); // Card value allows removal but the card is covered
+    }
+
+    // TODO -- Edge Case
+    // Position does not exist
+    @Test
+    public void getCardAtInvalidPosTest() {}
+
+    // TODO -- Edge Case
+    // Row does not exist
+    @Test
+    public void getCardAtInvalidRowTest() {}
 
     // TODO -- do we need to account for the number of draw cards decreasing?
     @Test
