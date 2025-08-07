@@ -22,9 +22,8 @@ public class BasicPyramidSolitaireTest {
         this.PS01 = B01.build();
     }
 
-    // TODO
     @Test
-    public void builderConstructorGenerateDeckTest() {
+    public void getDeckTest() {
         System.out.println(PS01.getDeck());
         assertEquals(new Card(CardType.Two, Suit.Spade), PS01.getDeck().getFirst());
         assertEquals(new Card(CardType.Ace, Suit.Heart), PS01.getDeck().get(25));
@@ -76,7 +75,75 @@ public class BasicPyramidSolitaireTest {
         assertEquals(-1, PS00.getNumRows());
         PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
         assertEquals(7, PS00.getNumRows());
+        assertEquals(5, B01.numRows(5).build().getNumRows());
     }
+
+    // TODO - Regular cases
+    // 1. changing number of elements in rows from initial state (requires the remove function)
+    // 2. Initial game state widths -- Good
+    @Test
+    public void getRowWidth() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(1, PS00.getRowWidth(0));
+        assertEquals(3, PS00.getRowWidth(2));
+    }
+
+    // TODO - Edge case:
+    // 1. Illegal row request (Row either never existed, or no longer exists due to flow of game)
+    @Test(expected = IllegalArgumentException.class)
+    public void getRowWidthIllegalRowTest() {}
+
+    // TODO - Edge case:
+    // 1. The game has not yet been started.
+    @Test(expected = IllegalStateException.class)
+    public void getRowWidthGameNotStartedTest() {}
+
+    // TODO - Regular cases:
+    // 1. Game running -- Good
+    // 2. Game ended - need to implement getScore and an ended game state first
+    @Test
+    public void isGameOverTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 3);
+        assertFalse(PS00.isGameOver());
+    }
+
+    // TODO -- Regular cases
+    // 1. Getting draw cards at the start of the game (where number draw cards == number initial draw cards) -- Good
+    // 2. Getting draw cards during game flow when draw cards have been removed
+    @Test
+    public void getDrawCardsTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 3);
+        assertEquals(new ArrayList<>(List.of(
+                new Card(CardType.Seven, Suit.Heart),
+                new Card(CardType.Seven, Suit.Diamond),
+                new Card(CardType.Seven, Suit.Club))),
+                PS00.getDrawCards());
+    }
+
+    // Edge Case:
+    // Game has not yet started
+    @Test(expected = IllegalStateException.class)
+    public void getDrawCardsGameNotStartedTest01() { B01.build().getDrawCards(); }
+
+    // Edge Case:
+    // Game has not yet started
+    @Test(expected = IllegalStateException.class)
+    public void getDrawCardsGameNotStartedTest02() { new BasicPyramidSolitaire().getDrawCards(); }
+
+    // Edge case:
+    // 1. The game has not yet been started.
+    @Test(expected = IllegalStateException.class)
+    public void isGameOverGameNotStartedTest01() { B01.build().isGameOver(); }
+
+    // Edge case:
+    // 1. The game has not yet been started.
+    @Test(expected = IllegalStateException.class)
+    public void isGameOverGameNotStartedTest02() { new BasicPyramidSolitaire().isGameOver(); }
+
 
     // TODO -- do we need to account for the number of draw cards decreasing?
     @Test
@@ -84,6 +151,7 @@ public class BasicPyramidSolitaireTest {
         assertEquals(-1, PS00.getNumDraw());
         PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
         assertEquals(2, PS00.getNumDraw());
+        assertEquals(3, B01.numDraw(3).build().getNumDraw());
     }
 
     @Test
@@ -112,9 +180,4 @@ public class BasicPyramidSolitaireTest {
     @Test
     public void builderTest() {}
 
-    // TODO
-    @Test
-    public void getRowWidthTest() {
-
-    }
 }
