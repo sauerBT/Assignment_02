@@ -10,13 +10,19 @@ import java.util.Objects;
 import static org.junit.Assert.*;
 
 public class BasicPyramidSolitaireTest {
+    // Example Deck
+    IDeck<Card> DOC52;
+
     // Example builders
     BasicPyramidSolitaire.Builder B01;
+
     // Example pyramid solitaire games
     PyramidSolitaireModel<Card> PS00;
     PyramidSolitaireModel<Card> PS01;
+
     @Before
     public void setupTestFixture() {
+        this.DOC52 = new DeckOfCards(52);
         this.PS00 = new BasicPyramidSolitaire();
         this.B01 = BasicPyramidSolitaire.builder();
         this.PS01 = B01.build();
@@ -43,22 +49,22 @@ public class BasicPyramidSolitaireTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetNumOfRowsTooLarge() {
-        PS00.startGame(new DeckOfCards(52).toList(), false, 10, 2);
+        PS00.startGame(DOC52.toList(), false, 10, 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetNumOfRowsTooSmall01() {
-        PS00.startGame(new DeckOfCards(52).toList(), false, 0, 2);
+        PS00.startGame(DOC52.toList(), false, 0, 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetNumOfRowsTooSmall02() {
-        PS00.startGame(new DeckOfCards(52).toList(), false, -1, 2);
+        PS00.startGame(DOC52.toList(), false, -1, 2);
     }
 
     @Test
     public void startGameTest() {
-        PS00.startGame(new DeckOfCards(52).toList(), false,7, 2);
+        PS00.startGame(DOC52.toList(), false,7, 2);
         assertEquals(1, PS00.getRowWidth(0));
         assertEquals(4, PS00.getRowWidth(3));
         assertEquals(7, PS00.getRowWidth(6));
@@ -73,7 +79,7 @@ public class BasicPyramidSolitaireTest {
     @Test
     public void getNumRowsTest() {
         assertEquals(-1, PS00.getNumRows());
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(7, PS00.getNumRows());
         assertEquals(5, B01.numRows(5).build().getNumRows());
     }
@@ -84,7 +90,7 @@ public class BasicPyramidSolitaireTest {
     @Test
     public void getRowWidth() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(7, PS00.getRowWidth(6));
         assertEquals(1, PS00.getRowWidth(0));
         assertEquals(3, PS00.getRowWidth(2));
@@ -106,17 +112,20 @@ public class BasicPyramidSolitaireTest {
     @Test
     public void isGameOverTest() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 3);
+        PS00.startGame(DOC52.toList(), false, 7, 3);
         assertFalse(PS00.isGameOver());
     }
 
+    // -------------------------------------
+    // getDrawCards()
+    // -------------------------------------
     // TODO -- Regular cases
     // 1. Getting draw cards at the start of the game (where number draw cards == number initial draw cards) -- Good
     // 2. Getting draw cards during game flow when draw cards have been removed
     @Test
     public void getDrawCardsTest() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 3);
+        PS00.startGame(DOC52.toList(), false, 7, 3);
         assertEquals(new ArrayList<>(List.of(
                 new Card(CardType.Seven, Suit.Heart),
                 new Card(CardType.Seven, Suit.Diamond),
@@ -134,6 +143,10 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalStateException.class)
     public void getDrawCardsGameNotStartedTest02() { new BasicPyramidSolitaire().getDrawCards(); }
 
+    // -------------------------------------
+    // isGameOver()
+    // -------------------------------------
+
     // Edge case:
     // 1. The game has not yet been started.
     @Test(expected = IllegalStateException.class)
@@ -144,11 +157,15 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalStateException.class)
     public void isGameOverGameNotStartedTest02() { new BasicPyramidSolitaire().isGameOver(); }
 
+    // -------------------------------------
+    // remove()
+    // -------------------------------------
+
     // Regular Cases
     @Test
     public void removeTwoTest() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(6, 0, 6, 6);
         PS00.remove(6, 1, 6, 5);
         PS00.remove(5, 0, 5, 5);
@@ -160,7 +177,7 @@ public class BasicPyramidSolitaireTest {
     @Test
     public void removeTwoInvalidMoveTest01() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(6, 0, 6, 1);
     }
 
@@ -169,7 +186,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void removeTwoInvalidMoveTest02() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(6, 0, 4, 4);
     }
 
@@ -178,7 +195,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void removeTwoInvalidMoveTest03() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(5, 5, 5, 0);
     }
 
@@ -194,7 +211,7 @@ public class BasicPyramidSolitaireTest {
     @Test
     public void removeOneTest() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(6, 3);
     }
 
@@ -203,7 +220,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void removeOneInvalidMoveTest01() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(7, 0);
     }
 
@@ -212,7 +229,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void removeOneInvalidMoveTest02() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(4, 1); // Card value allows removal but the card is covered
     }
 
@@ -224,11 +241,48 @@ public class BasicPyramidSolitaireTest {
         PS00.remove(4, 1); // Card value allows removal but the card is covered
     }
 
+    // -------------------------------------
+    // removeUsingDraw()
+    // -------------------------------------
+
+    // Regular Cases
+    @Test
+    public void removeUsingDrawTest() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.removeUsingDraw(0, 5, 5);
+        PS00.remove(6, 2, 6, 4);
+        PS00.removeUsingDraw(0, 5, 5); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+    }
+
+    // Edge Case - Game not started
+    @Test(expected = IllegalStateException.class)
+    public void removeUsingDrawGameNotStartedTest() { PS00.removeUsingDraw(0, 7, 0);}
+
+    // Edge Case - Points do not add to 13
+    @Test(expected = IllegalStateException.class)
+    public void removeUsingDrawIllegalPointsRemovalTest() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.removeUsingDraw(0, 6, 0);
+    }
+
+    // Edge Case - Draw index does not exist
+    @Test(expected = IllegalStateException.class)
+    public void removeUsingDrawIllegalDrawIndexTest() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.removeUsingDraw(2, 6, 0);
+    }
+
+    // -------------------------------------
+    // getCardAt()
+    // -------------------------------------
+
     // Regular Cases
     @Test
     public void getCardAtTest() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6, 0));
         assertEquals(new Card(CardType.Two, Suit.Spade), PS00.getCardAt(0, 0));
     }
@@ -238,7 +292,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void getCardAtInvalidPosTest01() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.getCardAt(6, 7);
     }
 
@@ -247,8 +301,18 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void getCardAtInvalidPosTest02() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.getCardAt(6, -1);
+    }
+
+    // Edge Case
+    // Card at row/position was removed
+    @Test(expected = IllegalArgumentException.class)
+    public void getCardAtInvalidPosTest03() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6,3);
+        PS00.getCardAt(6, 3);
     }
 
     // Edge Case
@@ -256,7 +320,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void getCardAtInvalidRowTest01() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.getCardAt(7, 0);
     }
 
@@ -265,7 +329,7 @@ public class BasicPyramidSolitaireTest {
     @Test(expected = IllegalArgumentException.class)
     public void getCardAtInvalidRowTest02() {
         PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.getCardAt(-1, 0);
     }
 
@@ -277,15 +341,21 @@ public class BasicPyramidSolitaireTest {
         PS00.getCardAt(6, 0);
     }
 
+    // -------------------------------------
+    // getNumDraw()
+    // -------------------------------------
     // TODO -- do we need to account for the number of draw cards decreasing?
     @Test
     public void getNumDrawTest() {
         assertEquals(-1, PS00.getNumDraw());
-        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(2, PS00.getNumDraw());
         assertEquals(3, B01.numDraw(3).build().getNumDraw());
     }
 
+    // -------------------------------------
+    // hashCode()
+    // -------------------------------------
     @Test
     public void hashCodeTest() {
         List tempDeck = PS01.getDeck().reversed(); // Change the order of the Deck to invoke a different hash code
@@ -295,6 +365,9 @@ public class BasicPyramidSolitaireTest {
         assertNotEquals(Objects.hash(7, 3, tempDeck), PS01.hashCode());
     }
 
+    // -------------------------------------
+    // equals()
+    // -------------------------------------
     @Test
     public void equalsTest() {
         List<Card> expectedNotEqualDeck = BasicPyramidSolitaire.Util.generateDeck().reversed();
@@ -308,6 +381,10 @@ public class BasicPyramidSolitaireTest {
         PyramidSolitaireModel<Card> expectedNotEqualsPS03 = builder.numDraw(4).build();
         assertNotEquals(expectedNotEqualsPS03, PS01);
     }
+
+    // -------------------------------------
+    // builder()
+    // -------------------------------------
     // TODO
     @Test
     public void builderTest() {}
