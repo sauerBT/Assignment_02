@@ -84,7 +84,7 @@ public class BasicPyramidSolitaireTest {
         assertEquals(5, B01.numRows(5).build().getNumRows());
     }
 
-    // TODO - Regular cases
+    // Regular cases
     // 1. changing number of elements in rows from initial state (requires the remove function)
     // 2. Initial game state widths -- Good
     @Test
@@ -94,27 +94,35 @@ public class BasicPyramidSolitaireTest {
         assertEquals(7, PS00.getRowWidth(6));
         assertEquals(1, PS00.getRowWidth(0));
         assertEquals(3, PS00.getRowWidth(2));
+        PS00.remove(6,3);
+        assertEquals(6, PS00.getRowWidth(6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
     }
 
-    // TODO - Edge case:
+    // Edge case -- Row never existed
     // 1. Illegal row request (Row either never existed, or no longer exists due to flow of game)
     @Test(expected = IllegalArgumentException.class)
-    public void getRowWidthIllegalRowTest() {}
-
-    // TODO - Edge case:
-    // 1. The game has not yet been started.
-    @Test(expected = IllegalStateException.class)
-    public void getRowWidthGameNotStartedTest() {}
-
-    // TODO - Regular cases:
-    // 1. Game running -- Good
-    // 2. Game ended - need to implement getScore and an ended game state first
-    @Test
-    public void isGameOverTest() {
-        PS00 = new BasicPyramidSolitaire();
-        PS00.startGame(DOC52.toList(), false, 7, 3);
-        assertFalse(PS00.isGameOver());
+    public void getRowWidthIllegalRowTest01() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.getRowWidth(7);
     }
+
+    // Edge case -- Row no longer exists due to flow of game
+    // 1. Illegal row request (Row either never existed, or no longer exists due to flow of game)
+    @Test(expected = IllegalArgumentException.class)
+    public void getRowWidthIllegalRowTest02() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.remove(6, 2, 6, 4);
+        PS00.remove(6, 3);
+        PS00.getRowWidth(6);
+    }
+
+    // Edge case - Game not started
+    @Test(expected = IllegalStateException.class)
+    public void getRowWidthGameNotStartedTest() { PS00.getRowWidth(6); }
 
     // -------------------------------------
     // getDrawCards()
@@ -147,6 +155,16 @@ public class BasicPyramidSolitaireTest {
     // isGameOver()
     // -------------------------------------
 
+    // TODO - Regular cases:
+    // 1. Game running -- Good
+    // 2. Game ended - need to implement getScore and an ended game state first
+    @Test
+    public void isGameOverTest() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 3);
+        assertFalse(PS00.isGameOver());
+    }
+    
     // Edge case:
     // 1. The game has not yet been started.
     @Test(expected = IllegalStateException.class)
