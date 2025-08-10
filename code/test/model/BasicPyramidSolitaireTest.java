@@ -84,6 +84,10 @@ public class BasicPyramidSolitaireTest {
         assertEquals(5, B01.numRows(5).build().getNumRows());
     }
 
+    // -------------------------------------
+    // getRowWidth()
+    // -------------------------------------
+
     // Regular cases
     // 1. changing number of elements in rows from initial state (requires the remove function)
     // 2. Initial game state widths -- Good
@@ -101,7 +105,6 @@ public class BasicPyramidSolitaireTest {
     }
 
     // Edge case -- Row never existed
-    // 1. Illegal row request (Row either never existed, or no longer exists due to flow of game)
     @Test(expected = IllegalArgumentException.class)
     public void getRowWidthIllegalRowTest01() {
         PS00.startGame(DOC52.toList(), false, 7, 2);
@@ -109,7 +112,6 @@ public class BasicPyramidSolitaireTest {
     }
 
     // Edge case -- Row no longer exists due to flow of game
-    // 1. Illegal row request (Row either never existed, or no longer exists due to flow of game)
     @Test(expected = IllegalArgumentException.class)
     public void getRowWidthIllegalRowTest02() {
         PS00.startGame(DOC52.toList(), false, 7, 2);
@@ -127,7 +129,7 @@ public class BasicPyramidSolitaireTest {
     // -------------------------------------
     // getDrawCards()
     // -------------------------------------
-    // TODO -- Regular cases
+    // Regular cases
     // 1. Getting draw cards at the start of the game (where number draw cards == number initial draw cards) -- Good
     // 2. Getting draw cards during game flow when draw cards have been removed
     @Test
@@ -135,10 +137,23 @@ public class BasicPyramidSolitaireTest {
         PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 3);
         assertEquals(new ArrayList<>(List.of(
-                new Card(CardType.Seven, Suit.Heart),
-                new Card(CardType.Seven, Suit.Diamond),
-                new Card(CardType.Seven, Suit.Club))),
+                new Card(CardType.Four, Suit.Diamond),
+                new Card(CardType.Five, Suit.Diamond),
+                new Card(CardType.Six, Suit.Diamond))),
                 PS00.getDrawCards());
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.removeUsingDraw(0, 5, 5);
+        assertEquals(new ArrayList<>(List.of(
+                        new Card(CardType.Five, Suit.Diamond),
+                        new Card(CardType.Six, Suit.Diamond))),
+                PS00.getDrawCards());
+        PS00.remove(6, 2, 6, 4);
+        PS00.removeUsingDraw(0, 5, 5); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+        assertEquals(new ArrayList<>(List.of(
+                new Card(CardType.Six, Suit.Diamond))),
+                PS00.getDrawCards());
+
     }
 
     // Edge Case:
@@ -164,7 +179,7 @@ public class BasicPyramidSolitaireTest {
         PS00.startGame(DOC52.toList(), false, 7, 3);
         assertFalse(PS00.isGameOver());
     }
-    
+
     // Edge case:
     // 1. The game has not yet been started.
     @Test(expected = IllegalStateException.class)
