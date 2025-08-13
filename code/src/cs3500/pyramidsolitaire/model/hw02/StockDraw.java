@@ -14,11 +14,11 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class StockDraw<K> implements SideDeck {
+public class StockDraw<K> implements SideDeck<K> {
     List<K> stock;
     List<K> draw;
 
-    public StockDraw(int numDraw, List<K> deck) {
+    public StockDraw(List<K> deck, int numDraw) {
         this.stock = generateStock(deck, numDraw);
         this.draw = generateDraw(deck, numDraw);
     }
@@ -36,9 +36,7 @@ public class StockDraw<K> implements SideDeck {
      * @return The Stock elements.
      * @param <K> The type of elements in the deck.
      */
-    private static <K> List<K> generateDraw(List<K> deck, int numDraw) {
-        return new ArrayList<>();
-    }
+    private static <K> List<K> generateDraw(List<K> deck, int numDraw) { return Util.getFirstX(deck, numDraw); }
 
     /**
      * Produce the initial Stock for a game of pyramid solitaire.
@@ -49,17 +47,15 @@ public class StockDraw<K> implements SideDeck {
      * @param <K> The type of elements in the deck.
      */
     private static <K> List<K> generateStock(List<K> deck, int numDraw) {
-        return new ArrayList<>();
+        return Util.removeFirstX(deck, numDraw);
     }
 
     // TODO
-
-    /**
-     *
-     * @return
-     */
+    @Override
     public StockDraw<K> turnOver() {
         return new StockDraw<>(new ArrayList<>(), new ArrayList<>());
     }
 
+    @Override
+    public int size() { return stock.size() + draw.size(); }
 }
