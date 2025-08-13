@@ -1,6 +1,6 @@
 package cs3500.pyramidsolitaire.model.hw02;
 
-public interface SideDeck {
+public interface SideDeck<K> {
     /**
      * Produce the next card in the "Stock".
      * <p>
@@ -9,5 +9,12 @@ public interface SideDeck {
      * </p>
      * @return The updated SideDeck
      */
-    SideDeck turnOver();
+    SideDeck<K> turnOver();
+
+    /**
+     * Produce the number of cards in this side deck.
+     *
+     * @return The size of the side deck.
+     */
+    int size();
 }
