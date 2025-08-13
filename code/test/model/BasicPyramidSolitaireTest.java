@@ -28,40 +28,78 @@ public class BasicPyramidSolitaireTest {
         this.PS01 = B01.build();
     }
 
+    // -------------------------------------
+    // getDeck()
+    // -------------------------------------
+
     @Test
     public void getDeckTest() {
         System.out.println(PS01.getDeck());
-        assertEquals(new Card(CardType.Two, Suit.Spade), PS01.getDeck().getFirst());
-        assertEquals(new Card(CardType.Ace, Suit.Heart), PS01.getDeck().get(25));
-        assertEquals(new Card(CardType.Ace, Suit.Club), PS01.getDeck().get(51));
+        assertEquals(new DeckOfCards(52).toList(), PS00.getDeck());
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        assertEquals(new ArrayList<>(), PS00.getDeck());
     }
 
+    // -------------------------------------
+    // startGame()
+    // -------------------------------------
+
+    // Edge Case -- Empty Deck
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetDeckEmpty() {
         PS00.startGame(new ArrayList<>(), false, 7, 2);
     }
 
+    // Edge Case -- Null Deck
+    @Test(expected = IllegalArgumentException.class)
+    public void startGameSetDeckNull() {
+        PS00.startGame(null, false, 7, 2);
+    }
+
+    // Edge Case -- Given game cannot be dealt
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetDeckTooSmall() {
         PS00.startGame(new DeckOfCards(44).toList(), false, 9, 2);
 
     }
 
+    // Edge Case -- Given game cannot be dealt
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetNumOfRowsTooLarge() {
         PS00.startGame(DOC52.toList(), false, 10, 2);
     }
 
+    // Edge Case -- Invalid # of rows supplied (0 rows)
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetNumOfRowsTooSmall01() {
         PS00.startGame(DOC52.toList(), false, 0, 2);
     }
 
+    // Edge Case -- Invalid # of rows supplied (negative rows)
     @Test(expected = IllegalArgumentException.class)
     public void startGameSetNumOfRowsTooSmall02() {
         PS00.startGame(DOC52.toList(), false, -1, 2);
     }
 
+    // Edge Case -- Invalid # of draw cards supplied (0 draw cards)
+    @Test(expected = IllegalArgumentException.class)
+    public void startGameSetNumOfDrawCardsTooSmall01() {
+        PS00.startGame(DOC52.toList(), false, 7, 0);
+    }
+
+    // Edge Case -- Invalid # of draw cards supplied (negative draw cards)
+    @Test(expected = IllegalArgumentException.class)
+    public void startGameSetNumOfDrawCardsTooSmall02() {
+        PS00.startGame(DOC52.toList(), false, 7, -1);
+    }
+
+    // Edge Case -- Invalid Stock/Draw size (too large)
+    @Test(expected = IllegalArgumentException.class)
+    public void startGameStockTooLarge01() {
+        PS00.startGame(DOC52.toList(), false, 9, 8);
+    }
+
+    // Regular Cases
     @Test
     public void startGameTest() {
         PS00.startGame(DOC52.toList(), false,7, 2);
@@ -75,6 +113,10 @@ public class BasicPyramidSolitaireTest {
         assertEquals(7, PS00.getNumRows());
         assertEquals(2, PS00.getNumDraw());
     }
+
+    // -------------------------------------
+    // getNumRows()
+    // -------------------------------------
 
     @Test
     public void getNumRowsTest() {
@@ -149,7 +191,7 @@ public class BasicPyramidSolitaireTest {
                         new Card(CardType.Six, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.remove(6, 2, 6, 4);
-        PS00.removeUsingDraw(0, 5, 5); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+        PS00.removeUsingDraw(0, 5, 4); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
         assertEquals(new ArrayList<>(List.of(
                 new Card(CardType.Six, Suit.Diamond))),
                 PS00.getDrawCards());
@@ -175,7 +217,6 @@ public class BasicPyramidSolitaireTest {
     // 2. Game ended - need to implement getScore and an ended game state first
     @Test
     public void isGameOverTest() {
-        PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 3);
         assertFalse(PS00.isGameOver());
     }
@@ -189,6 +230,35 @@ public class BasicPyramidSolitaireTest {
     // 1. The game has not yet been started.
     @Test(expected = IllegalStateException.class)
     public void isGameOverGameNotStartedTest02() { new BasicPyramidSolitaire().isGameOver(); }
+
+    // -------------------------------------
+    // getScore()
+    // -------------------------------------
+
+    // Regular Cases
+    // 1. Initial game score
+    // 2. Flow of game score - remove 2
+    // 3. Flow of game score - remove 1
+    // 4. Flow of game score - remove using Draw
+    @Test
+    public void getScoreTest() {
+        PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
+        assertEquals( 187, PS00.getScore());
+        PS00.remove(6, 0, 6, 6);
+        assertEquals( 174, PS00.getScore());
+        PS00.remove(6, 1, 6, 5);
+        assertEquals( 161, PS00.getScore());
+        PS00.removeUsingDraw(0, 5, 5);
+        assertEquals( 152, PS00.getScore());
+        PS00.remove(6, 2, 6, 4);
+        assertEquals( 139, PS00.getScore());
+        PS00.removeUsingDraw(0, 5, 4); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+        assertEquals( 131, PS00.getScore());
+    }
+
+    // Edge Cases -- Game has not started
+    @Test(expected = IllegalStateException.class)
+    public void getScoreGameNotStartedTest() { PS00.getScore(); }
 
     // -------------------------------------
     // remove()
@@ -286,7 +356,7 @@ public class BasicPyramidSolitaireTest {
         PS00.remove(6, 1, 6, 5);
         PS00.removeUsingDraw(0, 5, 5);
         PS00.remove(6, 2, 6, 4);
-        PS00.removeUsingDraw(0, 5, 5); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+        PS00.removeUsingDraw(0, 5, 4); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
     }
 
     // Edge Case - Game not started
