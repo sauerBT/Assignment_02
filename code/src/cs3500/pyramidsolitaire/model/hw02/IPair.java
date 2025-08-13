@@ -14,13 +14,6 @@ import java.util.Objects;
  */
 public interface IPair<K> {
     /**
-     * This produces an "empty" Pair, which contains no data.
-     * @return The empty pair
-     * @param <K> The Pair object defined in a game of Solitaire.
-     */
-    public static <K> IPair<K> empty() { return MtPair.getInstance(); }
-
-    /**
      * This produces a Pair.
      *
      * @param position The position of the Pair in the game of Solitaire.
@@ -29,7 +22,17 @@ public interface IPair<K> {
      * @return The Pair object
      * @param <K> The Pair object defined in a game of Solitaire.
      */
-    public static <K> IPair<K> of(int position, int rowNum, K c) { return new Pair<>(position, rowNum, c); }
+    static <K> IPair<K> of(int position, int rowNum, K c) { return new Pair<>(position, rowNum, c); }
+
+    int position();
+
+    IPair<K> position(int pos);
+
+    int rowNum();
+
+    IPair<K> rowNum(int rowNum);
+
+    K element();
 }
 
 class Pair<K> implements IPair<K> {
@@ -38,27 +41,42 @@ class Pair<K> implements IPair<K> {
      *
      * @since 1.0
      */
-    int position;
+    private final int position;
 
     /**
      * The row of the Pair in the game of Solitaire.
      *
      * @since 1.0
      */
-    int rowNum;
+    private final int rowNum;
 
     /**
      * The data object of the Pair in the game of Solitaire.
      *
      * @since 1.0
      */
-    K c;
+    private final K c;
 
     protected Pair(int position, int rowNum, K c) {
         this.position = position;
         this.rowNum = rowNum;
         this.c = c;
     }
+
+    @Override
+    public int position() { return this.position; }
+
+    @Override
+    public IPair<K> position(int pos) { return new Pair<>(pos, this.rowNum, this.c); }
+
+    @Override
+    public int rowNum() { return this.rowNum; }
+
+    @Override
+    public IPair<K> rowNum(int rowNum) { return new Pair<>(this.position, rowNum, this.c); }
+
+    @Override
+    public K element() { return this.c; }
 
     @Override
     public String toString() { return "P" + this.position + "R" + this.rowNum + c.toString(); }
@@ -75,24 +93,4 @@ class Pair<K> implements IPair<K> {
 
     @Override
     public int hashCode() { return Objects.hash(this.position, this.rowNum, this.c); }
-}
-
-class MtPair<K> implements IPair<K> {
-    private static final MtPair<?> INSTANCE = new MtPair<>();
-
-    private MtPair() {}
-
-    @SuppressWarnings("unchecked")
-    public static <K> MtPair<K> getInstance() {
-        return (MtPair<K>) INSTANCE;
-    }
-
-    @Override
-    public String toString() { return "Empty"; }
-
-    @Override
-    public boolean equals(Object obj) { return (obj instanceof MtPair<?>); }
-
-    @Override
-    public int hashCode() { return 98; }
 }
