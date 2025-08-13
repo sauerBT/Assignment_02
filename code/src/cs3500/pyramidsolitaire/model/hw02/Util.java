@@ -19,6 +19,7 @@ public class Util {
         }
         return result;
     }
+
     /**
      * Produce the first x elements of a given List, with x being a given
      * @param coll The List of elements
@@ -39,6 +40,7 @@ public class Util {
             return getFirstXHelper(wl, numOfElements - 1, listAcc);
         }
     }
+
     /**
      * Produce a List with the first x elements removed, with x being a given
      * @param coll The List of elements
@@ -86,6 +88,7 @@ public class Util {
         result.addAll(coll02);
         return result;
     }
+
     // TODO
     /**
      * Produce True if the given collection meets the given conditions with respect to the given object.
@@ -168,6 +171,21 @@ public class Util {
                 acc.add(coll.getFirst());
             }
             return findIfExcludeHelper(pred2, coll.subList(1, coll.size()), compColl, acc);
+        }
+    }
+
+    /**
+     * Produce the calculated sum of all integers adding up to the given integer.
+     *
+     * @param n The given integer value
+     * @return The resulting sum value.
+     * @throws IllegalArgumentException The given integer cannot be negative.
+     */
+    public static int sumUp(int n) {
+        if (n < 0) { throw new IllegalArgumentException("Given integer cannot be less than zero."); }
+        else if (n == 0) { return 0; }
+        else {
+            return n + sumUp(n - 1);
         }
     }
 }
