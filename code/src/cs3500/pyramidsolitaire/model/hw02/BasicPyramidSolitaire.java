@@ -30,10 +30,10 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      *
      * @since 1.0
      */
-    private StockDraw<Card> stockDraw;
+    private SideDeck<Card> sideDeck;
     /**
      * The state of the deck used to initially create the game. When a game is started, this deck is distributed to
-     * both the 'pyramid' and the 'stockDraw'.
+     * both the 'pyramid' and the 'sideDeck'.
      *
      * @since 1.0
      */
@@ -77,7 +77,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      */
     private BasicPyramidSolitaire(List<Card> deck, int numRows, int numDraw) {
         this.pyramid = new Pyramid<>(numRows, deck);
-        this.stockDraw = new StockDraw<>(numDraw, deck);
+        this.sideDeck = new StockDraw<>(deck, numDraw);
         this.deck = deck;
         this.numRows = numRows;
         this.numDraw = numDraw;
@@ -86,7 +86,13 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public List<Card> getDeck() { return this.deck; }
+    public List<Card> getDeck() {
+        if (this.state == PyramidSolitaireGameState.Running) {
+            return this.deck;
+        } else {
+            return new DeckOfCards(52).toList();
+        }
+    }
 
     // TODO
     @Override
@@ -104,9 +110,70 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     @Override
     public List<Card> getDrawCards() { return new ArrayList<>(); }
 
-    // TODO
     @Override
-    public void startGame(List<Card> deck, boolean shuffle, int numRows, int numDraw) {}
+    public void startGame(List<Card> deck, boolean shuffle, int numRows, int numDraw) {
+        if (deck.isEmpty()) {
+            throw new IllegalArgumentException("Provided deck is empty!");
+        } else {
+            if (shuffle) { deck = shuffleDeck(deck); }
+            deck(generateSideDeck(generatePyramid(deck, numRows), numDraw));
+        }
+    }
+
+    /**
+     * Produce the given deck with original positions randomized.
+     *
+     * @param deck The deck of cards.
+     * @return The shuffled deck of cards.
+     */
+    private List<Card> shuffleDeck(List<Card> deck) { return deck; }
+
+    /**
+     * Produce all cards (in their original order) not used to generate a game pyramid.
+     * MUTATION: This method will modify the pyramid variable state for this game of pyramid solitaire.
+     *
+     * @param deck The deck of cards.
+     * @param numRows The number of rows in the game's pyramid.
+     * @return The cards not used to generate the game pyramid, in their original (given) order.
+     */
+    private List<Card> generatePyramid(List<Card> deck, int numRows) {
+        pyramid(new Pyramid<>(numRows, deck)); // MUTATION: Set the pyramid variable.
+        return Util.removeFirstX(deck,deck.size() - this.pyramid.size());
+    }
+
+    /**
+     * Produce all cards NOT used to generate the StockDeck.
+     * MUTATION: This method will modify the sideDeck variable state for this game of pyramid solitaire.
+     *
+     * @param deck The deck of cards.
+     * @param numDraw The number of draw cards in the game's sideDeck.
+     * @return The remaining cards in the deck.
+     */
+    private List<Card> generateSideDeck(List<Card> deck, int numDraw) {
+        sideDeck(new StockDraw<>(deck, numDraw)); // MUTATION: Set the sideDeck variable.
+        return Util.removeFirstX(deck, deck.size() - this.sideDeck.size());
+    }
+
+    /**
+     * MUTATION: Deck variable setter. Set the deck variable to the given deck.
+     *
+     * @param deck The given deck.
+     */
+    private void deck(List<Card> deck) { this.deck = deck; }
+
+    /**
+     * MUTATION: SideDeck variable setter. Set the sideDeck variable to the given sideDeck.
+     *
+     * @param sideDeck The given sideDeck.
+     */
+    private void sideDeck(SideDeck<Card> sideDeck) { this.sideDeck = sideDeck; }
+
+    /**
+     * MUTATION: Pyramid variable setter. Set the pyramid variable to the given pyramid.
+     *
+     * @param pyramid The given pyramid.
+     */
+    private void pyramid(Pyramid<Card> pyramid) { this.pyramid = pyramid; }
 
     // TODO
     @Override
@@ -220,23 +287,5 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
          */
         public PyramidSolitaireModel<Card> build() { return new BasicPyramidSolitaire(this.deck, this.numRows, this.numDraw); }
     }
-
-    public static final class Util {
-        /**
-         * Produce a deck of 52 card with all possible combinations of Card Types and Suits
-         *
-         * @return the deck of Cards
-         */
-        public static List<Card> generateDeck() {
-            List<Card> deck = new ArrayList<Card>();
-            for (Suit suit : Suit.values()) {
-                for (CardType rank : CardType.values()) {
-                    deck.add(new Card(rank, suit));
-                }
-            }
-            return deck;
-        }
-    }
-
 }
 
