@@ -138,7 +138,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      */
     private List<Card> generatePyramid(List<Card> deck, int numRows) {
         pyramid(new Pyramid<>(numRows, deck)); // MUTATION: Set the pyramid variable.
-        return Util.removeFirstX(deck,deck.size() - this.pyramid.size());
+        return Util.ListUtil.removeFirstX(deck,deck.size() - this.pyramid.size());
     }
 
     /**
@@ -151,7 +151,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      */
     private List<Card> generateSideDeck(List<Card> deck, int numDraw) {
         sideDeck(new StockDraw<>(deck, numDraw)); // MUTATION: Set the sideDeck variable.
-        return Util.removeFirstX(deck, deck.size() - this.sideDeck.size());
+        return Util.ListUtil.removeFirstX(deck, deck.size() - this.sideDeck.size());
     }
 
     /**

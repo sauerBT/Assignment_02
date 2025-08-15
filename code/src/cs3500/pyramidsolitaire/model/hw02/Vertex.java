@@ -87,7 +87,7 @@ public class Vertex {
      *
      * @return A copy of this instance.
      */
-    public Vertex copy() { return new Vertex(Util.copy(this.edges), this.pair); }
+    public Vertex copy() { return new Vertex(Util.ListUtil.copy(this.edges), this.pair); }
 
     // TODO
     @Override

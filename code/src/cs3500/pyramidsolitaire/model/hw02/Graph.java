@@ -27,7 +27,7 @@ public class Graph {
         Vertex tempSubject = this.getIfContains(new Vertex(fromPair)); // 2
         tempSubject.addEdge(predicate, tempObject); // 3
         return
-                new Graph(Util.findIfExclude(IPred2.vertexSame(), this.vertices, new ArrayList<>(List.of(tempSubject, tempObject))))
+                new Graph(Util.ListUtil.findIfExclude(IPred2.vertexSame(), this.vertices, new ArrayList<>(List.of(tempSubject, tempObject))))
                         .addVertex(tempObject)
                         .addVertex(tempSubject);
     }
@@ -38,7 +38,7 @@ public class Graph {
      * @param v The given Vertex to query for.
      * @return The search result for the given Vertex.
      */
-    private Vertex getIfContains(Vertex v) { return Util.findOne(IPred2.vertexSame(), this.vertices, v).orElse(v); }
+    private Vertex getIfContains(Vertex v) { return Util.ListUtil.findOne(IPred2.vertexSame(), this.vertices, v).orElse(v); }
 
     /**
      * Produce a Graph with the given Vertex added to the list of vertices
@@ -48,10 +48,10 @@ public class Graph {
      * @throws IllegalArgumentException If the Vertex already exists, throw an exception.
      */
     public Graph addVertex(Vertex v) {
-        if (Util.contains(IPred2.vertexSame(), this.vertices, v)) {
+        if (Util.ListUtil.contains(IPred2.vertexSame(), this.vertices, v)) {
             throw new IllegalArgumentException("Vertex " + v.toString() + " exists for " + this.vertices.toString());
         } else {
-            List<Vertex> result = Util.copy(this.vertices);
+            List<Vertex> result = Util.ListUtil.copy(this.vertices);
             result.add(v);
             return new Graph(result);
         }

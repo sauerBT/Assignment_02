@@ -36,7 +36,7 @@ public class StockDraw<K> implements SideDeck<K> {
      * @return The Stock elements.
      * @param <K> The type of elements in the deck.
      */
-    private static <K> List<K> generateDraw(List<K> deck, int numDraw) { return Util.getFirstX(deck, numDraw); }
+    private static <K> List<K> generateDraw(List<K> deck, int numDraw) { return Util.ListUtil.getFirstX(deck, numDraw); }
 
     /**
      * Produce the initial Stock for a game of pyramid solitaire.
@@ -47,7 +47,7 @@ public class StockDraw<K> implements SideDeck<K> {
      * @param <K> The type of elements in the deck.
      */
     private static <K> List<K> generateStock(List<K> deck, int numDraw) {
-        return Util.removeFirstX(deck, numDraw);
+        return Util.ListUtil.removeFirstX(deck, numDraw);
     }
 
     // TODO
