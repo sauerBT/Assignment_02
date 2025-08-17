@@ -473,7 +473,7 @@ public class BasicPyramidSolitaireTest {
     // -------------------------------------
     @Test
     public void equalsTest() {
-        List<Card> expectedNotEqualDeck = BasicPyramidSolitaire.Util.generateDeck().reversed();
+        List<Card> expectedNotEqualDeck = new DeckOfCards(52).toList().reversed();
         BasicPyramidSolitaire.Builder builder = BasicPyramidSolitaire.builder();
         PyramidSolitaireModel<Card> expectedEqualsPS = builder.build();
         assertEquals(expectedEqualsPS, PS01);

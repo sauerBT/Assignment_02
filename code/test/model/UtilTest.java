@@ -21,7 +21,6 @@ public class UtilTest {
     Card C03;
     Card C04;
     // Example Pairs
-    IPair<Card> P00;
     IPair<Card> P01;
     IPair<Card> P02;
     IPair<Card> P03;
@@ -36,7 +35,6 @@ public class UtilTest {
     Edge E05;
     Edge E06;
     // Example Vertices
-    Vertex V00;
     Vertex V001;
     Vertex V01;
     Vertex V02;
@@ -78,7 +76,6 @@ public class UtilTest {
         C04 = new Card(CardType.Ace, Suit.Club);
 
         // Initialize Example Pairs
-        P00 = IPair.empty();
         P01 = IPair.of(0, 0, C01);
         P02 = IPair.of(1, 1, C02);
         P03 = IPair.of(2, 1, C03);
@@ -87,8 +84,6 @@ public class UtilTest {
         P06 = IPair.of(5, 2, new Card(CardType.Six, Suit.Club));
 
         // Initialize Example Vertices
-        // Empty
-        V00 = new Vertex(P00);
         // Single Vertex
         V001 = new Vertex(P01);
         // Row 0
@@ -129,71 +124,70 @@ public class UtilTest {
 
     @Test
     public void utilGetFirstX() {
-        assertEquals(new ArrayList<>(), Util.getFirstX(this.D04, 0));
-        assertEquals(new ArrayList<>(List.of(new Card(CardType.Queen, Suit.Heart))), Util.getFirstX(this.D04, 1));
+        assertEquals(new ArrayList<>(), Util.ListUtil.getFirstX(this.D04, 0));
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Queen, Suit.Heart))), Util.ListUtil.getFirstX(this.D04, 1));
         assertEquals(new ArrayList<>(List.of(
                 new Card(CardType.Queen, Suit.Heart),
                 new Card(CardType.Ten, Suit.Spade),
                 new Card(CardType.Seven, Suit.Club)
-        )), Util.getFirstX(this.D04, 3));
+        )), Util.ListUtil.getFirstX(this.D04, 3));
     }
 
     @Test
     public void utilRemoveFirstX() {
-        assertEquals(this.D04, Util.removeFirstX(this.D04, 0));
-        List<Card> expected02 = Util.clone(this.D04);
+        assertEquals(this.D04, Util.ListUtil.removeFirstX(this.D04, 0));
+        List<Card> expected02 = Util.ListUtil.clone(this.D04);
         expected02.removeFirst();
-        assertEquals(expected02, Util.removeFirstX(this.D04, 1));
-        List<Card> expected03 = Util.clone(this.D04);
+        assertEquals(expected02, Util.ListUtil.removeFirstX(this.D04, 1));
+        List<Card> expected03 = Util.ListUtil.clone(this.D04);
         expected03.removeFirst();
         expected03.removeFirst();
         expected03.removeFirst();
-        assertEquals(expected03, Util.removeFirstX(this.D04, 3));
+        assertEquals(expected03, Util.ListUtil.removeFirstX(this.D04, 3));
     }
 
     @Test
     public void utilContainsDuplicates() {
         IPred2<Card> pred2 = IPred2.equalsPred();
-        assertFalse(Util.containsDuplicatesOf(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
         D01.add(new Card(CardType.Queen, Suit.Heart));
-        assertTrue(Util.containsDuplicatesOf(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
-        assertFalse(Util.containsDuplicatesOf(pred2, D03, new Card(CardType.Five, Suit.Club)));
+        assertTrue(Util.ListUtil.containsDuplicatesOf(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(pred2, D03, new Card(CardType.Five, Suit.Club)));
         D03.add(new Card(CardType.Five, Suit.Club));
-        assertTrue(Util.containsDuplicatesOf(pred2, D03, new Card(CardType.Five, Suit.Club)));
-        assertFalse(Util.containsDuplicatesOf(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
+        assertTrue(Util.ListUtil.containsDuplicatesOf(pred2, D03, new Card(CardType.Five, Suit.Club)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
         D03.add(new Card(CardType.Jack, Suit.Diamond));
-        assertTrue(Util.containsDuplicatesOf(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
+        assertTrue(Util.ListUtil.containsDuplicatesOf(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
     }
 
     @Test
     public void utilCount() {
         IPred2<Card> pred2 = IPred2.equalsPred();
-        assertEquals(1, Util.count(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
+        assertEquals(1, Util.ListUtil.count(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
         D01.add(new Card(CardType.Queen, Suit.Heart));
-        assertEquals(2, Util.count(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
-        assertEquals(1, Util.count(pred2, D03, new Card(CardType.Five, Suit.Club)));
+        assertEquals(2, Util.ListUtil.count(pred2, D01, new Card(CardType.Queen, Suit.Heart)));
+        assertEquals(1, Util.ListUtil.count(pred2, D03, new Card(CardType.Five, Suit.Club)));
         D03.add(new Card(CardType.Five, Suit.Club));
-        assertEquals(2, Util.count(pred2, D03, new Card(CardType.Five, Suit.Club)));
-        assertEquals(1, Util.count(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
+        assertEquals(2, Util.ListUtil.count(pred2, D03, new Card(CardType.Five, Suit.Club)));
+        assertEquals(1, Util.ListUtil.count(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
         D03.add(new Card(CardType.Jack, Suit.Diamond));
-        assertEquals(2, Util.count(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
-        assertEquals(0, Util.count(pred2, D03, new Card(CardType.Two, Suit.Diamond)));
+        assertEquals(2, Util.ListUtil.count(pred2, D03, new Card(CardType.Jack, Suit.Diamond)));
+        assertEquals(0, Util.ListUtil.count(pred2, D03, new Card(CardType.Two, Suit.Diamond)));
     }
 
     @Test
     public void utilContains() {
-        assertTrue(Util.contains(IPred2.vertexSame(), new ArrayList<>(List.of(V00)), V00)); // Empty test - vertexSame
-        assertFalse(Util.contains(IPred2.vertexSame(), new ArrayList<>(), V00)); // Empty test - vertexSame
+        assertTrue(Util.ListUtil.contains(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), V01)); // Empty test - vertexSame
+        assertFalse(Util.ListUtil.contains(IPred2.vertexSame(), new ArrayList<>(), V01)); // Empty test - vertexSame
 
-        assertFalse(Util.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V00)), V00)); // Empty test - vertexDiff
-        assertFalse(Util.contains(IPred2.VertexDiff(), new ArrayList<>(), V00)); // Empty test - vertexDiff
+        assertFalse(Util.ListUtil.contains(IPred2.VertexDiff(), new ArrayList<>(), V01)); // Empty test - vertexDiff
 
-        assertFalse(Util.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V01)), V01)); // Single - Equal test
-        assertTrue(Util.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V01)), V02)); // Single - Non-Equal test
+        assertFalse(Util.ListUtil.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V01)), V01)); // Single - Equal test
+        assertTrue(Util.ListUtil.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V01)), V02)); // Single - Non-Equal test
 
-        assertTrue(Util.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V01, V02, V03)), V00)); // Multi - Non-Equal test
-        assertTrue(Util.contains(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V01)); // Multi - Non-Equal test
-        assertTrue(Util.contains(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V03)); // Multi - Non-Equal test
+        assertTrue(Util.ListUtil.contains(IPred2.VertexDiff(), new ArrayList<>(List.of(V01, V02, V03)), V06)); // Multi - Non-Equal test
+        assertTrue(Util.ListUtil.contains(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V01)); // Multi - Non-Equal test
+        assertTrue(Util.ListUtil.contains(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V03)); // Multi - Non-Equal test
     }
 
     @Test
@@ -201,33 +195,33 @@ public class UtilTest {
         List<Integer> LOI01 = new ArrayList<>(List.of());
         List<Integer> LOI02 = new ArrayList<>(List.of(0));
         List<Integer> LOI03 = new ArrayList<>(List.of(0,1,2));
-        assertEquals(LOI01, Util.copy(LOI01));
-        assertEquals(LOI02, Util.copy(LOI02));
-        assertEquals(LOI03, Util.copy(LOI03));
+        assertEquals(LOI01, Util.ListUtil.copy(LOI01));
+        assertEquals(LOI02, Util.ListUtil.copy(LOI02));
+        assertEquals(LOI03, Util.ListUtil.copy(LOI03));
     }
 
     @Test
     public void utilFindTest() {
-        assertEquals(Optional.empty(), Util.findOne(IPred2.vertexSame(), new ArrayList<>(), V00)); // Empty
-        assertEquals(Optional.of(V01), Util.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), V01)); // Single
-        assertEquals(Optional.empty(), Util.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), V00)); // Single - No Find
-        assertEquals(Optional.of(V03), Util.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V03)); // Multi
-        assertEquals(Optional.empty(), Util.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V00)); // Multi - No Find
+        assertEquals(Optional.empty(), Util.ListUtil.findOne(IPred2.vertexSame(), new ArrayList<>(), V01)); // Empty
+        assertEquals(Optional.of(V01), Util.ListUtil.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), V01)); // Single
+        assertEquals(Optional.empty(), Util.ListUtil.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), V02)); // Single - No Find
+        assertEquals(Optional.of(V03), Util.ListUtil.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V03)); // Multi
+        assertEquals(Optional.empty(), Util.ListUtil.findOne(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), V06)); // Multi - No Find
     }
 
     @Test
     public void utilfindIfExclude() {
-        assertEquals(new ArrayList<>(), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(), new ArrayList<>())); // Empty test
-        assertEquals(new ArrayList<>(List.of(V00)), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V00)), new ArrayList<>())); // Empty test
-        assertEquals(new ArrayList<>(), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(), new ArrayList<>(List.of(V00)))); // Empty test
+        assertEquals(new ArrayList<>(), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(), new ArrayList<>())); // Empty test
+        assertEquals(new ArrayList<>(List.of(V01)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), new ArrayList<>())); // Empty test
+        assertEquals(new ArrayList<>(), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(), new ArrayList<>(List.of(V01)))); // Empty test
 
-        assertEquals(new ArrayList<>(), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), new ArrayList<>(List.of(V01)))); // Single - Equal test
-        assertEquals(new ArrayList<>(List.of(V01)), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), new ArrayList<>(List.of(V02)))); // Single - Non-Equal test
+        assertEquals(new ArrayList<>(), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), new ArrayList<>(List.of(V01)))); // Single - Equal test
+        assertEquals(new ArrayList<>(List.of(V01)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01)), new ArrayList<>(List.of(V02)))); // Single - Non-Equal test
 
-        assertEquals(new ArrayList<>(List.of(V01, V02, V03)), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V00)))); // Multi - Non-Equal test
-        assertEquals(new ArrayList<>(List.of(V02, V03)), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V01)))); // Multi - Non-Equal test
-        assertEquals(new ArrayList<>(List.of(V01, V02)), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V03)))); // Multi - Non-Equal test
-        assertEquals(new ArrayList<>(List.of(V02)), Util.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V01, V03)))); // Multi - Non-Equal test
+        assertEquals(new ArrayList<>(List.of(V01, V02, V03)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V06)))); // Multi - Non-Equal test
+        assertEquals(new ArrayList<>(List.of(V02, V03)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V01)))); // Multi - Non-Equal test
+        assertEquals(new ArrayList<>(List.of(V01, V02)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V03)))); // Multi - Non-Equal test
+        assertEquals(new ArrayList<>(List.of(V02)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V01, V03)))); // Multi - Non-Equal test
     }
 
 }

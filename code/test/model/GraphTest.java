@@ -56,7 +56,6 @@ public class GraphTest {
         C04 = new Card(CardType.Ace, Suit.Club);
 
         // Initialize Example Pairs
-        P00 = IPair.empty();
         P01 = IPair.of(0, 0, C01);
         P02 = IPair.of(1, 1, C02);
         P03 = IPair.of(2, 1, C03);
@@ -108,7 +107,6 @@ public class GraphTest {
 
     @Test
     public void hashCodeTest() {
-        assertEquals(V00.hashCode(), new Vertex(IPair.empty()).hashCode());
         assertNotEquals(V00.hashCode(), new Vertex(P01).hashCode());
         assertEquals(V01.hashCode(), new Vertex(P01).hashCode());
         assertEquals(V01.hashCode(), V01.hashCode());
@@ -117,8 +115,6 @@ public class GraphTest {
 
     @Test
     public void vertexEqualsTest() {
-        assertEquals(V00, new Vertex(IPair.empty()));
-        assertEquals(new Vertex(IPair.empty()), V00);
         assertNotEquals(V00, new Vertex(P01));
         assertEquals(V01, new Vertex(P01));
         assertEquals(V01, V01);
@@ -159,16 +155,16 @@ public class GraphTest {
     @Test
     public void graphAddTripleTest() {
         // Test for same Vertex, different edge
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G00.getVertices(), new Vertex(P01))); // Empty test
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G02.getVertices(), new Vertex(P01)));
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex(P02)));
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex(P01)));
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P03)));
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P02)));
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P01)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G00.getVertices(), new Vertex(P01))); // Empty test
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G02.getVertices(), new Vertex(P01)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex(P02)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex(P01)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P03)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P02)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P01)));
         // Test for new Vertex
         assertEquals(G00.addTriple(P01, P02, GraphPred.Child), G01); // Empty addition
-        assertFalse(Util.containsDuplicatesOf(IPred2.vertexSame(),
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(),
                 G01.addTriple(P01, P04, GraphPred.Child).getVertices(), new Vertex(P01))); // Single Addition
     }
 

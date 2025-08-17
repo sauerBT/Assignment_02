@@ -26,7 +26,6 @@ public class IPairTest {
         C04 = new Card(CardType.Ace, Suit.Club);
 
         // Initialize Example Pairs
-        P00 = IPair.empty();
         P01 = IPair.of(0, 0, C01);
         P02 = IPair.of(1, 1, C02);
         P03 = IPair.of(2, 1, C03);
@@ -46,8 +45,6 @@ public class IPairTest {
 
     @Test
     public void hashCodeTest() {
-        assertEquals(IPair.empty().hashCode(), P00.hashCode());
-        assertNotEquals(IPair.empty().hashCode(), P01.hashCode());
         assertEquals(IPair.of(0, 0, new Card(CardType.King, Suit.Heart)).hashCode(), P01.hashCode());
         assertNotEquals(IPair.of(0, 1, C02).hashCode(), P02.hashCode());
         assertNotEquals(IPair.of(1, 1, new Card(CardType.Jack, Suit.Spade)).hashCode(), P02.hashCode());
@@ -56,10 +53,6 @@ public class IPairTest {
 
     @Test
     public void equalsTest() {
-        assertTrue(IPair.empty().equals(P00));
-        assertTrue(P00.equals(IPair.empty()));
-        assertFalse(IPair.empty().equals(P01));
-        assertFalse(P01.equals(IPair.empty()));
         assertTrue(IPair.of(0, 0, new Card(CardType.King, Suit.Heart)).equals(P01));
         assertTrue(P01.equals(IPair.of(0, 0, new Card(CardType.King, Suit.Heart))));
         assertFalse(IPair.of(0, 1, C02).equals(P02));
