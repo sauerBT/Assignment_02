@@ -177,9 +177,41 @@ public class Util {
             }
         }
 
-        public static <K, R> R map(Function<K, R> func, List<K> lok) { return null; }
+        public static <K, R> List<R> map(Function<K, R> func, List<K> lok) {
+            if (lok.isEmpty()) {
+                return new ArrayList<>();
+            } else {
+                List<R> result = new ArrayList<>();
+                for (K k : lok) {
+                    result.add(func.apply(k));
+                }
+                return result;
+            }
+        }
 
-        public static <K, R> R foldr(BiFunction<K, R, R> func, List<K> lok, R r) { return null; }
+        public static <K, R> R foldr(BiFunction<K, R, R> func, List<K> lok, R r) {
+            if (lok.isEmpty()) {
+                return r;
+            } else {
+                R result = r;
+                for (K k: lok.reversed()) {
+                    result = func.apply(k, result);
+                }
+                return result;
+            }
+        }
+
+        public static <K, R> R foldl(BiFunction<K, R, R> func, List<K> lok, R r) {
+            if (lok.isEmpty()) {
+                return r;
+            } else {
+                R result = r;
+                for (K k: lok) {
+                    result = func.apply(k, result);
+                }
+                return result;
+            }
+        }
     }
 
     /**

@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class UtilTest {
     // Example decks
@@ -224,4 +226,45 @@ public class UtilTest {
         assertEquals(new ArrayList<>(List.of(V02)), Util.ListUtil.findIfExclude(IPred2.vertexSame(), new ArrayList<>(List.of(V01, V02, V03)), new ArrayList<>(List.of(V01, V03)))); // Multi - Non-Equal test
     }
 
+    @Test
+    public void mapTest() {
+        List<Integer> LOI00 = new ArrayList<Integer>();
+        List<Integer> LOI01 = new ArrayList<>(List.of(1));
+        List<Integer> LOI03 = new ArrayList<>(List.of(1,2,3));
+        assertEquals(new ArrayList<String>(), Util.ListUtil.map(new IntToString(), LOI00));
+        assertEquals(new ArrayList<String>(List.of("1")), Util.ListUtil.map(new IntToString(), LOI01));
+        assertEquals(new ArrayList<String>(List.of("1", "2", "3")), Util.ListUtil.map(new IntToString(), LOI03));
+    }
+
+    @Test
+    public void foldrTest() {
+        List<String> LOI00 = new ArrayList<>();
+        List<String> LOI01 = new ArrayList<>(List.of("1"));
+        List<String> LOI03 = new ArrayList<>(List.of("1","2","3"));
+        assertEquals("", Util.ListUtil.foldr(new Concat(), LOI00, ""));
+        assertEquals("1", Util.ListUtil.foldr(new Concat(), LOI01, ""));
+        assertEquals("321", Util.ListUtil.foldr(new Concat(), LOI03, ""));
+    }
+
+    @Test
+    public void foldlTest() {
+        List<String> LOI00 = new ArrayList<>();
+        List<String> LOI01 = new ArrayList<>(List.of("1"));
+        List<String> LOI03 = new ArrayList<>(List.of("1","2","3"));
+        assertEquals("", Util.ListUtil.foldl(new Concat(), LOI00, ""));
+        assertEquals("1", Util.ListUtil.foldl(new Concat(), LOI01, ""));
+        assertEquals("123", Util.ListUtil.foldl(new Concat(), LOI03, ""));
+    }
+
+    class IntToString implements Function<Integer, String> {
+        public String apply(Integer i) {
+            return i.toString();
+        }
+    }
+
+    class Concat implements BiFunction<String, String, String> {
+        public String apply(String s1, String s2) {
+            return s2 + s1;
+        }
+    }
 }
