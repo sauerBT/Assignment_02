@@ -112,12 +112,13 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     @Override
     public void startGame(List<Card> deck, boolean shuffle, int numRows, int numDraw) {
-        if (deck.isEmpty()) {
-            throw new IllegalArgumentException("Provided deck is empty!");
+        if (shuffle) {
+            List<Card> shuffledDeck = this.shuffleDeck(deck);
+            deck(this.generateSideDeck(this.generatePyramid(shuffledDeck, numRows), numDraw));
         } else {
-            if (shuffle) { deck = shuffleDeck(deck); }
-            deck(generateSideDeck(generatePyramid(deck, numRows), numDraw));
+            deck(this.generateSideDeck(this.generatePyramid(deck, numRows), numDraw));
         }
+
     }
 
     /**
@@ -137,7 +138,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      * @return The cards not used to generate the game pyramid, in their original (given) order.
      */
     private List<Card> generatePyramid(List<Card> deck, int numRows) {
-        pyramid(new Pyramid<>(numRows, deck)); // MUTATION: Set the pyramid variable.
+        this.pyramid(new Pyramid<>(numRows, deck)); // MUTATION: Set the pyramid variable.
         return Util.ListUtil.removeFirstX(deck,deck.size() - this.pyramid.size());
     }
 
@@ -150,7 +151,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      * @return The remaining cards in the deck.
      */
     private List<Card> generateSideDeck(List<Card> deck, int numDraw) {
-        sideDeck(new StockDraw<>(deck, numDraw)); // MUTATION: Set the sideDeck variable.
+        this.sideDeck(new StockDraw<>(deck, numDraw)); // MUTATION: Set the sideDeck variable.
         return Util.ListUtil.removeFirstX(deck, deck.size() - this.sideDeck.size());
     }
 

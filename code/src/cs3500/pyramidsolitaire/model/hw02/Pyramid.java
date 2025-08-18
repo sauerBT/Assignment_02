@@ -37,22 +37,14 @@ public class Pyramid<K>{
      */
 //    private static <K> Graph dealDeck(int numRows, List<K> deck) { return new Graph(); } // STUB
     private static <K> Graph dealDeck(int numRows, List<K> deck) {
-        if (!isDeckDealable(numRows, deck.size())) {
-            throw new IllegalArgumentException("Deck size is too small for the given number of rows");
-        } else if (deck == null || deck.isEmpty()) {
+        if (deck == null || deck.isEmpty()) {
             throw new IllegalArgumentException("Given deck is invalid.");
+        } else if (!isDeckDealable(numRows, deck.size())) {
+            throw new IllegalArgumentException("Deck size is too small for the given number of rows");
         } else {
-            List<IPair<K>> convDeck = Util.ListUtil.map(new CardToPair<>(), deck);
+            List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), deck, new ArrayList<>());
             Graph graph = Util.ListUtil.foldr(new PairToGraph<>(), convDeck, new Graph());
             return graph;
-//            return
-//                // self referential data
-//                ...(
-//                    // compound data
-//                    ...(convDeck.getFirst().position(), // int
-//                        convDeck.getFirst().rowNum(),   // int
-//                        convDeck.getFirst().element()), // K
-//                    fnForDeck(convDeck.subList(1, deck.size())));
         }
     }
 
@@ -63,7 +55,10 @@ public class Pyramid<K>{
      * @param sizeDeck The size of the given deck to be used to generate the pyramid
      * @return True if the given deck and number of rows are of valid size, otherwise false.
      */
-    private static boolean isDeckDealable(int numRows, int sizeDeck) { return (sizeDeck - Util.sumUp(numRows)) >= 0; }
+    private static boolean isDeckDealable(int numRows, int sizeDeck) {
+        return ((sizeDeck - Util.sumUp(numRows)) >= 0) &&
+                (numRows > 0);
+    }
 
     /**
      * Produce the number of elements in this pyramid.
@@ -116,12 +111,31 @@ public class Pyramid<K>{
     }
 }
 
-class CardToPair<K> implements Function<K, IPair<K>> {
-    public IPair<K> apply(K c) {
-        return null;//IPair.of(0, 0, new Card(CardType.Seven, Suit.Heart));
+/**
+ * A function class used to wrap elements in IPair
+ *
+ * @param <K>  the type of cards this function class uses
+ */
+class CardToPair<K> implements BiFunction<K, List<IPair<K>>, List<IPair<K>>> {
+//    public List<IPair<K>> apply(K c, List<IPair<K>> loipk) { return new ArrayList<>(List.of(IPair.of(0, 0, c))); } // STUB
+    public List<IPair<K>> apply(K c, List<IPair<K>> loi) {
+        IPair<K> prev = loi.getLast();
+        int prevPos = prev.position();
+        int prevRowNum = prev.rowNum();
+        if (prevPos == prevRowNum) {
+            loi.addLast(IPair.of(0, prevRowNum + 1, c));
+        } else {
+            loi.addLast(IPair.of(prevPos + 1, prevRowNum, c));
+        }
+        return loi;
     }
 }
 
+/**
+ * A bifunction class used to "fold" IPairs into vertices within a Graph.
+ *
+ * @param <K>  the type of cards this bifunction class uses
+ */
 class PairToGraph<K> implements BiFunction<IPair<K>, Graph, Graph> {
     public Graph apply(IPair<K> p, Graph g) {
         return new Graph();

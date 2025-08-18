@@ -25,7 +25,7 @@ public class BasicPyramidSolitaireTest {
         this.DOC52 = new DeckOfCards(52);
         this.PS00 = new BasicPyramidSolitaire();
         this.B01 = BasicPyramidSolitaire.builder();
-        this.PS01 = B01.build();
+//        this.PS01 = B01.build();
     }
 
     // -------------------------------------
@@ -34,7 +34,6 @@ public class BasicPyramidSolitaireTest {
 
     @Test
     public void getDeckTest() {
-        System.out.println(PS01.getDeck());
         assertEquals(new DeckOfCards(52).toList(), PS00.getDeck());
         PS00.startGame(new DeckOfCards(52).toList(), false, 7, 2);
         assertEquals(new ArrayList<>(), PS00.getDeck());
@@ -461,7 +460,7 @@ public class BasicPyramidSolitaireTest {
     // -------------------------------------
     @Test
     public void hashCodeTest() {
-        List tempDeck = PS01.getDeck().reversed(); // Change the order of the Deck to invoke a different hash code
+        List<Card> tempDeck = PS01.getDeck().reversed(); // Change the order of the Deck to invoke a different hash code
         assertEquals(Objects.hash(7, 3, PS01.getDeck()), PS01.hashCode());
         assertNotEquals(Objects.hash(7, 2, PS01.getDeck()), PS01.hashCode());
         assertNotEquals(Objects.hash(6, 3, PS01.getDeck()), PS01.hashCode());
