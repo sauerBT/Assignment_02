@@ -19,9 +19,21 @@ public class StockDraw<K> implements SideDeck<K> {
     List<K> draw;
 
     public StockDraw(List<K> deck, int numDraw) {
-        this.stock = generateStock(deck, numDraw);
-        this.draw = generateDraw(deck, numDraw);
+        if (!isLegalDraw(numDraw)) {
+            throw new IllegalArgumentException("Invalid draw number.");
+        } else if (!isLegaldeck(deck, numDraw)) {
+            throw new IllegalArgumentException("Invalid deck and draw number combination.");
+        } else {
+            this.stock = generateStock(deck, numDraw);
+            this.draw = generateDraw(deck, numDraw);
+        }
     }
+
+    // TODO
+    private static boolean isLegalDraw(int numDraw) { return false; }
+
+    // TODO
+    private static <K> boolean isLegaldeck(List<K> deck, int numDraw) { return false; }
 
     private StockDraw(List<K> stock, List<K> draw) {
         this.stock = stock;
