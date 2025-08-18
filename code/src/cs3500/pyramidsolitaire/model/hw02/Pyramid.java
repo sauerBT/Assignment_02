@@ -35,38 +35,26 @@ public class Pyramid<K>{
      * @throws IllegalArgumentException if the deck is null or invalid,
      *    *                  or a full pyramid cannot be dealt with the given sizes
      */
-    private static <K> Graph dealDeck(int numRows, List<K> deck) { return new Graph(); } // STUB
-//    private static <K> Graph dealDeck(int numRows, List<K> deck) {
-//        if (!isDeckDealable(numRows, deck.size())) {
-//            throw new IllegalArgumentException("Deck size is too small for the given number of rows");
-//        } else if (deck == null || deck.isEmpty()) {
-//            throw new IllegalArgumentException("Given deck is invalid.");
-//        } else {
-//            List<IPair<Card>> convDeck = Util.ListUtil.map(new CardToPair(), deck);
-//            Graph graph = Util.ListUtil.foldr(new PairToGraph(), convDeck, new Graph());
-//            return graph;
-////            return
-////                // self referential data
-////                ...(
-////                    // compound data
-////                    ...(convDeck.getFirst().position(), // int
-////                        convDeck.getFirst().rowNum(),   // int
-////                        convDeck.getFirst().element()), // K
-////                    fnForDeck(convDeck.subList(1, deck.size())));
-//        }
-//    }
-//
-//    static class CardToPair implements Function<K, IPair<K>> {
-//        public IPair<K> apply(K c) {
-//            return null;//IPair.of(0, 0, new Card(CardType.Seven, Suit.Heart));
-//        }
-//    }
-//
-//    static class PairToGraph implements BiFunction<IPair<Card>, Graph, Graph> {
-//        public Graph apply(IPair<Card> p, Graph g) {
-//            return new Graph();
-//        }
-//    }
+//    private static <K> Graph dealDeck(int numRows, List<K> deck) { return new Graph(); } // STUB
+    private static <K> Graph dealDeck(int numRows, List<K> deck) {
+        if (!isDeckDealable(numRows, deck.size())) {
+            throw new IllegalArgumentException("Deck size is too small for the given number of rows");
+        } else if (deck == null || deck.isEmpty()) {
+            throw new IllegalArgumentException("Given deck is invalid.");
+        } else {
+            List<IPair<K>> convDeck = Util.ListUtil.map(new CardToPair<>(), deck);
+            Graph graph = Util.ListUtil.foldr(new PairToGraph<>(), convDeck, new Graph());
+            return graph;
+//            return
+//                // self referential data
+//                ...(
+//                    // compound data
+//                    ...(convDeck.getFirst().position(), // int
+//                        convDeck.getFirst().rowNum(),   // int
+//                        convDeck.getFirst().element()), // K
+//                    fnForDeck(convDeck.subList(1, deck.size())));
+        }
+    }
 
     /**
      * Determine the validity of the given deck size and row number.
@@ -125,5 +113,17 @@ public class Pyramid<K>{
     @Override
     public int hashCode() {
         return Objects.hash(pyramid);
+    }
+}
+
+class CardToPair<K> implements Function<K, IPair<K>> {
+    public IPair<K> apply(K c) {
+        return null;//IPair.of(0, 0, new Card(CardType.Seven, Suit.Heart));
+    }
+}
+
+class PairToGraph<K> implements BiFunction<IPair<K>, Graph, Graph> {
+    public Graph apply(IPair<K> p, Graph g) {
+        return new Graph();
     }
 }
