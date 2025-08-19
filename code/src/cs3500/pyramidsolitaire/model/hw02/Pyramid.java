@@ -42,8 +42,12 @@ public class Pyramid<K>{
         } else if (!isDeckDealable(numRows, deck.size())) {
             throw new IllegalArgumentException("Deck size is too small for the given number of rows");
         } else {
-            List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), deck, new ArrayList<>());
-            Graph graph = Util.ListUtil.foldr(new PairToGraph<>(), convDeck, new Graph());
+            // Set up the foldl function by extracting the first card of the deck, wrapping it in an IPair, and
+            // removing that card from the deck.
+            List<IPair<K>> initAcc = new ArrayList<IPair<K>>(List.of(IPair.of(0, 0, deck.getFirst())));
+            deck.removeFirst();
+            List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), deck, initAcc);
+            Graph graph = Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new Graph());
             return graph;
         }
     }
@@ -117,7 +121,6 @@ public class Pyramid<K>{
  * @param <K>  the type of cards this function class uses
  */
 class CardToPair<K> implements BiFunction<K, List<IPair<K>>, List<IPair<K>>> {
-//    public List<IPair<K>> apply(K c, List<IPair<K>> loipk) { return new ArrayList<>(List.of(IPair.of(0, 0, c))); } // STUB
     public List<IPair<K>> apply(K c, List<IPair<K>> loi) {
         IPair<K> prev = loi.getLast();
         int prevPos = prev.position();
@@ -136,8 +139,22 @@ class CardToPair<K> implements BiFunction<K, List<IPair<K>>, List<IPair<K>>> {
  *
  * @param <K>  the type of cards this bifunction class uses
  */
-class PairToGraph<K> implements BiFunction<IPair<K>, Graph, Graph> {
-    public Graph apply(IPair<K> p, Graph g) {
-        return new Graph();
+class PairToGraph<K> implements BiFunction<IPair<K>, IPairGraphAcc<K>, IPairGraphAcc<K>> {
+//    public Graph apply(IPair<K> p, Graph g) { return new Graph(); } // STUB
+    public IPairGraphAcc<K> apply(IPair<K> p, IPairGraphAcc<K> acc) {
+        return acc.g()
+                .addTriple(p, Util.ListUtil.findOne(new LeftNode(), acc.loi(), p), GraphPred.Child)  // new to extract value from Optional
+                .addTriple(p, Util.ListUtil.findOne(new RightNode(), acc.loi(), p), GraphPred.Child); // new to extract value from Optional
     }
+}
+
+class IPairGraphAcc<K> {
+    private final List<IPair<K>> loi;
+    private final Graph g;
+    IPairGraphAcc(List<IPair<K>> loi, Graph g) {
+        this.loi = loi;
+        this.g = g;
+    }
+    public List<IPair<K>> loi() { return this.loi; }
+    public Graph g() { return this.g; }
 }
