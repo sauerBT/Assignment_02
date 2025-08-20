@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 // Invariant: Subject Vertices cannot reference themselves, and they also cannot reference Vertices that reference themselves
-public class Graph {
-    private final List<Vertex> vertices;
+public class Graph<K> {
+    private final List<Vertex<K>> vertices;
 
-    public Graph() { this.vertices = new ArrayList<Vertex>(); }
+    public Graph() { this.vertices = new ArrayList<>(); }
 
-    private Graph(List<Vertex> vertices) {
+    private Graph(List<Vertex<K>> vertices) {
         this.vertices = vertices;
     }
 
@@ -22,12 +22,12 @@ public class Graph {
      * @param predicate The given statement "predicate" to define the relationship between Subject and Object.
      * @return A Graph with a new triple added.
      */
-    public Graph addTriple(IPair<Card> fromPair, IPair<Card> toPair, GraphPred predicate) {
-        Vertex tempObject = this.getIfContains(new Vertex(toPair)); // 1
-        Vertex tempSubject = this.getIfContains(new Vertex(fromPair)); // 2
+    public Graph<K> addTriple(K fromPair, K toPair, GraphPred predicate) {
+        Vertex<K> tempObject = this.getIfContains(new Vertex<>(toPair)); // 1
+        Vertex<K> tempSubject = this.getIfContains(new Vertex<>(fromPair)); // 2
         tempSubject.addEdge(predicate, tempObject); // 3
         return
-                new Graph(Util.ListUtil.findIfExclude(IPred2.vertexSame(), this.vertices, new ArrayList<>(List.of(tempSubject, tempObject))))
+                new Graph<>(Util.ListUtil.findIfExclude(IPred2.vertexSame(), this.vertices, new ArrayList<>(List.of(tempSubject, tempObject))))
                         .addVertex(tempObject)
                         .addVertex(tempSubject);
     }
@@ -38,7 +38,7 @@ public class Graph {
      * @param v The given Vertex to query for.
      * @return The search result for the given Vertex.
      */
-    private Vertex getIfContains(Vertex v) { return Util.ListUtil.findOne(IPred2.vertexSame(), this.vertices, v).orElse(v); }
+    private Vertex<K> getIfContains(Vertex<K> v) { return Util.ListUtil.findOne(IPred2.vertexSame(), this.vertices, v).orElse(v); }
 
     /**
      * Produce a Graph with the given Vertex added to the list of vertices
@@ -47,17 +47,17 @@ public class Graph {
      * @return A Graph with the new Vertex added.  This is a copy, not a reference.
      * @throws IllegalArgumentException If the Vertex already exists, throw an exception.
      */
-    public Graph addVertex(Vertex v) {
+    public Graph<K> addVertex(Vertex<K> v) {
         if (Util.ListUtil.contains(IPred2.vertexSame(), this.vertices, v)) {
             throw new IllegalArgumentException("Vertex " + v.toString() + " exists for " + this.vertices.toString());
         } else {
-            List<Vertex> result = Util.ListUtil.copy(this.vertices);
+            List<Vertex<K>> result = Util.ListUtil.copy(this.vertices);
             result.add(v);
-            return new Graph(result);
+            return new Graph<>(result);
         }
     }
 
-    public List<Vertex> getVertices() { return this.vertices; }
+    public List<Vertex<K>> getVertices() { return this.vertices; }
 
     // TODO
     @Override
@@ -72,7 +72,7 @@ public class Graph {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Graph)) return false;
-        Graph that = (Graph)obj;
+        Graph<K> that = (Graph<K>)obj;
         return this.vertices.equals(that.vertices);
     }
 

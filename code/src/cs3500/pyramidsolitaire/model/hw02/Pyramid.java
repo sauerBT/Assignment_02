@@ -2,6 +2,7 @@ package cs3500.pyramidsolitaire.model.hw02;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -36,7 +37,7 @@ public class Pyramid<K>{
      *    *                  or a full pyramid cannot be dealt with the given sizes
      */
 //    private static <K> Graph dealDeck(int numRows, List<K> deck) { return new Graph(); } // STUB
-    private static <K> Graph dealDeck(int numRows, List<K> deck) {
+    private static <K> Graph<IPair<K>> dealDeck(int numRows, List<K> deck) {
         if (deck == null || deck.isEmpty()) {
             throw new IllegalArgumentException("Given deck is invalid.");
         } else if (!isDeckDealable(numRows, deck.size())) {
@@ -44,10 +45,10 @@ public class Pyramid<K>{
         } else {
             // Set up the foldl function by extracting the first card of the deck, wrapping it in an IPair, and
             // removing that card from the deck.
-            List<IPair<K>> initAcc = new ArrayList<IPair<K>>(List.of(IPair.of(0, 0, deck.getFirst())));
+            List<IPair<K>> initAcc = new ArrayList<>(List.of(IPair.of(0, 0, deck.getFirst())));
             deck.removeFirst();
             List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), deck, initAcc);
-            Graph graph = Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new Graph());
+            Graph<IPair<K>> graph = Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new IPairGraphAcc<>(convDeck, new Graph<>())).g();
             return graph;
         }
     }
@@ -139,22 +140,39 @@ class CardToPair<K> implements BiFunction<K, List<IPair<K>>, List<IPair<K>>> {
  *
  * @param <K>  the type of cards this bifunction class uses
  */
-class PairToGraph<K> implements BiFunction<IPair<K>, IPairGraphAcc<K>, IPairGraphAcc<K>> {
+class PairToGraph<K> implements BiFunction<IPair<K>, IPairGraphAcc<IPair<K>>, IPairGraphAcc<IPair<K>>> {
 //    public Graph apply(IPair<K> p, Graph g) { return new Graph(); } // STUB
-    public IPairGraphAcc<K> apply(IPair<K> p, IPairGraphAcc<K> acc) {
-        return acc.g()
-                .addTriple(p, Util.ListUtil.findOne(new LeftNode(), acc.loi(), p), GraphPred.Child)  // new to extract value from Optional
-                .addTriple(p, Util.ListUtil.findOne(new RightNode(), acc.loi(), p), GraphPred.Child); // new to extract value from Optional
+    public IPairGraphAcc<IPair<K>> apply(IPair<K> p, IPairGraphAcc<IPair<K>> acc) {
+        Optional<IPair<K>> o1 = Util.ListUtil.findOne(new LeftNode<>(), acc.loi(), p);
+        Optional<IPair<K>> o2 = Util.ListUtil.findOne(new RightNode<>(), acc.loi(), p);
+        Graph<IPair<K>> result1 = o1.map(pair -> acc.g().addTriple(p, pair, GraphPred.Child))
+                .orElse(acc.g());
+
+        Graph<IPair<K>> result2 = o2.map(pair -> result1.addTriple(p, pair, GraphPred.Child))
+                .orElse(result1);
+
+//        Graph result = acc.g();
+//        if (o1.isPresent()) { result = result.addTriple(p, o1.get(), GraphPred.Child); } // Last Step -- Generalize Graph / Vertices / Edge
+//        if (o2.isPresent()) { result = result.addTriple(p, o2.get(), GraphPred.Child); } // Last Step -- Generalize Graph / Vertices / Edge
+        return new IPairGraphAcc<>(acc.loi(), result2);
     }
 }
 
+class LeftNode<K> implements IPred2<IPair<K>> {
+    public boolean apply(IPair<K> arg1, IPair<K> arg2) { return false; }
+}
+
+class RightNode<K> implements IPred2<IPair<K>> {
+    public boolean apply(IPair<K> arg1, IPair<K> arg2) { return false; }
+}
+
 class IPairGraphAcc<K> {
-    private final List<IPair<K>> loi;
-    private final Graph g;
-    IPairGraphAcc(List<IPair<K>> loi, Graph g) {
+    private final List<K> loi;
+    private final Graph<K> g;
+    IPairGraphAcc(List<K> loi, Graph<K> g) {
         this.loi = loi;
         this.g = g;
     }
-    public List<IPair<K>> loi() { return this.loi; }
-    public Graph g() { return this.g; }
+    public List<K> loi() { return this.loi; }
+    public Graph<K> g() { return this.g; }
 }

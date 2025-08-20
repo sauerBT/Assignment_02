@@ -17,27 +17,27 @@ import java.util.function.Predicate;
  * @version 1.0
  * @since 1.0
  */
-public class Vertex {
+public class Vertex<K> {
     /**
      * The collection of "Edges" (Predicates) that define relationships between this Vertex and other Vertices.
      * NOTE: This list is MUTABLE.
      * @since 1.0
      */
-    private List<Edge> edges;
+    private List<Edge<K>> edges;
 
     /**
      * The data object that defines this Vertex.
      *
      * @since 1.0
      */
-    private final IPair<Card> pair;
+    private final K pair;
 
-    public Vertex(IPair<Card> pair) {
+    public Vertex(K pair) {
         this.pair = pair;
         this.edges = new ArrayList<>();
     }
     
-    private Vertex(List<Edge> edges, IPair<Card> pair) {
+    private Vertex(List<Edge<K>> edges, K pair) {
         this.edges = edges;
         this.pair = pair;
     }
@@ -53,8 +53,8 @@ public class Vertex {
      * @param to The Object of the Triple
      * @throws IllegalArgumentException Error when the given predicate and Object create an Edge that already exists
      */
-    public void addEdge(GraphPred predicate, Vertex to) {
-        Edge newEdge = new Edge(predicate, this, to);
+    public void addEdge(GraphPred predicate, Vertex<K> to) {
+        Edge<K> newEdge = new Edge<>(predicate, this, to);
         if (this.edges.contains(newEdge)) {  // Confirm the edge to be added does not already exist
             throw new IllegalArgumentException(
                     "Identical Edge: " + newEdge.toString() + " already exists for " + this.toString() + ". Edges: " + this.edges.toString()
@@ -64,7 +64,7 @@ public class Vertex {
         }
     }
 
-    public List<Edge> getEdges() { return this.edges; }
+    public List<Edge<K>> getEdges() { return this.edges; }
 
     /**
      * Produce a true|false based on whether the Vertex has existing edges
@@ -80,14 +80,14 @@ public class Vertex {
      * @param obj The given Vertex to compare this Vertex to
      * @return True if this Vertex has the same data as the given Vertex.
      */
-    public boolean sameSubject(Vertex obj) { return this.pair.equals(obj.pair); }
+    public boolean sameSubject(Vertex<K> obj) { return this.pair.equals(obj.pair); }
 
     /**
      * Produce a shallow copy of this Vertex.
      *
      * @return A copy of this instance.
      */
-    public Vertex copy() { return new Vertex(Util.ListUtil.copy(this.edges), this.pair); }
+    public Vertex<K> copy() { return new Vertex<>(Util.ListUtil.copy(this.edges), this.pair); }
 
     // TODO
     @Override
@@ -104,7 +104,7 @@ public class Vertex {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Vertex)) return false;
-        Vertex that = (Vertex)obj;
+        Vertex<K> that = (Vertex<K>)obj;
         return this.pair.equals(that.pair);
     }
 }

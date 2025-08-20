@@ -3,9 +3,9 @@ package cs3500.pyramidsolitaire.model.hw02;
 public interface IPred2<T>{
     public boolean apply(T obj1, T obj2);
 
-    public static IPred2<Vertex> vertexSame() { return new VertexSame(); }
+    public static <K> IPred2<Vertex<K>> vertexSame() { return new VertexSame<>(); }
 
-    public static IPred2<Vertex> VertexDiff() { return new VertexDiff(); }
+    public static <K> IPred2<Vertex<K>> VertexDiff() { return new VertexDiff<>(); }
 
     public static IPred2<Card> equalsPred() { return new CardEquals(); }
 
@@ -13,14 +13,14 @@ public interface IPred2<T>{
 }
 
 
-class VertexSame implements IPred2<Vertex> {
-    public boolean apply(Vertex obj1, Vertex obj2) {
+class VertexSame<K> implements IPred2<Vertex<K>> {
+    public boolean apply(Vertex<K> obj1, Vertex<K> obj2) {
         return obj1.sameSubject(obj2);
     }
 }
 
-class VertexDiff implements IPred2<Vertex> {
-    public boolean apply(Vertex obj1, Vertex obj2) {
+class VertexDiff<K> implements IPred2<Vertex<K>> {
+    public boolean apply(Vertex<K> obj1, Vertex<K> obj2) {
         return !obj1.sameSubject(obj2);
     }
 }

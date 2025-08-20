@@ -22,29 +22,29 @@ public class GraphTest {
     IPair<Card> P05;
     IPair<Card> P06;
     // Example Edges
-    Edge E01;
-    Edge E02;
-    Edge E03;
-    Edge E04;
-    Edge E05;
-    Edge E06;
+    Edge<IPair<Card>> E01;
+    Edge<IPair<Card>> E02;
+    Edge<IPair<Card>> E03;
+    Edge<IPair<Card>> E04;
+    Edge<IPair<Card>> E05;
+    Edge<IPair<Card>> E06;
     // Example Vertices
-    Vertex V00;
-    Vertex V001;
-    Vertex V01;
-    Vertex V02;
-    Vertex V03;
-    Vertex V04;
-    Vertex V05;
-    Vertex V06;
+    Vertex<IPair<Card>> V00;
+    Vertex<IPair<Card>> V001;
+    Vertex<IPair<Card>> V01;
+    Vertex<IPair<Card>> V02;
+    Vertex<IPair<Card>> V03;
+    Vertex<IPair<Card>> V04;
+    Vertex<IPair<Card>> V05;
+    Vertex<IPair<Card>> V06;
     // Example Graphs
-    Graph G00;
-    Graph G01;
-    Graph G02;
-    Graph G03;
-    Graph G04;
-    Graph G05;
-    Graph G06;
+    Graph<IPair<Card>> G00;
+    Graph<IPair<Card>> G01;
+    Graph<IPair<Card>> G02;
+    Graph<IPair<Card>> G04;
+    Graph<IPair<Card>> G03;
+    Graph<IPair<Card>> G05;
+    Graph<IPair<Card>> G06;
 
 
     @Before
@@ -65,18 +65,18 @@ public class GraphTest {
 
         // Initialize Example Vertices
         // Empty
-        V00 = new Vertex(P00);
+        V00 = new Vertex<>(P00);
         // Single Vertex
-        V001 = new Vertex(P01);
+        V001 = new Vertex<>(P01);
         // Row 0
-        V01 = new Vertex(P01);
+        V01 = new Vertex<>(P01);
         // Row 1
-        V02 = new Vertex(P02);
-        V03 = new Vertex(P03);
+        V02 = new Vertex<>(P02);
+        V03 = new Vertex<>(P03);
         // Row 2
-        V04 = new Vertex(P04);
-        V05 = new Vertex(P05);
-        V06 = new Vertex(P06);
+        V04 = new Vertex<>(P04);
+        V05 = new Vertex<>(P05);
+        V06 = new Vertex<>(P06);
 
         // Initialize Example Edges
         // Row 0 --> Row 1
@@ -95,7 +95,7 @@ public class GraphTest {
         E06 = V03.getEdges().getLast();
 
         // Initialize Example Graphs
-        G00 = new Graph();
+        G00 = new Graph<>();
         G01 = G00.addTriple(P01, P02, GraphPred.Child);
         G02 = G01.addTriple(P01, P03, GraphPred.Child);
         G03 = G02.addTriple(P02, P04, GraphPred.Child);
@@ -107,18 +107,18 @@ public class GraphTest {
 
     @Test
     public void hashCodeTest() {
-        assertNotEquals(V00.hashCode(), new Vertex(P01).hashCode());
-        assertEquals(V01.hashCode(), new Vertex(P01).hashCode());
+        assertNotEquals(V00.hashCode(), new Vertex<>(P01).hashCode());
+        assertEquals(V01.hashCode(), new Vertex<>(P01).hashCode());
         assertEquals(V01.hashCode(), V01.hashCode());
-        assertNotEquals(V01.hashCode(), new Vertex(P02).hashCode());
+        assertNotEquals(V01.hashCode(), new Vertex<>(P02).hashCode());
     }
 
     @Test
     public void vertexEqualsTest() {
-        assertNotEquals(V00, new Vertex(P01));
-        assertEquals(V01, new Vertex(P01));
+        assertNotEquals(V00, new Vertex<>(P01));
+        assertEquals(V01, new Vertex<>(P01));
         assertEquals(V01, V01);
-        assertNotEquals(V01, new Vertex(P02));
+        assertNotEquals(V01, new Vertex<>(P02));
     }
 
     @Test
@@ -155,26 +155,26 @@ public class GraphTest {
     @Test
     public void graphAddTripleTest() {
         // Test for same Vertex, different edge
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G00.getVertices(), new Vertex(P01))); // Empty test
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G02.getVertices(), new Vertex(P01)));
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex(P02)));
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex(P01)));
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P03)));
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P02)));
-        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex(P01)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G00.getVertices(), new Vertex<>(P01))); // Empty test
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G02.getVertices(), new Vertex<>(P01)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex<>(P02)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G04.getVertices(), new Vertex<>(P01)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex<>(P03)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex<>(P02)));
+        assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(), G06.getVertices(), new Vertex<>(P01)));
         // Test for new Vertex
         assertEquals(G00.addTriple(P01, P02, GraphPred.Child), G01); // Empty addition
         assertFalse(Util.ListUtil.containsDuplicatesOf(IPred2.vertexSame(),
-                G01.addTriple(P01, P04, GraphPred.Child).getVertices(), new Vertex(P01))); // Single Addition
+                G01.addTriple(P01, P04, GraphPred.Child).getVertices(), new Vertex<>(P01))); // Single Addition
     }
 
     @Test
     public void graphAddVertex() {
-        assertEquals(new Graph().addVertex(V01).getVertices(), new ArrayList<>(List.of(V01)));
-        Graph exp01 = new Graph().addVertex(V01);
+        assertEquals(new Graph<>().addVertex(V01).getVertices(), new ArrayList<>(List.of(V01)));
+        Graph<IPair<Card>> exp01 = new Graph<>().addVertex(V01);
         assertSame(exp01.getVertices().getFirst().getEdges().getFirst(), E01);
-        assertEquals(new Graph().addVertex(V01).addVertex(V02).addVertex(V03).getVertices(), new ArrayList<>(List.of(V01, V02, V03)));
-        Graph exp02 = new Graph().addVertex(V01).addVertex(V02).addVertex(V03);
+        assertEquals(new Graph<>().addVertex(V01).addVertex(V02).addVertex(V03).getVertices(), new ArrayList<>(List.of(V01, V02, V03)));
+        Graph<IPair<Card>> exp02 = new Graph<>().addVertex(V01).addVertex(V02).addVertex(V03);
         assertSame(E04, exp02.getVertices().get(1).getEdges().getLast());
         assertSame(E03, exp02.getVertices().get(1).getEdges().getFirst());
         assertSame(E05, exp02.getVertices().get(2).getEdges().getFirst());
@@ -183,9 +183,9 @@ public class GraphTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void graphAddVertexDuplicate() {
-        new Graph().addVertex(V01).addVertex(V01);
-        new Graph().addVertex(V01).addVertex(V02).addVertex(V03).addVertex(V03);
-        new Graph().addVertex(V01).addVertex(V02).addVertex(V02).addVertex(V03);
+        new Graph<>().addVertex(V01).addVertex(V01);
+        new Graph<>().addVertex(V01).addVertex(V02).addVertex(V03).addVertex(V03);
+        new Graph<>().addVertex(V01).addVertex(V02).addVertex(V02).addVertex(V03);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -196,14 +196,14 @@ public class GraphTest {
 
     @Test
     public void graphHashCodeTest() {
-        assertEquals(new Graph().hashCode(), G00.hashCode()); // Empty
-        assertNotEquals(new Graph().hashCode(), G01.hashCode()); // Empty
+        assertEquals(new Graph<>().hashCode(), G00.hashCode()); // Empty
+        assertNotEquals(new Graph<>().hashCode(), G01.hashCode()); // Empty
         assertEquals(G01.hashCode(),
-                new Graph().addTriple(P01, P02, GraphPred.Child).hashCode()); // Single
+                new Graph<>().addTriple(P01, P02, GraphPred.Child).hashCode()); // Single
         assertNotEquals(G01.hashCode(),
-                new Graph().addTriple(P01, P03, GraphPred.Child).hashCode()); // Single
+                new Graph<>().addTriple(P01, P03, GraphPred.Child).hashCode()); // Single
         assertEquals(G06.hashCode(),
-                new Graph()
+                new Graph<>()
                         .addTriple(P01, P02, GraphPred.Child)
                         .addTriple(P01, P03, GraphPred.Child)
                         .addTriple(P02, P04, GraphPred.Child)
@@ -212,7 +212,7 @@ public class GraphTest {
                         .addTriple(P03, P06, GraphPred.Child).hashCode()
         ); // Multi
         assertNotEquals(G06,
-                new Graph()
+                new Graph<>()
                         .addTriple(P01, P02, GraphPred.Child)
                         .addTriple(P01, P03, GraphPred.Child)
                         .addTriple(P02, P04, GraphPred.Child)
@@ -220,7 +220,7 @@ public class GraphTest {
                         .addTriple(P03, P05, GraphPred.Child).hashCode()
         ); // Multi
         assertNotEquals(G06,
-                new Graph()
+                new Graph<>()
                         .addTriple(P01, P02, GraphPred.Child)
                         .addTriple(P01, P03, GraphPred.Child)
                         .addTriple(P02, P05, GraphPred.Child)
@@ -231,12 +231,12 @@ public class GraphTest {
 
     @Test
     public void graphEqualsTest() {
-        assertEquals(new Graph(), G00); // Empty
-        assertNotEquals(new Graph(), G01); // Empty
-        assertEquals(G01, new Graph().addTriple(P01, P02, GraphPred.Child)); // Single
-        assertNotEquals(G01, new Graph().addTriple(P01, P03, GraphPred.Child)); // Single
+        assertEquals(new Graph<>(), G00); // Empty
+        assertNotEquals(new Graph<>(), G01); // Empty
+        assertEquals(G01, new Graph<>().addTriple(P01, P02, GraphPred.Child)); // Single
+        assertNotEquals(G01, new Graph<>().addTriple(P01, P03, GraphPred.Child)); // Single
         assertEquals(G06,
-                new Graph()
+                new Graph<>()
                         .addTriple(P01, P02, GraphPred.Child)
                         .addTriple(P01, P03, GraphPred.Child)
                         .addTriple(P02, P04, GraphPred.Child)
@@ -245,7 +245,7 @@ public class GraphTest {
                         .addTriple(P03, P06, GraphPred.Child)
         ); // Multi
         assertNotEquals(G06,
-                new Graph()
+                new Graph<>()
                         .addTriple(P01, P02, GraphPred.Child)
                         .addTriple(P01, P03, GraphPred.Child)
                         .addTriple(P02, P04, GraphPred.Child)
@@ -253,7 +253,7 @@ public class GraphTest {
                         .addTriple(P03, P05, GraphPred.Child)
         ); // Multi
         assertNotEquals(G06,
-                new Graph()
+                new Graph<>()
                         .addTriple(P01, P02, GraphPred.Child)
                         .addTriple(P01, P03, GraphPred.Child)
                         .addTriple(P02, P05, GraphPred.Child)
