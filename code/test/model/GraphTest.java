@@ -170,11 +170,11 @@ public class GraphTest {
 
     @Test
     public void graphAddVertex() {
-        assertEquals(new Graph<>().addVertex(V01).getVertices(), new ArrayList<>(List.of(V01)));
-        Graph<IPair<Card>> exp01 = new Graph<>().addVertex(V01);
+        assertEquals(new Graph<IPair<Card>>().addVertex(V01).getVertices(), new ArrayList<>(List.of(V01)));
+        Graph<IPair<Card>> exp01 = new Graph<IPair<Card>>().addVertex(V01);
         assertSame(exp01.getVertices().getFirst().getEdges().getFirst(), E01);
-        assertEquals(new Graph<>().addVertex(V01).addVertex(V02).addVertex(V03).getVertices(), new ArrayList<>(List.of(V01, V02, V03)));
-        Graph<IPair<Card>> exp02 = new Graph<>().addVertex(V01).addVertex(V02).addVertex(V03);
+        assertEquals(new Graph<IPair<Card>>().addVertex(V01).addVertex(V02).addVertex(V03).getVertices(), new ArrayList<>(List.of(V01, V02, V03)));
+        Graph<IPair<Card>> exp02 = new Graph<IPair<Card>>().addVertex(V01).addVertex(V02).addVertex(V03);
         assertSame(E04, exp02.getVertices().get(1).getEdges().getLast());
         assertSame(E03, exp02.getVertices().get(1).getEdges().getFirst());
         assertSame(E05, exp02.getVertices().get(2).getEdges().getFirst());
@@ -183,9 +183,9 @@ public class GraphTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void graphAddVertexDuplicate() {
-        new Graph<>().addVertex(V01).addVertex(V01);
-        new Graph<>().addVertex(V01).addVertex(V02).addVertex(V03).addVertex(V03);
-        new Graph<>().addVertex(V01).addVertex(V02).addVertex(V02).addVertex(V03);
+        new Graph<IPair<Card>>().addVertex(V01).addVertex(V01);
+        new Graph<IPair<Card>>().addVertex(V01).addVertex(V02).addVertex(V03).addVertex(V03);
+        new Graph<IPair<Card>>().addVertex(V01).addVertex(V02).addVertex(V02).addVertex(V03);
     }
 
     @Test(expected = IllegalArgumentException.class)
