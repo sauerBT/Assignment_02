@@ -30,28 +30,28 @@ public class UtilTest {
     IPair<Card> P05;
     IPair<Card> P06;
     // Example Edges
-    Edge E01;
-    Edge E02;
-    Edge E03;
-    Edge E04;
-    Edge E05;
-    Edge E06;
+    Edge<IPair<Card>> E01;
+    Edge<IPair<Card>> E02;
+    Edge<IPair<Card>> E03;
+    Edge<IPair<Card>> E04;
+    Edge<IPair<Card>> E05;
+    Edge<IPair<Card>> E06;
     // Example Vertices
-    Vertex V001;
-    Vertex V01;
-    Vertex V02;
-    Vertex V03;
-    Vertex V04;
-    Vertex V05;
-    Vertex V06;
+    Vertex<IPair<Card>> V001;
+    Vertex<IPair<Card>> V01;
+    Vertex<IPair<Card>> V02;
+    Vertex<IPair<Card>> V03;
+    Vertex<IPair<Card>> V04;
+    Vertex<IPair<Card>> V05;
+    Vertex<IPair<Card>> V06;
     // Example Graphs
-    Graph G00;
-    Graph G01;
-    Graph G02;
-    Graph G03;
-    Graph G04;
-    Graph G05;
-    Graph G06;
+    Graph<IPair<Card>> G00;
+    Graph<IPair<Card>> G01;
+    Graph<IPair<Card>> G02;
+    Graph<IPair<Card>> G03;
+    Graph<IPair<Card>> G04;
+    Graph<IPair<Card>> G05;
+    Graph<IPair<Card>> G06;
 
     @Before
     public void setupTestFixture() {
@@ -87,16 +87,16 @@ public class UtilTest {
 
         // Initialize Example Vertices
         // Single Vertex
-        V001 = new Vertex(P01);
+        V001 = new Vertex<>(P01);
         // Row 0
-        V01 = new Vertex(P01);
+        V01 = new Vertex<>(P01);
         // Row 1
-        V02 = new Vertex(P02);
-        V03 = new Vertex(P03);
+        V02 = new Vertex<>(P02);
+        V03 = new Vertex<>(P03);
         // Row 2
-        V04 = new Vertex(P04);
-        V05 = new Vertex(P05);
-        V06 = new Vertex(P06);
+        V04 = new Vertex<>(P04);
+        V05 = new Vertex<>(P05);
+        V06 = new Vertex<>(P06);
 
         // Initialize Example Edges
         // Row 0 --> Row 1
@@ -115,7 +115,7 @@ public class UtilTest {
         E06 = V03.getEdges().getLast();
 
         // Initialize Example Graphs
-        G00 = new Graph();
+        G00 = new Graph<>();
 //        G01 = G00.addTriple(P01, P02, GraphPred.Child);
 //        G02 = G01.addTriple(P01, P03, GraphPred.Child);
 //        G03 = G02.addTriple(P02, P04, GraphPred.Child);
