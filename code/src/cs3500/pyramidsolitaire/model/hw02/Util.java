@@ -45,7 +45,10 @@ public class Util {
         }
 
         /**
-         * Produce a List with the first x elements removed, with x being a given
+         * Produce a List with the first x elements removed, with x being a given.
+         * Note: If the number of elements requested for removal is greater than the number of elements in
+         * the given list, then an empty list is returned.
+         *
          * @param coll The List of elements
          * @param numOfElements The number of x elements to remove from the list
          * @return The list with x elements removed
@@ -56,10 +59,12 @@ public class Util {
         }
 
         private static <K> List<K> removeFirstXHelper(List<K> listAcc, int numOfElements) {
-            if (numOfElements == 0) {
+            if (numOfElements <= 0) {
                 return listAcc;
             } else {
-                listAcc.removeFirst();
+                if (!listAcc.isEmpty()) {
+                    listAcc.removeFirst();
+                }
                 return removeFirstXHelper(listAcc, numOfElements - 1);
             }
         }
