@@ -13,12 +13,12 @@ import java.util.function.Function;
  * @param <K>  the type of cards this model uses
  */
 public class Pyramid<K>{
-    private final Graph pyramid;
+    private final Graph<IPair<K>> pyramid;
 
     public Pyramid(int numRows, List<K> deck) {
         this.pyramid = dealDeck(numRows, deck);
     }
-    private Pyramid(Graph pyramid) {
+    private Pyramid(Graph<IPair<K>> pyramid) {
         this.pyramid = pyramid;
     }
 
@@ -36,20 +36,16 @@ public class Pyramid<K>{
      * @throws IllegalArgumentException if the deck is null or invalid,
      *    *                  or a full pyramid cannot be dealt with the given sizes
      */
-//    private static <K> Graph dealDeck(int numRows, List<K> deck) { return new Graph(); } // STUB
     private static <K> Graph<IPair<K>> dealDeck(int numRows, List<K> deck) {
         if (deck == null || deck.isEmpty()) {
             throw new IllegalArgumentException("Given deck is invalid.");
         } else if (!isDeckDealable(numRows, deck.size())) {
             throw new IllegalArgumentException("Deck size is too small for the given number of rows");
         } else {
-            // Set up the foldl function by extracting the first card of the deck, wrapping it in an IPair, and
-            // removing that card from the deck.
             List<IPair<K>> initAcc = new ArrayList<>(List.of(IPair.of(0, 0, deck.getFirst())));
             deck.removeFirst();
             List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), deck, initAcc);
-            Graph<IPair<K>> graph = Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new IPairGraphAcc<>(convDeck, new Graph<>())).g();
-            return graph;
+            return  Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new IPairGraphAcc<>(convDeck, new Graph<>())).g();
         }
     }
 
@@ -159,11 +155,13 @@ class PairToGraph<K> implements BiFunction<IPair<K>, IPairGraphAcc<IPair<K>>, IP
 }
 
 class LeftNode<K> implements IPred2<IPair<K>> {
-    public boolean apply(IPair<K> arg1, IPair<K> arg2) { return false; }
+    public boolean apply(IPair<K> arg1, IPair<K> arg2) {
+        return ((arg2.position() == arg1.position()) && (arg2.rowNum() == (arg1.rowNum() - 1)));
+    }
 }
 
 class RightNode<K> implements IPred2<IPair<K>> {
-    public boolean apply(IPair<K> arg1, IPair<K> arg2) { return false; }
+    public boolean apply(IPair<K> arg1, IPair<K> arg2) { return ((arg2.position() == arg1.position() - 1) && (arg2.rowNum() == (arg1.rowNum() - 1))); }
 }
 
 class IPairGraphAcc<K> {
