@@ -34,7 +34,7 @@ public class Pyramid<K>{
      * @param deck A list of elements constituting the initial deck.
      * @return The Graph representing a game pyramid.
      * @throws IllegalArgumentException if the deck is null or invalid,
-     *    *                  or a full pyramid cannot be dealt with the given sizes
+     * or a full pyramid cannot be dealt with the given sizes
      */
     private static <K> Graph<IPair<K>> dealDeck(int numRows, List<K> deck) {
         if (deck == null || deck.isEmpty()) {
@@ -60,6 +60,32 @@ public class Pyramid<K>{
         return ((sizeDeck - Util.sumUp(numRows)) >= 0) &&
                 (numRows > 0);
     }
+
+    // TODO
+    /**
+     * Produce the width (number of elements) in the given row.
+     *
+     * @param row The given row.
+     * @return The number of elements in the given row.
+     * @throws IllegalArgumentException The given row is invalid.
+     * @throws IllegalStateException The game has not started.
+     */
+    public int getRowWidth(int row) {
+        if (!isRowValid(row)) {
+            throw new IllegalArgumentException("Requested row is not valid.");
+        } else {
+            return 0;
+        }
+    }
+
+    // TODO
+    /**
+     * Produce true if the given row is valid, otherwise false.
+     *
+     * @param row The given row.
+     * @return True if the given row is valid.
+     */
+    private boolean isRowValid(int row) { return false; } // STUB
 
     /**
      * Produce the number of elements in this pyramid.
@@ -137,7 +163,6 @@ class CardToPair<K> implements BiFunction<K, List<IPair<K>>, List<IPair<K>>> {
  * @param <K>  the type of cards this bifunction class uses
  */
 class PairToGraph<K> implements BiFunction<IPair<K>, IPairGraphAcc<IPair<K>>, IPairGraphAcc<IPair<K>>> {
-//    public Graph apply(IPair<K> p, Graph g) { return new Graph(); } // STUB
     public IPairGraphAcc<IPair<K>> apply(IPair<K> p, IPairGraphAcc<IPair<K>> acc) {
         Optional<IPair<K>> o1 = Util.ListUtil.findOne(new LeftNode<>(), acc.loi(), p);
         Optional<IPair<K>> o2 = Util.ListUtil.findOne(new RightNode<>(), acc.loi(), p);
@@ -161,7 +186,9 @@ class LeftNode<K> implements IPred2<IPair<K>> {
 }
 
 class RightNode<K> implements IPred2<IPair<K>> {
-    public boolean apply(IPair<K> arg1, IPair<K> arg2) { return ((arg2.position() == arg1.position() - 1) && (arg2.rowNum() == (arg1.rowNum() - 1))); }
+    public boolean apply(IPair<K> arg1, IPair<K> arg2) {
+        return ((arg2.position() == arg1.position() - 1) && (arg2.rowNum() == (arg1.rowNum() - 1)));
+    }
 }
 
 class IPairGraphAcc<K> {

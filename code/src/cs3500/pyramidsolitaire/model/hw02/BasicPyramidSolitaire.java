@@ -102,9 +102,22 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     @Override
     public int getNumDraw() { return this.numDraw; }
 
-    // TODO
     @Override
-    public int getRowWidth(int row) { return row; }
+    public int getRowWidth(int row) {
+        if (!isGameStarted()) {
+            throw new IllegalStateException("Game has not been started.  Cannot retrieve current row width.");
+        } else {
+            return this.pyramid.getRowWidth(row);
+        }
+    }
+
+    // TODO
+    /**
+     * Produce true if this game has started.
+     *
+     * @return True if the game has started, otherwise false.
+     */
+    private boolean isGameStarted() { return false; } //STUB
 
     // TODO
     @Override
