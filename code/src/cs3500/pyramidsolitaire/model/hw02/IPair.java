@@ -22,15 +22,15 @@ public interface IPair<K> {
      * @return The Pair object
      * @param <K> The Pair object defined in a game of Solitaire.
      */
-    static <K> IPair<K> of(int position, int rowNum, K c) { return new Pair<>(position, rowNum, c); }
+    static <K> IPair<K> of(Integer position, Integer rowNum, K c) { return new Pair<>(position, rowNum, c); }
 
-    int position();
+    Integer position();
 
-    IPair<K> position(int pos);
+    IPair<K> position(Integer pos);
 
-    int rowNum();
+    Integer rowNum();
 
-    IPair<K> rowNum(int rowNum);
+    IPair<K> rowNum(Integer rowNum);
 
     K element();
 }
@@ -41,14 +41,14 @@ class Pair<K> implements IPair<K> {
      *
      * @since 1.0
      */
-    private final int position;
+    private final Integer position;
 
     /**
      * The row of the Pair in the game of Solitaire.
      *
      * @since 1.0
      */
-    private final int rowNum;
+    private final Integer rowNum;
 
     /**
      * The data object of the Pair in the game of Solitaire.
@@ -57,23 +57,23 @@ class Pair<K> implements IPair<K> {
      */
     private final K c;
 
-    protected Pair(int position, int rowNum, K c) {
+    protected Pair(Integer position, Integer rowNum, K c) {
         this.position = position;
         this.rowNum = rowNum;
         this.c = c;
     }
 
     @Override
-    public int position() { return this.position; }
+    public Integer position() { return this.position; }
 
     @Override
-    public IPair<K> position(int pos) { return new Pair<>(pos, this.rowNum, this.c); }
+    public IPair<K> position(Integer pos) { return new Pair<>(pos, this.rowNum, this.c); }
 
     @Override
-    public int rowNum() { return this.rowNum; }
+    public Integer rowNum() { return this.rowNum; }
 
     @Override
-    public IPair<K> rowNum(int rowNum) { return new Pair<>(this.position, rowNum, this.c); }
+    public IPair<K> rowNum(Integer rowNum) { return new Pair<>(this.position, rowNum, this.c); }
 
     @Override
     public K element() { return this.c; }
@@ -87,8 +87,8 @@ class Pair<K> implements IPair<K> {
         if (!(obj instanceof Pair<?>)) return false;
         Pair<?> that = (Pair<?>)obj;
         return this.c.equals(that.c) &&
-                this.position == that.position &&
-                this.rowNum == that.rowNum;
+                this.position.equals(that.position) &&
+                this.rowNum.equals(that.rowNum);
     }
 
     @Override
