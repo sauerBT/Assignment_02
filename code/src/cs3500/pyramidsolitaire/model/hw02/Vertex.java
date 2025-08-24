@@ -66,6 +66,8 @@ public class Vertex<K> {
 
     public List<Edge<K>> getEdges() { return this.edges; }
 
+    public K data() { return this.pair; }
+    
     /**
      * Produce a true|false based on whether the Vertex has existing edges
      *
