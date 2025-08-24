@@ -15,14 +15,19 @@ import java.util.function.Function;
 public class Pyramid<K>{
     private final Graph<IPair<K>> pyramid;
 
+    // TODO -- make private? Make public interface with "of" and "empty"?
     public Pyramid(int numRows, List<K> deck) {
         this.pyramid = dealDeck(numRows, deck);
     }
+
+    public Pyramid() {
+        this.pyramid = new Graph<>();
+    }
+
     private Pyramid(Graph<IPair<K>> pyramid) {
         this.pyramid = pyramid;
     }
 
-    // TODO
     /**
      * Produce a full Graph representing a game Pyramid.
      * *<p>
@@ -44,7 +49,7 @@ public class Pyramid<K>{
         } else {
             List<IPair<K>> initAcc = new ArrayList<>(List.of(IPair.of(0, 0, deck.getFirst())));
             deck.removeFirst();
-            List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), deck, initAcc);
+            List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), Util.ListUtil.getFirstX(deck, Util.sumUp(numRows) - 1), initAcc);
             return  Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new IPairGraphAcc<>(convDeck, new Graph<>())).g();
         }
     }
@@ -61,7 +66,6 @@ public class Pyramid<K>{
                 (numRows > 0);
     }
 
-    // TODO
     /**
      * Produce the width (number of elements) in the given row.
      *
@@ -74,18 +78,22 @@ public class Pyramid<K>{
         if (!isRowValid(row)) {
             throw new IllegalArgumentException("Requested row is not valid.");
         } else {
-            return 0;
+            return Util.ListUtil.foldl(new CountOfRowX<>(), this.pyramid.getVertices(), new RowCountAcc(0, row)).count();
         }
     }
 
-    // TODO
     /**
      * Produce true if the given row is valid, otherwise false.
      *
      * @param row The given row.
      * @return True if the given row is valid.
      */
-    private boolean isRowValid(int row) { return false; } // STUB
+    private boolean isRowValid(int row) {
+        return 0 <= Util.ListUtil.findOne(
+                new SameObj<>(),
+                Util.ListUtil.map(new VertexToRow<>(), this.pyramid.getVertices()),
+                row).orElse(-1);
+    }
 
     /**
      * Produce the number of elements in this pyramid.
@@ -191,13 +199,37 @@ class RightNode<K> implements IPred2<IPair<K>> {
     }
 }
 
-class IPairGraphAcc<K> {
-    private final List<K> loi;
-    private final Graph<K> g;
-    IPairGraphAcc(List<K> loi, Graph<K> g) {
-        this.loi = loi;
-        this.g = g;
+class SameObj<K> implements IPred2<K> {
+    public boolean apply(K arg1, K arg2) {
+        return arg1.equals(arg2);
     }
-    public List<K> loi() { return this.loi; }
-    public Graph<K> g() { return this.g; }
+}
+
+// TODO -- Remove cast...
+class VertexToRow<K, Integer> implements Function<Vertex<IPair<K>>, Integer> {
+    public Integer apply(Vertex<IPair<K>> vertex) {
+        return (Integer) vertex.data().rowNum();
+    }
+}
+
+// TODO -- Function body
+/**
+ * Increments the counter if a particular row is found.
+ *
+ * @param <K>
+ */
+class CountOfRowX<K> implements BiFunction<Vertex<IPair<K>>, RowCountAcc, RowCountAcc> {
+    public RowCountAcc apply(Vertex<IPair<K>> vertex, RowCountAcc acc) {
+        if (acc.row().equals(vertex.data().rowNum())) {
+            return new RowCountAcc(acc.count() + 1, acc.row());
+        } else {
+            return new RowCountAcc(acc.count(), acc.row());
+        }
+    }
+}
+
+record RowCountAcc(Integer count, Integer row) {
+}
+
+record IPairGraphAcc<K>(List<K> loi, Graph<K> g) {
 }
