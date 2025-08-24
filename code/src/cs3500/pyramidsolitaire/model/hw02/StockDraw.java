@@ -18,6 +18,7 @@ public class StockDraw<K> implements SideDeck<K> {
     List<K> stock;
     List<K> draw;
 
+    // TODO -- make private? Make public interface with "of" and "empty"?
     public StockDraw(List<K> deck, int numDraw) {
         if (!isLegalDraw(numDraw)) {
             throw new IllegalArgumentException("Invalid draw number.");
@@ -27,6 +28,11 @@ public class StockDraw<K> implements SideDeck<K> {
             this.stock = generateStock(deck, numDraw);
             this.draw = generateDraw(deck, numDraw);
         }
+    }
+
+    public StockDraw() {
+        this.stock = new ArrayList<>();
+        this.draw = new ArrayList<>();
     }
 
     // TODO
