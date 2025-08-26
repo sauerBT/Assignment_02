@@ -437,7 +437,7 @@ public class BasicPyramidSolitaireTest {
 
     // Edge Case
     // Game not started
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalStateException.class)
     public void getCardAtGameNotStartedTest() {
         PS00 = new BasicPyramidSolitaire();
         PS00.getCardAt(6, 0);
