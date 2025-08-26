@@ -1,6 +1,7 @@
 package cs3500.pyramidsolitaire.model.hw02;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents the Pyramid Solitaire "Pair" object
@@ -22,7 +23,9 @@ public interface IPair<K> {
      * @return The Pair object
      * @param <K> The Pair object defined in a game of Solitaire.
      */
-    static <K> IPair<K> of(Integer position, Integer rowNum, K c) { return new Pair<>(position, rowNum, c); }
+    static <K> IPair<K> of(Integer position, Integer rowNum, Optional<K> c) { return new Pair<>(position, rowNum, c); }
+
+    static <K> IPair<K> empty(Integer position, Integer rowNum) { return new Pair<>(position, rowNum, Optional.empty()); }
 
     Integer position();
 
@@ -32,7 +35,7 @@ public interface IPair<K> {
 
     IPair<K> rowNum(Integer rowNum);
 
-    K element();
+    Optional<K> element();
 }
 
 class Pair<K> implements IPair<K> {
@@ -55,9 +58,9 @@ class Pair<K> implements IPair<K> {
      *
      * @since 1.0
      */
-    private final K c;
+    private final Optional<K> c;
 
-    protected Pair(Integer position, Integer rowNum, K c) {
+    protected Pair(Integer position, Integer rowNum, Optional<K> c) {
         this.position = position;
         this.rowNum = rowNum;
         this.c = c;
@@ -76,17 +79,17 @@ class Pair<K> implements IPair<K> {
     public IPair<K> rowNum(Integer rowNum) { return new Pair<>(this.position, rowNum, this.c); }
 
     @Override
-    public K element() { return this.c; }
+    public Optional<K> element() { return this.c; }
 
     @Override
-    public String toString() { return "P" + this.position + "R" + this.rowNum + c.toString(); }
+    public String toString() { return "P" + this.position + "R" + this.rowNum + (c.isPresent() ? c.get().toString() : "EMPTY"); }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Pair<?>)) return false;
         Pair<?> that = (Pair<?>)obj;
-        return this.c.equals(that.c) &&
+        return Objects.equals(this.c, that.c) &&
                 this.position.equals(that.position) &&
                 this.rowNum.equals(that.rowNum);
     }

@@ -78,12 +78,12 @@ public class UtilTest {
         C04 = new Card(CardType.Ace, Suit.Club);
 
         // Initialize Example Pairs
-        P01 = IPair.of(0, 0, C01);
-        P02 = IPair.of(1, 1, C02);
-        P03 = IPair.of(2, 1, C03);
-        P04 = IPair.of(3, 2, C04);
-        P05 = IPair.of(4, 2, new Card(CardType.Seven, Suit.Heart));
-        P06 = IPair.of(5, 2, new Card(CardType.Six, Suit.Club));
+        P01 = IPair.of(0, 0, Optional.of(C01));
+        P02 = IPair.of(1, 1, Optional.of(C02));
+        P03 = IPair.of(2, 1, Optional.of(C03));
+        P04 = IPair.of(3, 2, Optional.of(C04));
+        P05 = IPair.of(4, 2, Optional.of(new Card(CardType.Seven, Suit.Heart)));
+        P06 = IPair.of(5, 2, Optional.of(new Card(CardType.Six, Suit.Club)));
 
         // Initialize Example Vertices
         // Single Vertex
