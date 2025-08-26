@@ -1,4 +1,5 @@
 package cs3500.pyramidsolitaire.model.hw02;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +48,7 @@ public class Pyramid<K>{
         } else if (!isDeckDealable(numRows, deck.size())) {
             throw new IllegalArgumentException("Deck size is too small for the given number of rows");
         } else {
-            List<IPair<K>> initAcc = new ArrayList<>(List.of(IPair.of(0, 0, deck.getFirst())));
+            List<IPair<K>> initAcc = new ArrayList<>(List.of(IPair.of(0, 0, Optional.of(deck.getFirst()))));
             deck.removeFirst();
             List<IPair<K>> convDeck = Util.ListUtil.foldl(new CardToPair<>(), Util.ListUtil.getFirstX(deck, Util.sumUp(numRows) - 1), initAcc);
             return  Util.ListUtil.foldl(new PairToGraph<>(), convDeck, new IPairGraphAcc<>(convDeck, new Graph<>())).g();
@@ -109,8 +110,28 @@ public class Pyramid<K>{
      * @param pos The requested position.
      * @return The requested card element.
      */
+//    public K getCardAt(int row, int pos) { throw new UnsupportedOperationException("Not implemented yet"); } // STUB
     public K getCardAt(int row, int pos) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (!this.isRowValid(row)) {
+            throw new IllegalArgumentException("Invalid row given."); // Fail fast on a given invalid row
+        } else {
+            return this.getPairAt(row, pos).element()
+                    .orElseThrow(() -> new IllegalArgumentException("No card at the given position"));
+        }
+    }
+
+    // TODO
+    /**
+     * Produce the Pair at the given row and position.
+     *
+     * @param row The given row.
+     * @param pos The given position.
+     * @return The Pair.
+     */
+//    private IPair<K> getPairAt(int row, int pos) { throw new UnsupportedOperationException("Not implemented yet"); } // STUB
+    private IPair<K> getPairAt(int row, int pos) {
+        return Util.ListUtil.findOne(new SamePairLocation<>(), Util.ListUtil.map(Vertex::data, this.pyramid.getVertices()), IPair.of(pos, row, Optional.empty()))
+                .orElseThrow(() -> new IllegalArgumentException("Card at given location not found."));
     }
 
     /**
@@ -123,13 +144,15 @@ public class Pyramid<K>{
     }
 
     /**
+     * Remove a single element from this pyramid given a position and row
      *
-     * @param rowNum
-     * @param pos
-     * @return
+     * @param rowNum The given row of the element to be removed.
+     * @param pos The given position of the element to be removed.
+     * @return A new copy of this pyramid with the given element at the given row and position removed
      */
+//    public Pyramid<K> removeElement(int rowNum, int pos) { return new Pyramid<>(0, new ArrayList<>()); } // STUB
     public Pyramid<K> removeElement(int rowNum, int pos) {
-        return new Pyramid<>(0, new ArrayList<>());
+        return new Pyramid<>(this.pyramid.removeElement(this.getPairAt(rowNum, pos)));
     }
 
     @Override
@@ -157,9 +180,9 @@ class CardToPair<K> implements BiFunction<K, List<IPair<K>>, List<IPair<K>>> {
         int prevPos = prev.position();
         int prevRowNum = prev.rowNum();
         if (prevPos == prevRowNum) {
-            loi.addLast(IPair.of(0, prevRowNum + 1, c));
+            loi.addLast(IPair.of(0, prevRowNum + 1, Optional.of(c)));
         } else {
-            loi.addLast(IPair.of(prevPos + 1, prevRowNum, c));
+            loi.addLast(IPair.of(prevPos + 1, prevRowNum, Optional.of(c)));
         }
         return loi;
     }
@@ -205,6 +228,12 @@ class SameObj<K> implements IPred2<K> {
     }
 }
 
+class SamePairLocation<K> implements IPred2<IPair<K>> {
+    public boolean apply (IPair<K> arg1, IPair<K> arg2) {
+        return arg1.rowNum().equals(arg2.rowNum()) && arg1.position().equals(arg2.position());
+    }
+}
+
 // TODO -- Remove cast...
 class VertexToRow<K, Integer> implements Function<Vertex<IPair<K>>, Integer> {
     public Integer apply(Vertex<IPair<K>> vertex) {
@@ -212,7 +241,6 @@ class VertexToRow<K, Integer> implements Function<Vertex<IPair<K>>, Integer> {
     }
 }
 
-// TODO -- Function body
 /**
  * Increments the counter if a particular row is found.
  *
