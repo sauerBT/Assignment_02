@@ -57,6 +57,16 @@ public class Graph<K> {
         }
     }
 
+    /**
+     * Produce a new copy of this graph with the given data element removed from ALL Triples.
+     *
+     * @param element The data element to be removed.
+     * @return The new copy of the Graph.
+     */
+    public Graph<K> removeElement(K element) {
+        return new Graph<>();
+    }
+
     public List<Vertex<K>> getVertices() { return this.vertices; }
 
     // TODO
