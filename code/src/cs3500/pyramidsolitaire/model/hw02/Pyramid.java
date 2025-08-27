@@ -110,17 +110,15 @@ public class Pyramid<K>{
      * @param pos The requested position.
      * @return The requested card element.
      */
-//    public K getCardAt(int row, int pos) { throw new UnsupportedOperationException("Not implemented yet"); } // STUB
     public K getCardAt(int row, int pos) {
         if (!this.isRowValid(row)) {
             throw new IllegalArgumentException("Invalid row given."); // Fail fast on a given invalid row
         } else {
-            return this.getPairAt(row, pos).element()
+            return this.getVertexAt(row, pos).data().element()
                     .orElseThrow(() -> new IllegalArgumentException("No card at the given position"));
         }
     }
 
-    // TODO
     /**
      * Produce the Pair at the given row and position.
      *
@@ -128,9 +126,8 @@ public class Pyramid<K>{
      * @param pos The given position.
      * @return The Pair.
      */
-//    private IPair<K> getPairAt(int row, int pos) { throw new UnsupportedOperationException("Not implemented yet"); } // STUB
-    private IPair<K> getPairAt(int row, int pos) {
-        return Util.ListUtil.findOne(new SamePairLocation<>(), Util.ListUtil.map(Vertex::data, this.pyramid.getVertices()), IPair.of(pos, row, Optional.empty()))
+    private Vertex<IPair<K>> getVertexAt(int row, int pos) {
+        return Util.ListUtil.findOne(new SamePairLocation<>(), this.pyramid.getVertices(), new Vertex<>(IPair.of(pos, row, Optional.empty())))
                 .orElseThrow(() -> new IllegalArgumentException("Card at given location not found."));
     }
 
@@ -145,15 +142,34 @@ public class Pyramid<K>{
 
     /**
      * Remove a single element from this pyramid given a position and row
+     * INVARIANTS:
+     * 1. An element with Edges is NOT removable (Edges implies that the given element is COVERED)
+     * 2. It is a GUARANTEE that if an Edge IS removable, and is subsequently removed, that the Vertex has TWO Edges that
+     * reference IT as a TO (or Object) UNLESS the Vertex is within rows 1 or 2 (0 or 1 in base 0). This invariant comes
+     * from the fact that every Vertex in Rows  greater than 2 is a blocker for two positions in the previous Row
      *
      * @param rowNum The given row of the element to be removed.
      * @param pos The given position of the element to be removed.
      * @return A new copy of this pyramid with the given element at the given row and position removed
+     * @throws IllegalArgumentException A card is not removable when covered by any other card
      */
 //    public Pyramid<K> removeElement(int rowNum, int pos) { return new Pyramid<>(0, new ArrayList<>()); } // STUB
     public Pyramid<K> removeElement(int rowNum, int pos) {
-        return new Pyramid<>(this.pyramid.removeElement(this.getPairAt(rowNum, pos)));
+        Vertex<IPair<K>> vertex = this.getVertexAt(rowNum, pos);
+        if (!isRemovable(vertex)) {
+            throw new IllegalArgumentException("Card is covered, and therefore not removable.");
+        } else {
+            return new Pyramid<>(this.pyramid.removeElement(vertex));
+        }
     }
+
+    /**
+     * Produce true if the given Vertex is removable, meaning that the vertex has no edges.
+     *
+     * @param v The given Vertex
+     * @return True if the given Vertex has no edges
+     */
+    private boolean isRemovable(Vertex<IPair<K>> v) { return v.getEdges().isEmpty(); }
 
     @Override
     public boolean equals(Object obj) {
@@ -228,9 +244,9 @@ class SameObj<K> implements IPred2<K> {
     }
 }
 
-class SamePairLocation<K> implements IPred2<IPair<K>> {
-    public boolean apply (IPair<K> arg1, IPair<K> arg2) {
-        return arg1.rowNum().equals(arg2.rowNum()) && arg1.position().equals(arg2.position());
+class SamePairLocation<K> implements IPred2<Vertex<IPair<K>>> {
+    public boolean apply (Vertex<IPair<K>> arg1, Vertex<IPair<K>> arg2) {
+        return arg1.data().rowNum().equals(arg2.data().rowNum()) && arg1.data().position().equals(arg2.data().position());
     }
 }
 
