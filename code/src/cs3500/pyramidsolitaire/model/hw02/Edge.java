@@ -2,6 +2,7 @@ package cs3500.pyramidsolitaire.model.hw02;
 
 import java.util.Objects;
 // INVARIANT: And Edge cannot exist without a Vertex, but a Vertex can exist without an Edge.
+// In other words, the FROM vertex must exist for this edge to exist.
 public class Edge<K> {
     private GraphPred predicate;
     private Vertex<K> from, to;
