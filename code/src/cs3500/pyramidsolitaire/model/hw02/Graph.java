@@ -3,16 +3,31 @@ package cs3500.pyramidsolitaire.model.hw02;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 // Invariant: Subject Vertices cannot reference themselves, and they also cannot reference Vertices that reference themselves
 public class Graph<K> {
     private final List<Vertex<K>> vertices;
+    private final Optional<Vertex<K>> entryPoint;
 
-    public Graph() { this.vertices = new ArrayList<>(); }
+    public Graph() {
+        this.vertices = new ArrayList<>();
+        this.entryPoint = Optional.empty();
+    }
 
     private Graph(List<Vertex<K>> vertices) {
         this.vertices = vertices;
+        this.entryPoint = Optional.empty();
     }
+
+    private Graph(List<Vertex<K>> vertices, Vertex<K> entryPoint) {
+        this.vertices = vertices;
+        this.entryPoint = Optional.of(entryPoint);
+    }
+
+    public Graph<K> entryPoint(Vertex<K> entryPoint) { return new Graph<>(this.vertices, entryPoint); }
 
     /**
      * Produce a Graph with a new statement added.
@@ -59,12 +74,21 @@ public class Graph<K> {
 
     /**
      * Produce a new copy of this graph with the given data element removed from ALL Triples.
+     * NOTE: removal of a vertex from a graph is a linear time exercise since the algorithm MUST be exhaustive,
+     * and therefore the Graph search is not used.
      *
-     * @param element The data element to be removed.
+     * @param vertex The data element to be removed.
      * @return The new copy of the Graph.
      */
-    public Graph<K> removeElement(K element) {
-        return new Graph<>();
+//    public Graph<K> removeElement(Vertex<K> vertex) { return new Graph<>(); } // STUB
+    public Graph<K> removeElement(Vertex<K> vertex) {
+        // 1. Remove all vertices that match the given vertices (this is okay because any vertex that matches the
+        // given vertex would also contain edges that include the given vertex
+        List<Vertex<K>> filteredLov = Util.ListUtil.findIfExclude(new ExcludeVertex<>(), this.vertices, new ArrayList<>(List.of(vertex)));
+        // 2. Execute a remove edges function that passes the work to the Vertex class
+        List<Vertex<K>> filteredLovWithEdgesRemoved = Util.ListUtil.foldl(new RemoveEdges<>(), filteredLov, new RemoveEdgesAcc<>(new ArrayList<>(), vertex)).lov();
+        // 3. create new graph
+        return new Graph<>(filteredLovWithEdgesRemoved);
     }
 
     public List<Vertex<K>> getVertices() { return this.vertices; }
@@ -86,4 +110,35 @@ public class Graph<K> {
         return this.vertices.equals(that.vertices);
     }
 
+}
+
+/**
+ * Predicate function class that compares two vertices and produces true if they are equal
+ * @param <K> The type of data contained within the vertex
+ */
+class ExcludeVertex<K> implements IPred2<Vertex<K>> {
+    public boolean apply(Vertex<K> arg1, Vertex<K> arg2) {
+        return arg1.equals(arg2);
+    }
+}
+
+/**
+ * Function used for comparison of Vertices to a given Vertex and removal of that vertex if the match is found.
+ * @param <K> The type of data contained within the Vertex
+ */
+class RemoveEdges<K> implements BiFunction<Vertex<K>, RemoveEdgesAcc<K>, RemoveEdgesAcc<K>> {
+    public RemoveEdgesAcc<K> apply(Vertex<K> vertex, RemoveEdgesAcc<K> acc) {
+        return new RemoveEdgesAcc<>(acc.lov().add(vertex.removeEdgesWithVertex(acc.accVertex())), acc.accVertex());
+    }
+}
+
+class RemoveEdgesAcc<K> {
+    List<Vertex<K>> lov;
+    Vertex<K> accVertex;
+    RemoveEdgesAcc(List<Vertex<K>> lov, Vertex<K> accVertex) {
+        this.lov = lov;
+        this.accVertex = accVertex;
+    }
+    public List<Vertex<K>> lov() { return this.lov; }
+    public Vertex<K> accVertex() { return this.accVertex; }
 }
