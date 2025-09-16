@@ -3,6 +3,7 @@ package cs3500.pyramidsolitaire.model.hw02;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 // TODO Future enhancement: Make pair generic
 /**
@@ -91,6 +92,18 @@ public class Vertex<K> {
      */
     public Vertex<K> copy() { return new Vertex<>(Util.ListUtil.copy(this.edges), this.pair); }
 
+    /**
+     * Remove all edges that contain the given Vertex in their "To" or "From" element.
+     *
+     * @param vertex The given vertex to compare with each edge
+     * @return The vertex with a filtered edges field.
+     */
+    public Vertex<K> removeEdgesWithVertex(Vertex<K> vertex) {
+        return new Vertex<>(
+                Util.ListUtil.foldl(new RemoveEdgesForVertex<>(), this.getEdges(), new RemoveEdgesForVertexAcc<>(vertex, new ArrayList<>())).accEdges(),
+                this.data());
+    }
+
     // TODO
     @Override
     public String toString() {
@@ -109,4 +122,26 @@ public class Vertex<K> {
         Vertex<K> that = (Vertex<K>)obj;
         return this.pair.equals(that.pair);
     }
+}
+
+class RemoveEdgesForVertex<K> implements BiFunction<Edge<K>, RemoveEdgesForVertexAcc<K>, RemoveEdgesForVertexAcc<K>> {
+    public RemoveEdgesForVertexAcc<K> apply(Edge<K> edge, RemoveEdgesForVertexAcc<K> acc) {
+        if (edge.containsVertex(acc.vertex())) {
+            return acc;
+        } else {
+            acc.accEdges().add(edge);
+            return new RemoveEdgesForVertexAcc<>(acc.vertex(), acc.accEdges());
+        }
+    }
+}
+
+class RemoveEdgesForVertexAcc<K> {
+    Vertex<K> vertex;
+    List<Edge<K>> accEdges;
+    RemoveEdgesForVertexAcc(Vertex<K> vertex, List<Edge<K>> accEdges) {
+        this.vertex = vertex;
+        this.accEdges = accEdges;
+    }
+    public Vertex<K> vertex() { return this.vertex; }
+    public List<Edge<K>> accEdges() { return this.accEdges; }
 }
