@@ -25,6 +25,16 @@ public class Edge<K> {
 
     public Vertex<K> getTo() { return this.to; }
 
+    /**
+     * Produce true if this edge contains the given vertex in either the "to" or "from" components of its statement.
+     *
+     * @param vertex The vertex to compare this edge's statement to.
+     * @return True if this edge contains the given vertex, otherwise false.
+     */
+    public boolean containsVertex(Vertex<K> vertex) {
+        return this.from.equals(vertex) || this.to.equals(vertex);
+    }
+
     // TODO
     @Override
     public String toString() { return this.from.toString() + "--" + this.predicate.toString() + "-->" + this.to.toString(); }
