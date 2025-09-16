@@ -276,7 +276,7 @@ public class BasicPyramidSolitaireTest {
 
     // Edge Case
     // Move is invalid, value != 13
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void removeTwoInvalidMoveTest01() {
         PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 2);
