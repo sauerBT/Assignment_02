@@ -128,7 +128,8 @@ class ExcludeVertex<K> implements IPred2<Vertex<K>> {
  */
 class RemoveEdges<K> implements BiFunction<Vertex<K>, RemoveEdgesAcc<K>, RemoveEdgesAcc<K>> {
     public RemoveEdgesAcc<K> apply(Vertex<K> vertex, RemoveEdgesAcc<K> acc) {
-        return new RemoveEdgesAcc<>(acc.lov().add(vertex.removeEdgesWithVertex(acc.accVertex())), acc.accVertex());
+        acc.lov().add(vertex.removeEdgesWithVertex(acc.accVertex()));
+        return new RemoveEdgesAcc<>(acc.lov(), acc.accVertex());
     }
 }
 
