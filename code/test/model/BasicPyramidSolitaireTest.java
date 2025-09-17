@@ -261,17 +261,137 @@ public class BasicPyramidSolitaireTest {
 
     // -------------------------------------
     // remove()
+    // TODO Currently, remove DOES NOT check vertex edges for vertex removal... Where should this be done?
     // -------------------------------------
 
     // Regular Cases
-    @Test
-    public void removeTwoTest() {
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest01() {
         PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
         PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.getCardAt(6,0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest02() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.getCardAt(6,6);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest03() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
         PS00.remove(6, 1, 6, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(6, PS00.getRowWidth(5));
+        PS00.getCardAt(6,1);
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest04() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.remove(6, 1, 6, 5);
+        PS00.getCardAt(6,5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest05() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.remove(6, 1, 6, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(6, PS00.getRowWidth(5));
         PS00.remove(5, 0, 5, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(5));
+        PS00.getCardAt(5,0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest06() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.remove(6, 1, 6, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(6, PS00.getRowWidth(5));
+        PS00.remove(5, 0, 5, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(5));
+        PS00.getCardAt(5,5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest07() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.remove(6, 1, 6, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(6, PS00.getRowWidth(5));
+        PS00.remove(5, 0, 5, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(5));
         PS00.remove(6, 2, 6, 4);
+        assertEquals(1, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(5));
+        PS00.getCardAt(6,2);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeTwoTest08() {
+        PS00 = new BasicPyramidSolitaire();
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.Ten, Suit.Heart), PS00.getCardAt(6,0));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
+        PS00.remove(6, 0, 6, 6);
+        assertEquals(5, PS00.getRowWidth(6));
+        PS00.remove(6, 1, 6, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(6, PS00.getRowWidth(5));
+        PS00.remove(5, 0, 5, 5);
+        assertEquals(3, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(5));
+        PS00.remove(6, 2, 6, 4);
+        assertEquals(1, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(5));
+        PS00.getCardAt(6,4);
     }
 
     // Edge Case
