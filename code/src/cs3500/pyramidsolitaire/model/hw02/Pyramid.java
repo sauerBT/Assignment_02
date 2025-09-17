@@ -171,6 +171,12 @@ public class Pyramid<K>{
      */
     private boolean isRemovable(Vertex<IPair<K>> v) { return v.getEdges().isEmpty(); }
 
+    // TODO
+    @Override
+    public String toString() {
+        return this.pyramid.toString();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

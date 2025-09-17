@@ -198,7 +198,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      */
     private void pyramid(Pyramid<Card> pyramid) { this.pyramid = pyramid; }
 
-    // TODO
     @Override
     public void remove(int row1, int card1, int row2, int card2) {
         if (!isGameStarted()) {
@@ -244,7 +243,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public String toString() { return ""; }
+    public String toString() { return this.pyramid.toString(); }
 
     // TODO
     @Override
