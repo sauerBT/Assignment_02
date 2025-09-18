@@ -175,7 +175,6 @@ public class BasicPyramidSolitaireTest {
     // 2. Getting draw cards during game flow when draw cards have been removed
     @Test
     public void getDrawCardsTest() {
-        PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 3);
         assertEquals(new ArrayList<>(List.of(
                 new Card(CardType.Four, Suit.Diamond),
@@ -303,6 +302,7 @@ public class BasicPyramidSolitaireTest {
         assertEquals(6, PS00.getRowWidth(5));
         PS00.getCardAt(6,1);
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void removeTwoTest04() {
         PS00 = new BasicPyramidSolitaire();
@@ -409,6 +409,7 @@ public class BasicPyramidSolitaireTest {
     public void removeTwoInvalidMoveTest02() {
         PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 2);
+        System.out.println(PS00.getCardAt(4, 4));
         PS00.remove(6, 0, 4, 4);
     }
 
@@ -430,11 +431,15 @@ public class BasicPyramidSolitaireTest {
     }
 
     // Regular Cases
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void removeOneTest() {
         PS00 = new BasicPyramidSolitaire();
         PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(7, PS00.getRowWidth(6));
+        assertEquals(new Card(CardType.King, Suit.Heart), PS00.getCardAt(6,3));
         PS00.remove(6, 3);
+        assertEquals(6, PS00.getRowWidth(6));
+        Card card = PS00.getCardAt(6,3);
     }
 
     // Edge Case
