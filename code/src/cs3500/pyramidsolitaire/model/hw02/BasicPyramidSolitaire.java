@@ -205,7 +205,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         } else {
             int requestedRemovalValue = this.pyramid.getCardAt(row1, card1).getValue() + this.pyramid.getCardAt(row2, card2).getValue();
             if (requestedRemovalValue == 13) {
-                this.pyramid(this.pyramid.removeElement(row1, card1).removeElement(row2, card2));
+                this.pyramid(this.pyramid.removeElement(row1, card1).removeElement(row2, card2)); // MUTATION: mutates the pyramid in place
             } else {
                 throw new IllegalArgumentException("Move is invalid, combined card values equal " + requestedRemovalValue);
             }
@@ -214,7 +214,18 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public void remove(int row, int card) throws IllegalStateException {}
+    public void remove(int row, int card) {
+        if (!isGameStarted()) {
+            throw new IllegalStateException("Cannot make any moves. Game has not started.");
+        } else {
+            int requestedRemovalValue = this.pyramid.getCardAt(row, card).getValue();
+            if (requestedRemovalValue == 13) {
+                this.pyramid(this.pyramid.removeElement(row, card)); // MUTATION: mutates the pyramid in place
+            } else {
+                throw new IllegalStateException("Move is invalid, card value equals " + requestedRemovalValue);
+            }
+        }
+    }
 
     // TODO
     @Override
