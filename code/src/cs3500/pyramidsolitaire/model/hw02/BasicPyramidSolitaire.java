@@ -245,7 +245,21 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public void discardDraw(int drawIndex) throws IllegalStateException {}
+//    public void discardDraw(int drawIndex) throws IllegalStateException {} // STUB
+    public void discardDraw(int drawIndex) {
+        if (!isGameStarted()) {
+            throw new IllegalStateException("Cannot make any moves. Game has not started.");
+        } else {
+            List<Card> drawPile = this.getDrawCards();
+            if (drawPile.isEmpty()) {
+                throw new IllegalArgumentException("Draw pile is empty. No cards to remove");
+            } else if (drawPile.size() < (drawIndex + 1) || (drawIndex < 0)) {
+                throw new IllegalArgumentException("Given draw index is invalid.");
+            } else {
+                return this.sideDeck.discardDraw(drawIndex);
+            }
+        }
+    }
 
     @Override
     public Card getCardAt(int row, int card) throws IllegalStateException {
