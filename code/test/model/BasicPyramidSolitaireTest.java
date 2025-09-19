@@ -663,11 +663,19 @@ public class BasicPyramidSolitaireTest {
     }
 
     // Edge Case
-    // Empty draw pile
+    // Draw index greater than the size of the draw pile
     @Test(expected = IllegalArgumentException.class)
-    public void discardDrawInvalidDrawIndex() {
+    public void discardDrawInvalidDrawIndex01() {
         PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.discardDraw(2);
+    }
+
+    // Edge Case
+    // Draw index impossible
+    @Test(expected = IllegalArgumentException.class)
+    public void discardDrawInvalidDrawIndex02() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.discardDraw(-1);
     }
 
     // -------------------------------------
