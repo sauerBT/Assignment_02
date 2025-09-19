@@ -256,7 +256,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
             } else if (drawPile.size() < (drawIndex + 1) || (drawIndex < 0)) {
                 throw new IllegalArgumentException("Given draw index is invalid.");
             } else {
-                return this.sideDeck.discardDraw(drawIndex);
+                this.sideDeck(this.sideDeck.discardDraw(drawIndex)); // MUTATION: set new side deck in place
             }
         }
     }
