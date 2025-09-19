@@ -69,6 +69,18 @@ public class StockDraw<K> implements SideDeck<K> {
     }
 
     // TODO
+    public SideDeck<K> discardDraw(int drawIndex) {
+        if (this.draw.isEmpty()) {
+            throw new IllegalArgumentException("Draw pile is empty. No cards to remove");
+        } else if (this.draw.size() < (drawIndex + 1) || (drawIndex < 0)) {
+            throw new IllegalArgumentException("Given draw index is invalid.");
+        } else {
+            this.draw.remove(drawIndex);
+            return new StockDraw<>(this.stock, this.draw);
+        }
+    }
+
+    // TODO
     @Override
     public StockDraw<K> turnOver() {
         return new StockDraw<>(new ArrayList<>(), new ArrayList<>());

@@ -17,4 +17,13 @@ public interface SideDeck<K> {
      * @return The size of the side deck.
      */
     int size();
+
+    /**
+     * Produce a new SideDeck with the card at the given DrawIndex removed from the draw pile.
+     *
+     * @param drawIndex The index containing the card to remove from the draw pile
+     * @return A new SideDeck
+     * @throws IllegalArgumentException When the given index is invalid or the draw pile is empty.
+     */
+    SideDeck<K> discardDraw(int drawIndex);
 }
