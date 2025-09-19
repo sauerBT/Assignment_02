@@ -606,6 +606,71 @@ public class BasicPyramidSolitaireTest {
     }
 
     // -------------------------------------
+    // discardDraw()
+    // -------------------------------------
+
+    // Regular Case
+    @Test
+    public void discardDraw01() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(
+                new ArrayList<>(List.of(
+                        new Card(CardType.Four, Suit.Diamond),
+                        new Card(CardType.Five, Suit.Diamond))),
+                PS00.getDrawCards());
+        PS00.discardDraw(0);
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond))), PS00.getDrawCards());
+    }
+
+    // Regular Case
+    @Test
+    public void discardDraw02() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(
+                new ArrayList<>(List.of(
+                        new Card(CardType.Four, Suit.Diamond),
+                        new Card(CardType.Five, Suit.Diamond))),
+                PS00.getDrawCards());
+        PS00.discardDraw(1);
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Four, Suit.Diamond))), PS00.getDrawCards());
+    }
+
+    // Regular Case
+    @Test
+    public void discardDraw03() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(
+                new ArrayList<>(List.of(
+                        new Card(CardType.Four, Suit.Diamond),
+                        new Card(CardType.Five, Suit.Diamond))),
+                PS00.getDrawCards());
+        PS00.discardDraw(0);
+        PS00.discardDraw(1);
+        assertEquals(new ArrayList<>(), PS00.getDrawCards());
+    }
+
+    // Edge Case
+    // Game not started
+    @Test(expected = IllegalStateException.class)
+    public void discardDrawGameNotStarted() { PS00.discardDraw(0); }
+
+    // Edge Case
+    // Empty draw pile
+    @Test(expected = IllegalArgumentException.class)
+    public void discardDrawEmptyDrawPile() {
+        PS00.startGame(DOC52.toList(), false, 7, 0);
+        PS00.discardDraw(0);
+    }
+
+    // Edge Case
+    // Empty draw pile
+    @Test(expected = IllegalArgumentException.class)
+    public void discardDrawInvalidDrawIndex() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.discardDraw(2);
+    }
+
+    // -------------------------------------
     // hashCode()
     // -------------------------------------
     @Test
