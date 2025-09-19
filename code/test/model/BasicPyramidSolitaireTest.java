@@ -473,14 +473,31 @@ public class BasicPyramidSolitaireTest {
     // -------------------------------------
 
     // Regular Cases
-    @Test
-    public void removeUsingDrawTest() {
+    @Test(expected = IllegalArgumentException.class)
+    public void removeUsingDrawTest01() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        assertEquals(6, PS00.getRowWidth(5));
+        assertEquals(new Card(CardType.Nine, Suit.Heart), PS00.getCardAt(5,5));
+        PS00.removeUsingDraw(0, 5, 5);
+        assertEquals(5, PS00.getRowWidth(5));
+        Card card = PS00.getCardAt(5,5);
+    }
+
+    // Regular Cases
+    @Test(expected = IllegalArgumentException.class)
+    public void removeUsingDrawTest02() {
         PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.remove(6, 0, 6, 6);
         PS00.remove(6, 1, 6, 5);
         PS00.removeUsingDraw(0, 5, 5);
         PS00.remove(6, 2, 6, 4);
+        assertEquals(5, PS00.getRowWidth(5));
+        assertEquals(new Card(CardType.Eight, Suit.Heart), PS00.getCardAt(5,4));
         PS00.removeUsingDraw(0, 5, 4); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+        assertEquals(4, PS00.getRowWidth(5));
+        Card card = PS00.getCardAt(5,4);
     }
 
     // Edge Case - Game not started
