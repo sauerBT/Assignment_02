@@ -11,6 +11,15 @@ public interface SideDeck<K> {
     List<K> getDraw();
 
     /**
+     * Produce the element from this draw pile at the given index.
+     *
+     * @param drawIndex The given draw index
+     * @return The element.
+     * @throws IllegalArgumentException When the given draw index is invalid.
+     */
+    K getDrawElement(int drawIndex);
+
+    /**
      * Produce the next card in the "Stock".
      * <p>
      *     This method "exposes" the next card in the stock and transfers it to the "Draw".

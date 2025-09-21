@@ -38,6 +38,15 @@ public class StockDraw<K> implements SideDeck<K> {
     @Override
     public List<K> getDraw() { return this.draw; }
 
+    @Override
+    public K getDrawElement(int drawIndex) {
+        if (this.draw.size() < (drawIndex + 1) || drawIndex < 0) {
+            throw new IllegalArgumentException("Given draw index is out of bounds or invalid");
+        } else {
+            return this.draw.get(drawIndex);
+        }
+    }
+
     // TODO
     private static boolean isLegalDraw(int numDraw) { return numDraw > 0; }
 
@@ -72,6 +81,14 @@ public class StockDraw<K> implements SideDeck<K> {
     }
 
     // TODO
+
+    /**
+     * Produce a new StockDraw where the element at the given draw index is removed from the draw pile.
+     *
+     * @param drawIndex The index containing the card to remove from the draw pile.
+     * @return The new StockDraw.
+     * @throws IllegalArgumentException When the draw pile is empty or the given draw index is out of bounds or invalid.
+     */
     public SideDeck<K> discardDraw(int drawIndex) {
         if (this.draw.isEmpty()) {
             throw new IllegalArgumentException("Draw pile is empty. No cards to remove");
