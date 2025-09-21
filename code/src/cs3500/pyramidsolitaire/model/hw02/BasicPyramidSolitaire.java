@@ -129,7 +129,13 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     }
 
     @Override
-    public List<Card> getDrawCards() { return this.sideDeck.getDraw(); }
+    public List<Card> getDrawCards() {
+        if (!this.isGameStarted()) {
+            throw new IllegalStateException("Game not started. Cannot get draw pile.");
+        } else {
+            return this.sideDeck.getDraw();
+        }
+    }
 
     @Override
     public void startGame(List<Card> deck, boolean shuffle, int numRows, int numDraw) {
@@ -225,14 +231,12 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         }
     }
 
-    // TODO
     @Override
-//    public void removeUsingDraw(int drawIndex, int row, int card) throws IllegalStateException {} // STUB
     public void removeUsingDraw(int drawIndex, int row, int card) {
         if (!isGameStarted()) {
             throw new IllegalStateException("Cannot make any moves. Game has not started.");
         } else {
-            int requestedRemovalValue = this.pyramid.getCardAt(row, card).getValue() + this.getDrawCards().get(drawIndex).getValue();
+            int requestedRemovalValue = this.pyramid.getCardAt(row, card).getValue() + this.sideDeck.getDrawElement(drawIndex).getValue();
             if (requestedRemovalValue == 13) {
                 this.pyramid(this.pyramid.removeElement(row, card)); // MUTATION: mutates the pyramid in place
                 this.discardDraw(drawIndex); // MUTATION: mutates the side deck in place
