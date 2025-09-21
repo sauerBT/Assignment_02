@@ -35,6 +35,9 @@ public class StockDraw<K> implements SideDeck<K> {
         this.draw = new ArrayList<>();
     }
 
+    @Override
+    public List<K> getDraw() { return this.draw; }
+
     // TODO
     private static boolean isLegalDraw(int numDraw) { return numDraw > 0; }
 
