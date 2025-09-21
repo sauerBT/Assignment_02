@@ -8,7 +8,7 @@ public interface SideDeck<K> {
      *
      * @return List of draw elements.
      */
-    List<K> getDrawCards();
+    List<K> getDraw();
 
     /**
      * Produce the next card in the "Stock".

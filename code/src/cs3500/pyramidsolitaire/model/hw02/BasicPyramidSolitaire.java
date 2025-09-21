@@ -129,7 +129,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     }
 
     @Override
-    public List<Card> getDrawCards() { return this.sideDeck.getDrawCards(); }
+    public List<Card> getDrawCards() { return this.sideDeck.getDraw(); }
 
     @Override
     public void startGame(List<Card> deck, boolean shuffle, int numRows, int numDraw) {
@@ -241,7 +241,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
             }
         }
     }
-    
+
     @Override
     public void discardDraw(int drawIndex) {
         if (!isGameStarted()) {
