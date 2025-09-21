@@ -128,9 +128,8 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         return this.state.equals(PyramidSolitaireGameState.Running);
     }
 
-    // TODO
     @Override
-    public List<Card> getDrawCards() { return new ArrayList<>(); }
+    public List<Card> getDrawCards() { return this.sideDeck.getDrawCards(); }
 
     @Override
     public void startGame(List<Card> deck, boolean shuffle, int numRows, int numDraw) {
@@ -242,22 +241,13 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
             }
         }
     }
-
-    // TODO
+    
     @Override
-//    public void discardDraw(int drawIndex) throws IllegalStateException {} // STUB
     public void discardDraw(int drawIndex) {
         if (!isGameStarted()) {
             throw new IllegalStateException("Cannot make any moves. Game has not started.");
         } else {
-            List<Card> drawPile = this.getDrawCards();
-            if (drawPile.isEmpty()) {
-                throw new IllegalArgumentException("Draw pile is empty. No cards to remove");
-            } else if (drawPile.size() < (drawIndex + 1) || (drawIndex < 0)) {
-                throw new IllegalArgumentException("Given draw index is invalid.");
-            } else {
-                this.sideDeck(this.sideDeck.discardDraw(drawIndex)); // MUTATION: set new side deck in place
-            }
+            this.sideDeck(this.sideDeck.discardDraw(drawIndex)); // MUTATION: set new side deck in place
         }
     }
 
