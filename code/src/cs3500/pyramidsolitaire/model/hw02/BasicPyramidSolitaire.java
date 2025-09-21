@@ -160,7 +160,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      */
     private List<Card> generatePyramid(List<Card> deck, int numRows) {
         this.pyramid(new Pyramid<>(numRows, deck)); // MUTATION: Set the pyramid variable.
-        return Util.ListUtil.removeFirstX(deck,deck.size() - this.pyramid.size());
+        return Util.ListUtil.removeFirstX(deck, this.pyramid.size() - 1);
     }
 
     /**
