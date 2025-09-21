@@ -25,7 +25,6 @@ public class BasicPyramidSolitaireTest {
         this.DOC52 = new DeckOfCards(52);
         this.PS00 = new BasicPyramidSolitaire();
         this.B01 = BasicPyramidSolitaire.builder();
-//        this.PS01 = B01.build();
     }
 
     // -------------------------------------
@@ -41,6 +40,7 @@ public class BasicPyramidSolitaireTest {
 
     // -------------------------------------
     // startGame()
+    // TODO -- missing draw card cases
     // -------------------------------------
 
     // Edge Case -- Empty Deck
@@ -101,16 +101,16 @@ public class BasicPyramidSolitaireTest {
     // Regular Cases
     @Test
     public void startGameTest() {
-        PS00.startGame(DOC52.toList(), false,7, 2);
+        PS00.startGame(DOC52.toList(), false, PS00.getNumRows(), PS00.getNumDraw());
         assertEquals(1, PS00.getRowWidth(0));
         assertEquals(4, PS00.getRowWidth(3));
         assertEquals(7, PS00.getRowWidth(6));
         assertEquals(new Card(CardType.Two, Suit.Spade), PS00.getCardAt(0, 0));
-        assertEquals(new Card(CardType.Seven, Suit.Spade), PS00.getCardAt(6,6));
-        assertEquals(new Card(CardType.Three, Suit.Club), PS00.getCardAt(3,1));
+        assertEquals(new Card(CardType.Seven, Suit.Spade), PS00.getCardAt(2,2));
+        assertEquals(new Card(CardType.Three, Suit.Diamond), PS00.getCardAt(6,6));
         assertFalse(PS00.isGameOver());
         assertEquals(7, PS00.getNumRows());
-        assertEquals(2, PS00.getNumDraw());
+        assertEquals(3, PS00.getNumDraw());
     }
 
     // -------------------------------------
