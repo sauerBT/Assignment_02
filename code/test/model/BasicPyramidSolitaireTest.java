@@ -482,7 +482,7 @@ public class BasicPyramidSolitaireTest {
         assertEquals(new Card(CardType.Nine, Suit.Heart), PS00.getCardAt(5,5));
         assertEquals(
                 new ArrayList<>(List.of(
-                        new Card(CardType.Five, Suit.Diamond),
+                        new Card(CardType.Four, Suit.Diamond),
                         new Card(CardType.Five, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.removeUsingDraw(0, 5, 5);
@@ -520,7 +520,7 @@ public class BasicPyramidSolitaireTest {
     }
 
     // Edge Case - Draw index does not exist
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void removeUsingDrawIllegalDrawIndexTest() {
         PS00.startGame(DOC52.toList(), false, 7, 2);
         PS00.removeUsingDraw(2, 6, 0);
