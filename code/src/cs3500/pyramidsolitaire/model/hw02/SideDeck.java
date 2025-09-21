@@ -1,6 +1,15 @@
 package cs3500.pyramidsolitaire.model.hw02;
 
+import java.util.List;
+
 public interface SideDeck<K> {
+    /**
+     * Produce the draw pile.
+     *
+     * @return List of draw elements.
+     */
+    List<K> getDrawCards();
+
     /**
      * Produce the next card in the "Stock".
      * <p>
