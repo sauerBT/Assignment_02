@@ -14,18 +14,33 @@ import java.util.function.Function;
  * @param <K>  the type of cards this model uses
  */
 public class Pyramid<K>{
+    /**
+     * The current game pyramid.
+     *
+     * @since 1.0
+     */
     private final Graph<IPair<K>> pyramid;
+
+    /**
+     * The original number of rows in the pyramid.
+     *
+     * @since 1.0
+     */
+    private final int numRows;
 
     // TODO -- make private? Make public interface with "of" and "empty"?
     public Pyramid(int numRows, List<K> deck) {
+        this.numRows = numRows;
         this.pyramid = dealDeck(numRows, deck);
     }
 
-    public Pyramid() {
+    public Pyramid(int numRows) {
+        this.numRows = numRows;
         this.pyramid = new Graph<>();
     }
 
-    private Pyramid(Graph<IPair<K>> pyramid) {
+    private Pyramid(int numRows, Graph<IPair<K>> pyramid) {
+        this.numRows = numRows;
         this.pyramid = pyramid;
     }
 
@@ -67,6 +82,12 @@ public class Pyramid<K>{
                 (numRows > 0);
     }
 
+    /**
+     * Produce the original number of rows in this pyramid.
+     *
+     * @return Original number of rows.
+     */
+    public int getNumRows() { return this.numRows; }
     /**
      * Produce the width (number of elements) in the given row.
      *
@@ -131,6 +152,7 @@ public class Pyramid<K>{
                 .orElseThrow(() -> new IllegalArgumentException("Card at given location not found."));
     }
 
+    // TODO
     /**
      *
      * @param ele
@@ -153,13 +175,12 @@ public class Pyramid<K>{
      * @return A new copy of this pyramid with the given element at the given row and position removed
      * @throws IllegalArgumentException A card is not removable when covered by any other card
      */
-//    public Pyramid<K> removeElement(int rowNum, int pos) { return new Pyramid<>(0, new ArrayList<>()); } // STUB
     public Pyramid<K> removeElement(int rowNum, int pos) {
         Vertex<IPair<K>> vertex = this.getVertexAt(rowNum, pos);
         if (!isRemovable(vertex)) {
             throw new IllegalArgumentException("Card is covered, and therefore not removable.");
         } else {
-            return new Pyramid<>(this.pyramid.removeElement(vertex));
+            return new Pyramid<>(this.numRows, this.pyramid.removeElement(vertex));
         }
     }
 
@@ -170,6 +191,24 @@ public class Pyramid<K>{
      * @return True if the given Vertex has no edges
      */
     private boolean isRemovable(Vertex<IPair<K>> v) { return v.getEdges().isEmpty(); }
+
+    // TODO
+    /**
+     * Produce the list of cards covering the given card at the given vertex.
+     * @param v The given vertex.
+     * @return List of Cards.
+     * @throws IllegalArgumentException The given Vertex is not within this pyramid.
+     */
+    public List<K> coveringCards(Vertex<IPair<K>> v) { return new ArrayList<>(); }
+
+    // TODO
+    /**
+     * Produce the number of cards covering the given card at the given vertex.
+     * @param v The given vertex.
+     * @return The count.
+     * @throws IllegalArgumentException The given Vertex is not within this pyramid.
+     */
+    public int coveringCardsCount(Vertex<IPair<K>> v) { return 0; }
 
     // TODO
     @Override
