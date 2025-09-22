@@ -17,6 +17,12 @@ import java.util.List;
 public class StockDraw<K> implements SideDeck<K> {
     List<K> stock;
     List<K> draw;
+    /**
+     * The maximum number of elements available to the draw pile.
+     *
+     * @since 1.0
+     */
+    private final int numDraw;
 
     // TODO -- make private? Make public interface with "of" and "empty"?
     public StockDraw(List<K> deck, int numDraw) {
@@ -25,15 +31,26 @@ public class StockDraw<K> implements SideDeck<K> {
         } else if (!isLegalDeck(deck, numDraw)) {
             throw new IllegalArgumentException("Invalid deck and draw number combination.");
         } else {
+            this.numDraw = numDraw;
             this.stock = generateStock(deck, numDraw);
             this.draw = generateDraw(deck, numDraw);
         }
     }
 
-    public StockDraw() {
+    public StockDraw(int numDraw) {
+        this.numDraw = numDraw;
         this.stock = new ArrayList<>();
         this.draw = new ArrayList<>();
     }
+
+    private StockDraw(int numDraw, List<K> stock, List<K> draw) {
+        this.numDraw = numDraw;
+        this.stock = stock;
+        this.draw = draw;
+    }
+
+    @Override
+    public int getNumDraw() { return this.numDraw; }
 
     @Override
     public List<K> getDraw() { return this.draw; }
@@ -52,11 +69,6 @@ public class StockDraw<K> implements SideDeck<K> {
 
     // TODO
     private static <K> boolean isLegalDeck(List<K> deck, int numDraw) { return (deck.size() - numDraw) > 0; }
-
-    private StockDraw(List<K> stock, List<K> draw) {
-        this.stock = stock;
-        this.draw = draw;
-    }
 
     /**
      * Produce the initial Stock for a game of pyramid solitaire.
@@ -80,8 +92,6 @@ public class StockDraw<K> implements SideDeck<K> {
         return Util.ListUtil.removeFirstX(deck, numDraw);
     }
 
-    // TODO
-
     /**
      * Produce a new StockDraw where the element at the given draw index is removed from the draw pile.
      *
@@ -96,14 +106,14 @@ public class StockDraw<K> implements SideDeck<K> {
             throw new IllegalArgumentException("Given draw index is invalid.");
         } else {
             this.draw.remove(drawIndex);
-            return new StockDraw<>(this.stock, this.draw);
+            return new StockDraw<>(this.numDraw, this.stock, this.draw);
         }
     }
 
     // TODO
     @Override
     public StockDraw<K> turnOver() {
-        return new StockDraw<>(new ArrayList<>(), new ArrayList<>());
+        return new StockDraw<>(this.numDraw, new ArrayList<>(), new ArrayList<>());
     }
 
     @Override
