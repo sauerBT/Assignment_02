@@ -645,7 +645,7 @@ public class BasicPyramidSolitaireTest {
                         new Card(CardType.Five, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.discardDraw(0);
-        PS00.discardDraw(1);
+        PS00.discardDraw(0);
         assertEquals(new ArrayList<>(), PS00.getDrawCards());
     }
 
