@@ -322,8 +322,8 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
          * Constructs the PyramidSolitaire Builder with its DEFAULT values
          */
         public Builder() {
-            this.pyramid = new Pyramid<>();
-            this.sideDeck = new StockDraw<>();
+            this.pyramid = new Pyramid<>(7);
+            this.sideDeck = new StockDraw<>(3);
             this.deck = new DeckOfCards(52).toList();
             this.numRows = 7;
             this.numDraw = 3;
