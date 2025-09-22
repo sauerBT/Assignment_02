@@ -11,6 +11,14 @@ public interface SideDeck<K> {
     List<K> getDraw();
 
     /**
+     * Returns the maximum number of visible cards in the draw pile,
+     * or -1 if the game hasn't been started.
+     *
+     * @return the number of visible cards in the draw pile
+     */
+    int getNumDraw();
+
+    /**
      * Produce the element from this draw pile at the given index.
      *
      * @param drawIndex The given draw index
