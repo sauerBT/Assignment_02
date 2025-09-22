@@ -40,7 +40,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     private List<Card> deck;
 
     /**
-     * The number of rows in the game
+     * The original number of rows in the pyramid.
      *
      * @since 1.0
      */
@@ -104,11 +104,23 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public int getNumRows() { return this.numRows; }
+    public int getNumRows() {
+        if (!this.isGameStarted()) {
+            return -1;
+        } else {
+            return this.pyramid.getNumRows();
+        }
+    }
 
     // TODO
     @Override
-    public int getNumDraw() { return this.numDraw; }
+    public int getNumDraw() {
+        if (!this.isGameStarted()) {
+            return -1;
+        } else {
+            return this.sideDeck.getNumDraw();
+        }
+    }
 
     @Override
     public int getRowWidth(int row) {
