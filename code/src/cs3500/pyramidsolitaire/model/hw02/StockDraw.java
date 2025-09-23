@@ -2,6 +2,7 @@ package cs3500.pyramidsolitaire.model.hw02;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The representative object of the Stock for playing a game of Pyramid Solitaire with a standard deck of cards.
@@ -15,8 +16,8 @@ import java.util.List;
  * @since 1.0
  */
 public class StockDraw<K> implements SideDeck<K> {
-    List<K> stock;
-    List<K> draw;
+    private final List<K> stock;
+    private final List<K> draw;
     /**
      * The maximum number of elements available to the draw pile.
      *
@@ -92,13 +93,7 @@ public class StockDraw<K> implements SideDeck<K> {
         return Util.ListUtil.removeFirstX(deck, numDraw);
     }
 
-    /**
-     * Produce a new StockDraw where the element at the given draw index is removed from the draw pile.
-     *
-     * @param drawIndex The index containing the card to remove from the draw pile.
-     * @return The new StockDraw.
-     * @throws IllegalArgumentException When the draw pile is empty or the given draw index is out of bounds or invalid.
-     */
+    @Override
     public SideDeck<K> discardDraw(int drawIndex) {
         if (this.draw.isEmpty()) {
             throw new IllegalArgumentException("Draw pile is empty. No cards to remove");
@@ -118,4 +113,19 @@ public class StockDraw<K> implements SideDeck<K> {
 
     @Override
     public int size() { return stock.size() + draw.size(); }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof StockDraw<?>)) return false;
+        StockDraw<?> that = (StockDraw<?>)obj;
+        return this.stock.equals(that.stock) &&
+                this.draw.equals(that.draw) &&
+                this.numDraw == that.numDraw;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stock, draw, numDraw);
+    }
 }
