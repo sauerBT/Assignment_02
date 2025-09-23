@@ -25,6 +25,7 @@ public class BasicPyramidSolitaireTest {
         this.DOC52 = new DeckOfCards(52);
         this.PS00 = new BasicPyramidSolitaire();
         this.B01 = BasicPyramidSolitaire.builder();
+        this.PS01 = this.B01.build();
     }
 
     // -------------------------------------
@@ -119,10 +120,13 @@ public class BasicPyramidSolitaireTest {
 
     @Test
     public void getNumRowsTest() {
-        assertEquals(-1, PS00.getNumRows());
+        assertEquals(-1, PS00.getNumRows()); // Gaame not started test
         PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(7, PS00.getNumRows());
-        assertEquals(5, B01.numRows(5).build().getNumRows());
+        assertEquals(-1, B01.pyramid(5).build().getNumRows());
+        PyramidSolitaireModel<Card> builderTest = B01.pyramid(5).build();
+        builderTest.startGame(DOC52.toList(), false, 5, 2);
+        assertEquals(5, builderTest.getNumRows());
     }
 
     // -------------------------------------
@@ -602,7 +606,7 @@ public class BasicPyramidSolitaireTest {
         assertEquals(-1, PS00.getNumDraw());
         PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(2, PS00.getNumDraw());
-        assertEquals(3, B01.numDraw(3).build().getNumDraw());
+        assertEquals(3, B01.sideDeck(3).build().getNumDraw());
     }
 
     // -------------------------------------
@@ -701,9 +705,9 @@ public class BasicPyramidSolitaireTest {
         assertEquals(expectedEqualsPS, PS01);
         PyramidSolitaireModel<Card> expectedNotEqualsPS01 = builder.deck(expectedNotEqualDeck).build();
         assertNotEquals(expectedNotEqualsPS01, PS01);
-        PyramidSolitaireModel<Card> expectedNotEqualsPS02 = builder.numRows(6).build();
+        PyramidSolitaireModel<Card> expectedNotEqualsPS02 = builder.pyramid(6).build();
         assertNotEquals(expectedNotEqualsPS02, PS01);
-        PyramidSolitaireModel<Card> expectedNotEqualsPS03 = builder.numDraw(4).build();
+        PyramidSolitaireModel<Card> expectedNotEqualsPS03 = builder.sideDeck(4).build();
         assertNotEquals(expectedNotEqualsPS03, PS01);
     }
 

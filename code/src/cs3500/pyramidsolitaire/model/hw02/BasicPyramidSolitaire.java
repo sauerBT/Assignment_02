@@ -38,21 +38,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      * @since 1.0
      */
     private List<Card> deck;
-
-    /**
-     * The original number of rows in the pyramid.
-     *
-     * @since 1.0
-     */
-//    private final int numRows;
-
-    /**
-     * The current number of draw cards pulled from the 'stock'.
-     *
-     * @since 1.0
-     */
-//    private final int numDraw;
-
     /**
      * The state of the game.
      *
@@ -78,17 +63,18 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     /**
      * Construct a new Pyramid Solitaire game model with the given parameters
      *
-     * @param numRows the number of rows in this pyramid solitaire game
-     * @param numDraw the number of cards from the stock that are turned face-up
+     * @param pyramid the pyramid of elements
+     * @param sideDeck the side deck containing the draw pile and the stock
+     * @param deck the initial deck of cards
+     * @param state the current state of the game
      */
-    private BasicPyramidSolitaire(Pyramid<Card> pyramid, SideDeck<Card> sideDeck, List<Card> deck, int numRows, int numDraw, PyramidSolitaireGameState state) {
+    private BasicPyramidSolitaire(Pyramid<Card> pyramid, SideDeck<Card> sideDeck, List<Card> deck, PyramidSolitaireGameState state) {
         this.pyramid = pyramid;
         this.sideDeck = sideDeck;
         this.deck = deck;
         this.state = state;
     }
 
-    // TODO
     @Override
     public List<Card> getDeck() {
         if (this.state == PyramidSolitaireGameState.Running) {
@@ -99,6 +85,10 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     }
 
     // TODO
+    private List<Card> shuffleDeck() {
+        return this.deck;
+    }
+
     @Override
     public int getNumRows() {
         if (!this.isGameStarted()) {
@@ -108,7 +98,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         }
     }
 
-    // TODO
     @Override
     public int getNumDraw() {
         if (!this.isGameStarted()) {
@@ -311,8 +300,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         private final Pyramid<Card> pyramid;
         private final SideDeck<Card> sideDeck;
         private final List<Card> deck;
-        private final int numRows;
-        private final int numDraw;
         private final PyramidSolitaireGameState state;
 
         /**
@@ -322,24 +309,21 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
             this.pyramid = new Pyramid<>(7);
             this.sideDeck = new StockDraw<>(3);
             this.deck = new DeckOfCards(52).toList();
-            this.numRows = 7;
-            this.numDraw = 3;
             this.state = PyramidSolitaireGameState.Idle;
         }
 
         /**
          * Constructs the PyramidSolitaire Builder with a set of given values
          *
+         * @param pyramid the pyramid of elements
+         * @param sideDeck the side deck containing the draw pile and the stock
          * @param deck the initial deck of cards
-         * @param numRows the number of rows in the solitaire game
-         * @param numDraw the number of face-up cards in the 'stock'
+         * @param state the current state of the game
          */
-        private Builder(Pyramid<Card> pyramid, SideDeck<Card> sideDeck, List<Card> deck, int numRows, int numDraw, PyramidSolitaireGameState state) {
+        private Builder(Pyramid<Card> pyramid, SideDeck<Card> sideDeck, List<Card> deck, PyramidSolitaireGameState state) {
             this.pyramid = pyramid;
             this.sideDeck = sideDeck;
             this.deck = deck;
-            this.numRows = numRows;
-            this.numDraw = numDraw;
             this.state = state;
         }
 
@@ -349,7 +333,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
          * @param deck the deck of cards
          * @return the updated Builder
          */
-        public Builder deck(List<Card> deck) { return new Builder(this.pyramid, this.sideDeck, deck, this.numRows, this.numDraw, this.state); }
+        public Builder deck(List<Card> deck) { return new Builder(this.pyramid, this.sideDeck, deck, this.state); }
 
         /**
          * Set the number of rows in the solitaire pyramid
@@ -357,7 +341,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
          * @param numRows the number of rows in the solitaire game
          * @return the updated Builder
          */
-        public Builder numRows(int numRows) { return new Builder(this.pyramid, this.sideDeck, this.deck, numRows, this.numDraw, this.state); }
+        public Builder pyramid(int numRows) { return new Builder(new Pyramid<>(numRows), this.sideDeck, this.deck, this.state); }
 
         /**
          * Set the number of face-up cards from the "stock" draw deck
@@ -365,14 +349,14 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
          * @param numDraw the number of face-up cards
          * @return the updated Builder
          */
-        public Builder numDraw(int numDraw) { return new Builder(this.pyramid, this.sideDeck, this.deck, this.numRows, numDraw, this.state); }
+        public Builder sideDeck(int numDraw) { return new Builder(this.pyramid, new StockDraw<>(numDraw), this.deck, this.state); }
 
         /**
          * Produce the specified {@link BasicPyramidSolitaire}.
          *
          * @return a new {@code BasicPyramidSolitaire}
          */
-        public PyramidSolitaireModel<Card> build() { return new BasicPyramidSolitaire(this.pyramid, this.sideDeck, this.deck, this.numRows, this.numDraw, this.state); }
+        public PyramidSolitaireModel<Card> build() { return new BasicPyramidSolitaire(this.pyramid, this.sideDeck, this.deck, this.state); }
     }
 }
 
