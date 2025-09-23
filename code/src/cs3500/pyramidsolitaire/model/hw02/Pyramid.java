@@ -221,12 +221,13 @@ public class Pyramid<K>{
         if (this == obj) return true;
         if (!(obj instanceof Pyramid<?>)) return false;
         Pyramid<?> that = (Pyramid<?>)obj;
-        return this.pyramid.equals(that.pyramid);
+        return this.pyramid.equals(that.pyramid) &&
+                this.numRows == that.numRows;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pyramid);
+        return Objects.hash(pyramid, numRows);
     }
 }
 
