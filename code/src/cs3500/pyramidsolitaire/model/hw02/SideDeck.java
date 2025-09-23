@@ -28,16 +28,6 @@ public interface SideDeck<K> {
     K getDrawElement(int drawIndex);
 
     /**
-     * Produce the next card in the "Stock".
-     * <p>
-     *     This method "exposes" the next card in the stock and transfers it to the "Draw".
-     *     Note: This method creates a new SideDeck instance.
-     * </p>
-     * @return The updated SideDeck
-     */
-    SideDeck<K> turnOver();
-
-    /**
      * Produce the number of cards in this side deck.
      *
      * @return The size of the side deck.
@@ -46,6 +36,10 @@ public interface SideDeck<K> {
 
     /**
      * Produce a new SideDeck with the card at the given DrawIndex removed from the draw pile.
+     * <p>
+     *     When a draw card is discarded, it should be replaced with the next card from the stock pile.
+     *     Any other draw cards should not be affected.
+     * </p>
      *
      * @param drawIndex The index containing the card to remove from the draw pile
      * @return A new SideDeck

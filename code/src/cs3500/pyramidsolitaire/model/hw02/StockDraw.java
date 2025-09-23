@@ -93,6 +93,7 @@ public class StockDraw<K> implements SideDeck<K> {
         return Util.ListUtil.removeFirstX(deck, numDraw);
     }
 
+    // TODO - a "turn over" from the stock to the draw must happen upon successful discard
     @Override
     public SideDeck<K> discardDraw(int drawIndex) {
         if (this.draw.isEmpty()) {
@@ -103,12 +104,6 @@ public class StockDraw<K> implements SideDeck<K> {
             this.draw.remove(drawIndex);
             return new StockDraw<>(this.numDraw, this.stock, this.draw);
         }
-    }
-
-    // TODO
-    @Override
-    public StockDraw<K> turnOver() {
-        return new StockDraw<>(this.numDraw, new ArrayList<>(), new ArrayList<>());
     }
 
     @Override
