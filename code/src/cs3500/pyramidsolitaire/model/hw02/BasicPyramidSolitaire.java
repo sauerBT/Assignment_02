@@ -44,14 +44,14 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
      *
      * @since 1.0
      */
-    private final int numRows;
+//    private final int numRows;
 
     /**
      * The current number of draw cards pulled from the 'stock'.
      *
      * @since 1.0
      */
-    private final int numDraw;
+//    private final int numDraw;
 
     /**
      * The state of the game.
@@ -72,8 +72,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         this.pyramid = base.pyramid;
         this.sideDeck = base.sideDeck;
         this.deck = base.deck;
-        this.numRows = base.numRows;
-        this.numDraw = base.numDraw;
         this.state = base.state;
     }
 
@@ -87,8 +85,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         this.pyramid = pyramid;
         this.sideDeck = sideDeck;
         this.deck = deck;
-        this.numRows = numRows;
-        this.numDraw = numDraw;
         this.state = state;
     }
 
@@ -294,14 +290,15 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         if (this == obj) return true;
         if (!(obj instanceof BasicPyramidSolitaire)) return false;
         BasicPyramidSolitaire that = (BasicPyramidSolitaire)obj;
-        return this.deck.equals(that.deck)  &&
-                this.numRows == that.numRows &&
-                this.numDraw == that.numDraw;
+        return this.deck.equals(that.deck) &&
+                this.pyramid.equals(that.pyramid) &&
+                this.sideDeck.equals(that.sideDeck) &&
+                this.state.equals(that.state);
     }
 
     // TODO
     @Override
-    public int hashCode() { return Objects.hash(this.numRows, this.numDraw, this.deck); }
+    public int hashCode() { return Objects.hash(this.pyramid, this.sideDeck, this.state, this.deck); }
     
     /**
      * Constructs a builder for configuring and creating a game model instance. Defaults to a standard game with ...
