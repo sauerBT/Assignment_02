@@ -194,6 +194,14 @@ public class Pyramid<K>{
 
     // TODO
     /**
+     * Produce this pyramid as a list of data (elements).
+     *
+     * @return the list of data.
+     */
+    public List<K> dataToList() { return new ArrayList<>(); } // STUB
+
+    // TODO
+    /**
      * Produce the list of cards covering the given card at the given vertex.
      * @param v The given vertex.
      * @return List of Cards.
