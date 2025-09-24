@@ -265,7 +265,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
     @Override
     public boolean isGameOver() throws IllegalStateException { return false; }
 
-    // TODO
     @Override
     public int getScore() throws IllegalStateException {
         if (!this.isGameStarted()) {

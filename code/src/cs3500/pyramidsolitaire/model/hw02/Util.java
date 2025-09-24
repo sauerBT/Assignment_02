@@ -224,8 +224,8 @@ public class Util {
         /**
          * Produce a list of cards from a given list of IPairs.
          *
-         * @param lop
-         * @return
+         * @param lop list of IPair
+         * @return the list of Card
          */
         public static List<Card> extractCard(List<IPair<Card>> lop) { return new ArrayList<>(); } // STUB
 

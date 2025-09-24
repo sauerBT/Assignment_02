@@ -192,7 +192,6 @@ public class Pyramid<K>{
      */
     private boolean isRemovable(Vertex<IPair<K>> v) { return v.getEdges().isEmpty(); }
 
-    // TODO
     /**
      * Produce this pyramid as a list of data (elements).
      *

@@ -71,7 +71,7 @@ public class Graph<K> {
             return new Graph<>(result);
         }
     }
-    
+
     /**
      * Produce this pyramid as a list of data (elements).
      *
