@@ -71,14 +71,15 @@ public class Graph<K> {
             return new Graph<>(result);
         }
     }
-
-    // TODO
+    
     /**
      * Produce this pyramid as a list of data (elements).
      *
      * @return the list of data.
      */
-    public List<K> extractData() { return new ArrayList<>(); } // STUB
+    public List<K> extractData() {
+        return Util.ListUtil.map(new VertexToData<>(), this.vertices);
+    }
 
     /**
      * Produce a new copy of this graph with the given data element removed from ALL Triples.
@@ -88,7 +89,6 @@ public class Graph<K> {
      * @param vertex The data element to be removed.
      * @return The new copy of the Graph.
      */
-//    public Graph<K> removeElement(Vertex<K> vertex) { return new Graph<>(); } // STUB
     public Graph<K> removeElement(Vertex<K> vertex) {
         // 1. Remove all vertices that match the given vertices (this is okay because any vertex that matches the
         // given vertex would also contain edges that include the given vertex
@@ -150,4 +150,13 @@ class RemoveEdgesAcc<K> {
     }
     public List<Vertex<K>> lov() { return this.lov; }
     public Vertex<K> accVertex() { return this.accVertex; }
+}
+
+/**
+ * Function class for extracting data from a vertex
+ *
+ * @param <K> the data
+ */
+class VertexToData<K> implements Function<Vertex<K>, K> {
+    public K apply(Vertex<K> vertex) { return vertex.data(); }
 }
