@@ -219,6 +219,25 @@ public class Util {
         }
     }
 
+    public static class GameUtil{
+        // TODO
+        /**
+         * Produce a list of cards from a given list of IPairs.
+         *
+         * @param lop
+         * @return
+         */
+        public static List<Card> extractCard(List<IPair<Card>> lop) { return new ArrayList<>(); } // STUB
+
+        // TODO
+        /**
+         * Produce the total sum of the given card values
+         *
+         * @param loc the given list of cards
+         * @return the sum
+         */
+        public static int getCardTotalValue(List<Card> loc) { return 0; } // STUB
+    }
     /**
      * Produce the calculated sum of all integers adding up to the given integer.
      *

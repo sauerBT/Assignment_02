@@ -198,7 +198,7 @@ public class Pyramid<K>{
      *
      * @return the list of data.
      */
-    public List<K> dataToList() { return new ArrayList<>(); } // STUB
+    public List<IPair<K>> extractIPair() { return this.pyramid.extractData(); }
 
     // TODO
     /**

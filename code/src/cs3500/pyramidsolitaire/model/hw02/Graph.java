@@ -72,6 +72,14 @@ public class Graph<K> {
         }
     }
 
+    // TODO
+    /**
+     * Produce this pyramid as a list of data (elements).
+     *
+     * @return the list of data.
+     */
+    public List<K> extractData() { return new ArrayList<>(); } // STUB
+
     /**
      * Produce a new copy of this graph with the given data element removed from ALL Triples.
      * NOTE: removal of a vertex from a graph is a linear time exercise since the algorithm MUST be exhaustive,
