@@ -267,7 +267,21 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public int getScore() throws IllegalStateException { return 0; }
+    public int getScore() throws IllegalStateException {
+        if (!this.isGameStarted()) {
+            throw new IllegalStateException("Game not started.  No score available.");
+        } else {
+            return this.getCardTotalValue(this.pyramid.dataToList());
+        }
+    }
+
+    /**
+     * Produce the total sum of the given card values
+     *
+     * @param loc the given list of cards
+     * @return the sum
+     */
+    private int getCardTotalValue(List<Card> loc) { return 0; } // STUB
 
     // TODO
     @Override
