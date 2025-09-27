@@ -220,23 +220,38 @@ public class Util {
     }
 
     public static class GameUtil{
-        // TODO
         /**
          * Produce a list of cards from a given list of IPairs.
          *
          * @param lop list of IPair
          * @return the list of Card
          */
-        public static List<Card> extractCard(List<IPair<Card>> lop) { return new ArrayList<>(); } // STUB
+        public static List<Card> extractCard(List<IPair<Card>> lop) {
+            return Util.ListUtil.foldl(new IPairToCard(), lop, new ArrayList<>());
+        }
 
-        // TODO
         /**
          * Produce the total sum of the given card values
          *
          * @param loc the given list of cards
          * @return the sum
          */
-        public static int getCardTotalValue(List<Card> loc) { return 0; } // STUB
+        public static int getCardTotalValue(List<Card> loc) {
+            return Util.ListUtil.foldl(new SumCardValues(), loc, 0);
+        }
+
+        /**
+         * Produce true if there is a move that a player can make.
+         * <p>
+         *    What constitutes a move is at least one set of two cards whose combined values equal 13 or
+         *    a single card whose value is 13.
+         * </p>
+         *
+         * @param loc List of uncovered cards
+         * @return True when there is a move to be played, false otherwise.
+         */
+        public static boolean isMove(List<Card> loc) { return false; } // STUB
+
     }
     /**
      * Produce the calculated sum of all integers adding up to the given integer.
@@ -252,4 +267,20 @@ public class Util {
             return n + sumUp(n - 1);
         }
     }
+}
+
+class IPairToCard implements BiFunction<IPair<Card>, List<Card>, List<Card>> {
+    public List<Card> apply(IPair<Card> pair, List<Card> acc) {
+        if (pair.element().isPresent()) {
+            acc.add(pair.element().get());
+        }
+        return acc;
+    }
+}
+
+/**
+ * The function class to produce the sum of Card elements within from a list of Card.
+ */
+class SumCardValues implements BiFunction<Card, Integer, Integer> {
+    public Integer apply(Card c, Integer acc) { return acc + c.getValue(); }
 }
