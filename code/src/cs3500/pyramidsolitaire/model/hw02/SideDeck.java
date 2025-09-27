@@ -11,6 +11,13 @@ public interface SideDeck<K> {
     List<K> getDraw();
 
     /**
+     * Produce the stock pile.
+     *
+     * @return List of stock elements.
+     */
+    List<K> getStock();
+
+    /**
      * Returns the maximum number of visible cards in the draw pile,
      * or -1 if the game hasn't been started.
      *

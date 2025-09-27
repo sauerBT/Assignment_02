@@ -57,6 +57,9 @@ public class StockDraw<K> implements SideDeck<K> {
     public List<K> getDraw() { return this.draw; }
 
     @Override
+    public List<K> getStock() { return this.stock; }
+
+    @Override
     public K getDrawElement(int drawIndex) {
         if (this.draw.size() < (drawIndex + 1) || drawIndex < 0) {
             throw new IllegalArgumentException("Given draw index is out of bounds or invalid");
@@ -93,7 +96,6 @@ public class StockDraw<K> implements SideDeck<K> {
         return Util.ListUtil.removeFirstX(deck, numDraw);
     }
 
-    // TODO - a "turn over" from the stock to the draw must happen upon successful discard
     @Override
     public SideDeck<K> discardDraw(int drawIndex) {
         if (this.draw.isEmpty()) {
@@ -102,7 +104,19 @@ public class StockDraw<K> implements SideDeck<K> {
             throw new IllegalArgumentException("Given draw index is invalid.");
         } else {
             this.draw.remove(drawIndex);
-            return new StockDraw<>(this.numDraw, this.stock, this.draw);
+            return this.turnOver();
+        }
+    }
+
+    private SideDeck<K> turnOver() {
+        List<K> tempDraw = Util.ListUtil.copy(this.draw);
+        List<K> tempStock = Util.ListUtil.copy(this.stock);
+        if (tempStock.isEmpty()) {
+            return new StockDraw<>(this.numDraw, tempStock, tempDraw);
+        } else {
+            tempDraw.add(tempStock.getFirst());
+            tempStock.removeFirst();
+            return new StockDraw<>(this.numDraw, tempStock, tempDraw);
         }
     }
 
