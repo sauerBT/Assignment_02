@@ -214,13 +214,113 @@ public class BasicPyramidSolitaireTest {
     // isGameOver()
     // -------------------------------------
 
-    // TODO - Regular cases:
-    // 1. Game running -- Good
-    // 2. Game ended - need to implement getScore and an ended game state first
+    // Regular case:
+    // Game Score == 0
     @Test
-    public void isGameOverTest() {
+    public void isGameOverTest01() {
         PS00.startGame(DOC52.toList(), false, 7, 3);
         assertFalse(PS00.isGameOver());
+        PS00.remove(6, 3);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(6, 0, 6, 6);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(6, 1, 6, 5);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(6, 2, 6, 4);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(5, 0, 5, 5);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(5, 1, 5, 4);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(5, 2, 5, 3);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(4, 0, 4, 2);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(4, 1); // <-- As far as you can go without starting to use the draw
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(0, 3, 1);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(0, 3, 0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 2, 0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(1);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 4, 4);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 4, 3);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(1);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(1);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(1);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 3, 3);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 3, 2);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(2, 1, 2, 2);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 1, 1);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 1, 0);
+        assertFalse(PS00.isGameOver());
+        PS00.removeUsingDraw(1, 0, 0); // <-- Game Over
+        assertTrue(PS00.isGameOver());
+    }
+
+    // TODO Regular case:
+    // Stock empty, no more moves
+    @Test
+    public void isGameOverTest02() {
+        PS00.startGame(DOC52.toList(), false, 7, 3);
+        assertFalse(PS00.isGameOver());
+        PS00.remove(6, 3);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.remove(6, 2, 6, 4);
+        PS00.remove(5, 0, 5, 5);
+        PS00.remove(5, 1, 5, 4);
+        PS00.remove(5, 2, 5, 3);
+        PS00.remove(4, 0, 4, 2);
+        PS00.remove(4, 1); // <-- As far as you can go without starting to use the draw
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        assertFalse(PS00.isGameOver());
+        PS00.discardDraw(0);
+        assertTrue(PS00.isGameOver());
     }
 
     // Edge case:
@@ -491,7 +591,7 @@ public class BasicPyramidSolitaireTest {
                 PS00.getDrawCards());
         PS00.removeUsingDraw(0, 5, 5);
         assertEquals(5, PS00.getRowWidth(5));
-        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond))), PS00.getDrawCards());
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond), new Card(CardType.Six, Suit.Diamond))), PS00.getDrawCards());
         Card card = PS00.getCardAt(5,5);
     }
 
@@ -623,7 +723,7 @@ public class BasicPyramidSolitaireTest {
                         new Card(CardType.Five, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.discardDraw(0);
-        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond))), PS00.getDrawCards());
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond), new Card(CardType.Six, Suit.Diamond))), PS00.getDrawCards());
     }
 
     // Regular Case
@@ -636,7 +736,7 @@ public class BasicPyramidSolitaireTest {
                         new Card(CardType.Five, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.discardDraw(1);
-        assertEquals(new ArrayList<>(List.of(new Card(CardType.Four, Suit.Diamond))), PS00.getDrawCards());
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Four, Suit.Diamond), new Card(CardType.Six, Suit.Diamond))), PS00.getDrawCards());
     }
 
     // Regular Case
@@ -649,6 +749,46 @@ public class BasicPyramidSolitaireTest {
                         new Card(CardType.Five, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.discardDraw(0);
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond), new Card(CardType.Six, Suit.Diamond))), PS00.getDrawCards());
+        PS00.discardDraw(0);
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Six, Suit.Diamond), new Card(CardType.Seven, Suit.Diamond))), PS00.getDrawCards());
+    }
+
+    // Regular Case
+    // Stock and draw pile exhausted
+    @Test
+    public void discardDraw04() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        assertEquals(
+                new ArrayList<>(List.of(
+                        new Card(CardType.Four, Suit.Diamond),
+                        new Card(CardType.Five, Suit.Diamond))),
+                PS00.getDrawCards());
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.King, Suit.Club), new Card(CardType.Ace, Suit.Club))), PS00.getDrawCards());
+        PS00.discardDraw(0);
+        assertEquals(new ArrayList<>(List.of(new Card(CardType.Ace, Suit.Club))), PS00.getDrawCards());
         PS00.discardDraw(0);
         assertEquals(new ArrayList<>(), PS00.getDrawCards());
     }
