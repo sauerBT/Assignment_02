@@ -101,6 +101,13 @@ public class Graph<K> {
 
     public List<Vertex<K>> getVertices() { return this.vertices; }
 
+    /**
+     * Produce a list of the data from all vertices with no edges.
+     *
+     * @return list of uncovered elements.
+     */
+    public List<K> getZeroEdgeVertices() { return Util.ListUtil.filter(new NoEdge(), this.vertices); } // STUB
+
     // TODO
     @Override
     public String toString() {
