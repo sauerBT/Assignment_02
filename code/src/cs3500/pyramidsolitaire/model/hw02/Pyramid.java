@@ -199,13 +199,14 @@ public class Pyramid<K>{
      */
     public List<IPair<K>> extractIPair() { return this.pyramid.extractData(); }
 
-    // TODO
     /**
      * Produce a list of all uncovered elements.
      *
      * @return list of uncovered elements.
      */
-    public List<K> getUncoveredCards() { return new ArrayList<>(); } // STUB
+    public List<IPair<K>> getUncoveredCards() {
+        return this.pyramid.getZeroEdgeVertices();
+    }
 
     // TODO
     /**
