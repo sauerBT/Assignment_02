@@ -240,6 +240,7 @@ public class Util {
             return Util.ListUtil.foldl(new SumCardValues(), loc, 0);
         }
 
+        // TODO
         /**
          * Produce true if there is a move that a player can make.
          * <p>
@@ -250,7 +251,10 @@ public class Util {
          * @param loc List of uncovered cards
          * @return True when there is a move to be played, false otherwise.
          */
-        public static boolean isMove(List<Card> loc) { return false; } // STUB
+//        public static boolean isMove(List<Card> loc) { return false; } // STUB
+        public static boolean isMove(List<Card> loc) {
+            return !Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc, loc).isEmpty();
+        }
 
     }
     /**
@@ -283,4 +287,11 @@ class IPairToCard implements BiFunction<IPair<Card>, List<Card>, List<Card>> {
  */
 class SumCardValues implements BiFunction<Card, Integer, Integer> {
     public Integer apply(Card c, Integer acc) { return acc + c.getValue(); }
+}
+
+/**
+ * The predicate function class that compares two cards and determines if their combined value is 13.
+ */
+class DoesNotAddToThirteen implements IPred2<Card> {
+    public boolean apply(Card arg1, Card arg2) { return (arg1.getValue() + arg2.getValue()) != 13; }
 }
