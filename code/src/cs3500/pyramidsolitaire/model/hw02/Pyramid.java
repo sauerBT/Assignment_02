@@ -201,6 +201,14 @@ public class Pyramid<K>{
 
     // TODO
     /**
+     * Produce a list of all uncovered elements.
+     *
+     * @return list of uncovered elements.
+     */
+    public List<K> getUncoveredCards() { return new ArrayList<>(); } // STUB
+
+    // TODO
+    /**
      * Produce the list of cards covering the given card at the given vertex.
      * @param v The given vertex.
      * @return List of Cards.
