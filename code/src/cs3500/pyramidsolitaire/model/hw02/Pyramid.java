@@ -204,9 +204,7 @@ public class Pyramid<K>{
      *
      * @return list of uncovered elements.
      */
-    public List<IPair<K>> getUncoveredCards() {
-        return this.pyramid.getZeroEdgeVertices();
-    }
+    public List<IPair<K>> getUncoveredCards() { return this.pyramid.getZeroEdgeVertices(); }
 
     // TODO
     /**

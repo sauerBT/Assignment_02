@@ -240,7 +240,6 @@ public class Util {
             return Util.ListUtil.foldl(new SumCardValues(), loc, 0);
         }
 
-        // TODO
         /**
          * Produce true if there is a move that a player can make.
          * <p>
@@ -251,7 +250,6 @@ public class Util {
          * @param loc List of uncovered cards
          * @return True when there is a move to be played, false otherwise.
          */
-//        public static boolean isMove(List<Card> loc) { return false; } // STUB
         public static boolean isMove(List<Card> loc) {
             return !Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc, loc).isEmpty();
         }
