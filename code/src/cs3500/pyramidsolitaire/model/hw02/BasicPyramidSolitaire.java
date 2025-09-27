@@ -261,12 +261,27 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
         }
     }
 
-    // TODO
+    // TODO -- simplify
     @Override
-    public boolean isGameOver() throws IllegalStateException { return false; }
+//    public boolean isGameOver() throws IllegalStateException { return false; } // STUB
+    public boolean isGameOver() {
+        if (!isGameStarted()) {
+            throw new IllegalStateException("Game has not started!");
+        } else {
+            if (this.getScore() == 0) { // <-- Score is 0 (empty pyramid)
+                return true;
+            } else if (this.sideDeck.getStock().isEmpty()) { // <-- Stock is empty
+                List<Card> uncoveredCards = new ArrayList<>(); // TODO
+                if (!Util.GameUtil.isMove(uncoveredCards)) { // <-- No possible move combination
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
     @Override
-    public int getScore() throws IllegalStateException {
+    public int getScore() {
         if (!this.isGameStarted()) {
             throw new IllegalStateException("Game not started.  No score available.");
         } else {
