@@ -271,7 +271,7 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
             if (this.getScore() == 0) { // <-- Score is 0 (empty pyramid)
                 return true;
             } else if (this.sideDeck.getStock().isEmpty()) { // <-- Stock is empty
-                List<Card> uncoveredCards = new ArrayList<>(); // TODO
+                List<Card> uncoveredCards = this.pyramid.getUncoveredCards().addAll(this.getDrawCards()); // TODO
                 if (!Util.GameUtil.isMove(uncoveredCards)) { // <-- No possible move combination
                     return true;
                 }
