@@ -263,7 +263,6 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO -- simplify
     @Override
-//    public boolean isGameOver() throws IllegalStateException { return false; } // STUB
     public boolean isGameOver() {
         if (!isGameStarted()) {
             throw new IllegalStateException("Game has not started!");
