@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Util {
     public static class ListUtil{
@@ -217,6 +218,27 @@ public class Util {
                 return result;
             }
         }
+
+        /**
+         * Produce the abstract function for filtering out particular given values based on a given predicate.
+         *
+         * @param pred Predicate function.
+         * @param lok Given list of elements
+         * @return Filtered list of elements
+         * @param <K> Type of element.
+         */
+        public static <K> List<K> filter(Predicate<K> pred, List<K> lok) {
+            return Util.ListUtil.filterHelper(pred, lok, new ArrayList<>());
+        }
+
+        private static <K> List<K> filterHelper(Predicate<K> pred, List<K> lok, List<K> acc) {
+            for (K k : lok) {
+                if (pred.test(k)) {
+                    acc.add(k);
+                }
+            }
+            return acc;
+        }
     }
 
     public static class GameUtil{
@@ -240,6 +262,7 @@ public class Util {
             return Util.ListUtil.foldl(new SumCardValues(), loc, 0);
         }
 
+        // TODO -- simplify
         /**
          * Produce true if there is a move that a player can make.
          * <p>
@@ -247,11 +270,21 @@ public class Util {
          *    a single card whose value is 13.
          * </p>
          *
-         * @param loc List of uncovered cards
+         * @param loc1 List of draw cards
+         * @param loc2 List of uncovered cards
          * @return True when there is a move to be played, false otherwise.
          */
-        public static boolean isMove(List<Card> loc) {
-            return !Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc, loc).isEmpty();
+        public static boolean isMove(List<Card> loc1, List<Card> loc2) {
+            if (!Util.ListUtil.filter(new IsThirteen(), loc2).isEmpty()) { // <-- check for individual removes
+                return false;
+            } else if (!Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc2, loc2).isEmpty()) { // <-- check for two card removals
+                return false;
+            } else if (!Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc2, loc1).isEmpty()) { // <-- check for draw card removals
+                return false;
+            } else { // <-- There are no removals
+                return true;
+            }
+
         }
 
     }
@@ -292,4 +325,8 @@ class SumCardValues implements BiFunction<Card, Integer, Integer> {
  */
 class DoesNotAddToThirteen implements IPred2<Card> {
     public boolean apply(Card arg1, Card arg2) { return (arg1.getValue() + arg2.getValue()) != 13; }
+}
+
+class IsThirteen implements Predicate<Card> {
+    public boolean test(Card arg) { return arg.getValue() == 13; }
 }
