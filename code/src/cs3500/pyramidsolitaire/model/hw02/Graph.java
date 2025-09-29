@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 // Invariant: Subject Vertices cannot reference themselves, and they also cannot reference Vertices that reference themselves
 public class Graph<K> {
@@ -106,7 +107,9 @@ public class Graph<K> {
      *
      * @return list of uncovered elements.
      */
-    public List<K> getZeroEdgeVertices() { return Util.ListUtil.filter(new NoEdge(), this.vertices); } // STUB
+    public List<K> getZeroEdgeVertices() {
+        return Util.ListUtil.map(new VertexToData<>(),
+                Util.ListUtil.filter(new NoEdge<>(), this.vertices)); }
 
     // TODO
     @Override
@@ -166,4 +169,8 @@ class RemoveEdgesAcc<K> {
  */
 class VertexToData<K> implements Function<Vertex<K>, K> {
     public K apply(Vertex<K> vertex) { return vertex.data(); }
+}
+
+class NoEdge<K> implements Predicate<Vertex<K>> {
+    public boolean test(Vertex<K> vertex) { return vertex.getEdges().isEmpty(); }
 }
