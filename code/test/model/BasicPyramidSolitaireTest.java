@@ -218,7 +218,7 @@ public class BasicPyramidSolitaireTest {
     // Game Score == 0
     @Test
     public void isGameOverTest01() {
-        PS00.startGame(DOC52.toList(), false, 7, 3);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         assertFalse(PS00.isGameOver());
         PS00.remove(6, 3);
         assertFalse(PS00.isGameOver());
@@ -286,7 +286,7 @@ public class BasicPyramidSolitaireTest {
     // Stock empty, no more moves
     @Test
     public void isGameOverTest02() {
-        PS00.startGame(DOC52.toList(), false, 7, 3);
+        PS00.startGame(DOC52.toList(), false, 7, 2);
         assertFalse(PS00.isGameOver());
         PS00.remove(6, 3);
         PS00.remove(6, 0, 6, 6);
@@ -320,6 +320,7 @@ public class BasicPyramidSolitaireTest {
         PS00.discardDraw(0);
         assertFalse(PS00.isGameOver());
         PS00.discardDraw(0);
+        System.out.println(PS00.getDrawCards());
         assertTrue(PS00.isGameOver());
     }
 
