@@ -102,7 +102,7 @@ public class BasicPyramidSolitaireTest {
     // Regular Cases
     @Test
     public void startGameTest() {
-        PS00.startGame(DOC52.toList(), false, PS00.getNumRows(), PS00.getNumDraw());
+        PS00.startGame(DOC52.toList(), false, 7, 3);
         assertEquals(1, PS00.getRowWidth(0));
         assertEquals(4, PS00.getRowWidth(3));
         assertEquals(7, PS00.getRowWidth(6));
@@ -146,7 +146,7 @@ public class BasicPyramidSolitaireTest {
         PS00.remove(6,3);
         assertEquals(6, PS00.getRowWidth(6));
         PS00.remove(6, 0, 6, 6);
-        assertEquals(5, PS00.getRowWidth(6));
+        assertEquals(4, PS00.getRowWidth(6));
     }
 
     // Edge case -- Row never existed
@@ -190,12 +190,16 @@ public class BasicPyramidSolitaireTest {
         PS00.removeUsingDraw(0, 5, 5);
         assertEquals(new ArrayList<>(List.of(
                         new Card(CardType.Five, Suit.Diamond),
-                        new Card(CardType.Six, Suit.Diamond))),
+                        new Card(CardType.Six, Suit.Diamond),
+                        new Card(CardType.Seven, Suit.Diamond))),
                 PS00.getDrawCards());
         PS00.remove(6, 2, 6, 4);
-        PS00.removeUsingDraw(0, 5, 4); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
-        assertEquals(new ArrayList<>(List.of(
-                new Card(CardType.Six, Suit.Diamond))),
+        PS00.removeUsingDraw(0, 5, 4);
+        assertEquals(new ArrayList<>(
+                List.of(
+                        new Card(CardType.Six, Suit.Diamond),
+                        new Card(CardType.Seven, Suit.Diamond),
+                        new Card(CardType.Eight, Suit.Diamond))),
                 PS00.getDrawCards());
 
     }
@@ -320,7 +324,6 @@ public class BasicPyramidSolitaireTest {
         PS00.discardDraw(0);
         assertFalse(PS00.isGameOver());
         PS00.discardDraw(0);
-        System.out.println(PS00.getDrawCards());
         assertTrue(PS00.isGameOver());
     }
 
@@ -605,11 +608,19 @@ public class BasicPyramidSolitaireTest {
         PS00.removeUsingDraw(0, 5, 5);
         PS00.remove(6, 2, 6, 4);
         assertEquals(5, PS00.getRowWidth(5));
-        assertEquals(new ArrayList<>(List.of(new Card(CardType.Five, Suit.Diamond))), PS00.getDrawCards());
+        assertEquals(new ArrayList<>(
+                List.of(
+                        new Card(CardType.Five, Suit.Diamond),
+                        new Card(CardType.Six, Suit.Diamond))),
+                PS00.getDrawCards());
         assertEquals(new Card(CardType.Eight, Suit.Heart), PS00.getCardAt(5,4));
-        PS00.removeUsingDraw(0, 5, 4); // TODO -- The draw index used assume that successful removeUsingDraw() does NOT automatically "turnOver" a card from Stock
+        PS00.removeUsingDraw(0, 5, 4);
         assertEquals(4, PS00.getRowWidth(5));
-        assertEquals(new ArrayList<>(), PS00.getDrawCards());
+        assertEquals(new ArrayList<>(
+                List.of(
+                        new Card(CardType.Six, Suit.Diamond),
+                        new Card(CardType.Seven, Suit.Diamond))),
+                PS00.getDrawCards());
         Card card = PS00.getCardAt(5,4);
     }
 
@@ -707,7 +718,10 @@ public class BasicPyramidSolitaireTest {
         assertEquals(-1, PS00.getNumDraw());
         PS00.startGame(DOC52.toList(), false, 7, 2);
         assertEquals(2, PS00.getNumDraw());
-        assertEquals(3, B01.sideDeck(3).build().getNumDraw());
+        assertEquals(-1, B01.sideDeck(3).build().getNumDraw());
+        PyramidSolitaireModel<Card> PS01 = B01.sideDeck(3).build();
+        PS01.startGame(DOC52.toList(), false, 7, 3);
+        assertEquals(3, PS01.getNumDraw());
     }
 
     // -------------------------------------
