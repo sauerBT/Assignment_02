@@ -1,6 +1,7 @@
 package cs3500.pyramidsolitaire.model.hw02;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -154,6 +155,32 @@ public class Util {
             return Optional.empty();
         }
 
+        /**
+         * Compare all elements of a given comparison List to all elements of a given collection using the given comparison function
+         * and return all elements from the collection that meet the comparison predicate.
+         *
+         * @param pred2 The comparison function.
+         * @param coll The given collection.
+         * @param comp The given comparison list.
+         * @return The list of elements that match the given comparison predicate.
+         * @param <K> The type of array elements.
+         */
+        public static <K> List<K> findAll(IPred2<K> pred2, List<K> coll, List<K> comp) {
+            return findAllHelper(pred2, coll, comp, new ArrayList<>());
+        }
+
+        private static <K> List<K> findAllHelper(IPred2<K> pred2, List<K> coll, List<K> comp, List<K> acc) {
+            if (coll.isEmpty()) {
+                return acc;
+            } else {
+                Optional<K> cond = Util.ListUtil.findOne(pred2, comp, coll.getFirst());
+                if (cond.isPresent()) {
+                    acc.add(coll.getFirst()); // MUTATION
+                }
+                return findAllHelper(pred2, coll.subList(1, coll.size()), comp, acc);
+            }
+        }
+
         // TODO
         /**
          * Produce a new List that contains only elements from the original list that meet the conditions defined by the given
@@ -270,20 +297,14 @@ public class Util {
          *    a single card whose value is 13.
          * </p>
          *
-         * @param loc1 List of draw cards
-         * @param loc2 List of uncovered cards
+         * @param lodc List of draw cards
+         * @param lopc List of uncovered cards
          * @return True when there is a move to be played, false otherwise.
          */
-        public static boolean isMove(List<Card> loc1, List<Card> loc2) {
-            if (!Util.ListUtil.filter(new IsThirteen(), loc2).isEmpty()) { // <-- check for individual removes
-                return false;
-            } else if (!Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc2, loc2).isEmpty()) { // <-- check for two card removals
-                return false;
-            } else if (!Util.ListUtil.findIfExclude(new DoesNotAddToThirteen(), loc2, loc1).isEmpty()) { // <-- check for draw card removals
-                return false;
-            } else { // <-- There are no removals
-                return true;
-            }
+        public static boolean isMove(List<Card> lodc, List<Card> lopc) {
+            return !(Util.ListUtil.filter(new IsThirteen(), lopc).isEmpty() && // <-- check for individual removes
+                    Util.ListUtil.findAll(new AddsToThirteen(), lopc, lopc).isEmpty() && // <-- check for two card removals
+                    Util.ListUtil.findAll(new AddsToThirteen(), lopc, lodc).isEmpty()); // <-- check for draw card removals
 
         }
 
@@ -323,8 +344,8 @@ class SumCardValues implements BiFunction<Card, Integer, Integer> {
 /**
  * The predicate function class that compares two cards and determines if their combined value is 13.
  */
-class DoesNotAddToThirteen implements IPred2<Card> {
-    public boolean apply(Card arg1, Card arg2) { return (arg1.getValue() + arg2.getValue()) != 13; }
+class AddsToThirteen implements IPred2<Card> {
+    public boolean apply(Card arg1, Card arg2) { return (arg1.getValue() + arg2.getValue()) == 13; }
 }
 
 class IsThirteen implements Predicate<Card> {
