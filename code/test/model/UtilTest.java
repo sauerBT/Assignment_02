@@ -29,6 +29,22 @@ public class UtilTest {
     IPair<Card> P04;
     IPair<Card> P05;
     IPair<Card> P06;
+    // Example Draw Piles
+    List<Card> DP00;
+    List<Card> DP01M;
+    List<Card> DP01NM;
+    List<Card> DP03M;
+    List<Card> DP03NM;
+
+    // Example Pyramids as Lists
+    List<Card> PAL00;
+    List<Card> PAL01M;
+    List<Card> PAL01NM;
+    List<Card> PAL03M;
+    List<Card> PAL04M;
+    List<Card> PAL05M;
+    List<Card> PAL03NM;
+
     // Example Edges
     Edge<IPair<Card>> E01;
     Edge<IPair<Card>> E02;
@@ -70,6 +86,54 @@ public class UtilTest {
         D04.addAll(D01);
         D04.addAll(D02);
         D04.addAll(D03);
+
+        // Example Draw Pile
+        DP00 = new ArrayList<>();
+        DP01M = new ArrayList<>(
+                List.of(
+                        new Card(CardType.King, Suit.Club)));
+        DP01NM = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Ace, Suit.Club)));
+        DP03M = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Ace, Suit.Club),
+                        new Card(CardType.Seven, Suit.Club),
+                        new Card(CardType.Queen, Suit.Club)));
+        DP03NM = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Two, Suit.Club),
+                        new Card(CardType.Seven, Suit.Club),
+                        new Card(CardType.Queen, Suit.Club)));
+
+        // Example Pyramid as List
+        PAL00 = new ArrayList<>();
+        PAL01M = new ArrayList<>(
+                List.of(
+                        new Card(CardType.King, Suit.Club)));
+        PAL01NM = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Two, Suit.Club)));
+        PAL03M = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Ace, Suit.Club),
+                        new Card(CardType.Seven, Suit.Club),
+                        new Card(CardType.Queen, Suit.Club)));
+        PAL04M = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Ace, Suit.Club),
+                        new Card(CardType.King, Suit.Club),
+                        new Card(CardType.Queen, Suit.Club)));
+        PAL05M = new ArrayList<>(
+                List.of(
+                        new Card(CardType.Two, Suit.Club),
+                        new Card(CardType.King, Suit.Club),
+                        new Card(CardType.Queen, Suit.Club)));
+        PAL03NM = new ArrayList<>(
+                List.of(
+                    new Card(CardType.Two, Suit.Club),
+                    new Card(CardType.Seven, Suit.Club),
+                    new Card(CardType.Queen, Suit.Club)));
 
         // Initialize Example Cards
         C01 = new Card(CardType.King, Suit.Heart);
@@ -116,12 +180,6 @@ public class UtilTest {
 
         // Initialize Example Graphs
         G00 = new Graph<>();
-//        G01 = G00.addTriple(P01, P02, GraphPred.Child);
-//        G02 = G01.addTriple(P01, P03, GraphPred.Child);
-//        G03 = G02.addTriple(P02, P04, GraphPred.Child);
-//        G04 = G03.addTriple(P02, P05, GraphPred.Child);
-//        G05 = G04.addTriple(P03, P05, GraphPred.Child);
-//        G06 = G05.addTriple(P03, P06, GraphPred.Child);
     }
 
     @Test
@@ -255,6 +313,61 @@ public class UtilTest {
         assertEquals("1", Util.ListUtil.foldl(new Concat(), LOI01, ""));
         assertEquals("123", Util.ListUtil.foldl(new Concat(), LOI03, ""));
     }
+
+    // -------------------------------------
+    // isMove()
+    // -------------------------------------
+
+    // Regular case:
+    @Test
+    public void isMove() {
+        assertFalse(Util.GameUtil.isMove(DP00, PAL00)); // Draw Empty, pyramid empty
+
+        assertTrue(Util.GameUtil.isMove(DP00, PAL01M)); // Draw Empty, pyramid single move
+        assertFalse(Util.GameUtil.isMove(DP00, PAL01NM)); // Draw Empty, pyramid single no move
+
+        assertTrue(Util.GameUtil.isMove(DP00, PAL03M)); // Draw Empty, moves in pyramid
+        assertTrue(Util.GameUtil.isMove(DP00, PAL05M)); // Draw Empty, moves in pyramid
+        assertTrue(Util.GameUtil.isMove(DP00, PAL05M)); // Draw Empty, moves in pyramid
+        assertFalse(Util.GameUtil.isMove(DP00, PAL03NM)); // Draw Empty, pyramid multi no moves
+
+        assertFalse(Util.GameUtil.isMove(DP01M, PAL00)); // Draw Single, pyramid empty
+        assertFalse(Util.GameUtil.isMove(DP01NM, PAL00)); // Draw Single, pyramid empty
+
+        assertFalse(Util.GameUtil.isMove(DP03M, PAL00)); // Draw multi, pyramid empty
+        assertFalse(Util.GameUtil.isMove(DP03NM, PAL00)); // Draw multi, pyramid empty
+
+        assertFalse(Util.GameUtil.isMove(DP01M,
+                new ArrayList<>(
+                        List.of(new Card(CardType.Queen, Suit.Club))))); // Draw single, pyramid single
+        assertTrue(Util.GameUtil.isMove(DP01NM,
+                new ArrayList<>(
+                    List.of(new Card(CardType.Queen, Suit.Club))))); // Draw single, pyramid single
+
+        assertFalse(Util.GameUtil.isMove(DP03NM,
+                new ArrayList<>(
+                        List.of(new Card(CardType.Queen, Suit.Club))))); // Draw multi, pyramid single
+        assertTrue(Util.GameUtil.isMove(DP03NM,
+                new ArrayList<>(
+                        List.of(new Card(CardType.Jack, Suit.Club))))); // Draw multi, pyramid single
+        assertFalse(Util.GameUtil.isMove(DP03NM,
+                new ArrayList<>(
+                        List.of(new Card(CardType.Queen, Suit.Club),
+                                new Card(CardType.Seven, Suit.Club),
+                                new Card(CardType.Five, Suit.Club))))); // Draw multi, pyramid multi
+        assertTrue(Util.GameUtil.isMove(DP03NM,
+                new ArrayList<>(
+                        List.of(new Card(CardType.Jack, Suit.Club),
+                                new Card(CardType.Seven, Suit.Club),
+                                new Card(CardType.Five, Suit.Club))))); // Draw multi, pyramid multi
+        assertTrue(Util.GameUtil.isMove(DP03NM,
+                new ArrayList<>(
+                        List.of(new Card(CardType.Queen, Suit.Club),
+                                new Card(CardType.Seven, Suit.Club),
+                                new Card(CardType.Jack, Suit.Club))))); // Draw multi, pyramid multi
+
+    }
+
 
     class IntToString implements Function<Integer, String> {
         public String apply(Integer i) {
