@@ -12,7 +12,6 @@ public class PyramidSolitaireTextualView {
 
     @Override
     public String toString() {
-        return "";
-    //... render the model here
+        return model.toString();
     }
 }
