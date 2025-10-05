@@ -867,10 +867,154 @@ public class BasicPyramidSolitaireTest {
     }
 
     // -------------------------------------
-    // builder()
+    // toString()
     // -------------------------------------
-    // TODO
-    @Test
-    public void builderTest() {}
 
+    // Edge Case
+    // Game not started
+    @Test
+    public void toStringNotStarted() {
+        assertEquals("",  PS00.toString());
+    }
+
+    // Edge Case
+    // Game over - pyramid completed
+    @Test
+    public void toStringComplete() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6, 3);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.remove(6, 2, 6, 4);
+        PS00.remove(5, 0, 5, 5);
+        PS00.remove(5, 1, 5, 4);
+        PS00.remove(5, 2, 5, 3);
+        PS00.remove(4, 0, 4, 2);
+        PS00.remove(4, 1); // <-- As far as you can go without starting to use the draw
+        PS00.removeUsingDraw(0, 3, 1);
+        PS00.removeUsingDraw(0, 3, 0);
+        PS00.discardDraw(0);
+        PS00.removeUsingDraw(1, 2, 0);
+        PS00.discardDraw(1);
+        PS00.removeUsingDraw(1, 4, 4);
+        PS00.removeUsingDraw(1, 4, 3);
+        PS00.discardDraw(1);
+        PS00.discardDraw(1);
+        PS00.discardDraw(1);
+        PS00.removeUsingDraw(1, 3, 3);
+        PS00.removeUsingDraw(1, 3, 2);
+        PS00.remove(2, 1, 2, 2);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.removeUsingDraw(1, 1, 1);
+        PS00.removeUsingDraw(1, 1, 0);
+        PS00.removeUsingDraw(1, 0, 0); // <-- Game Over
+        assertEquals("You win!", PS00.toString());
+
+    }
+
+    // Edge Case
+    // Game Over - pyramid not completed & out of moves
+    @Test
+    public void toStringNotComplete() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6, 3);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.remove(6, 2, 6, 4);
+        PS00.remove(5, 0, 5, 5);
+        PS00.remove(5, 1, 5, 4);
+        PS00.remove(5, 2, 5, 3);
+        PS00.remove(4, 0, 4, 2);
+        PS00.remove(4, 1); // <-- As far as you can go without starting to use the draw
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        PS00.discardDraw(0);
+        assertEquals("Game over. Score: 70", PS00.toString());
+    }
+    // Regular Case
+    @Test
+    public void toString01() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        String row6 = "10♥  J♥  Q♥  K♥  A♥  2♦  3♦"; // DONE
+        String row5 = "  4♥  5♥  6♥  7♥  8♥  9♥";    // DONE
+        String row4 = "    Q♣  K♣  A♣  2♥  3♥";      // DONE
+        String row3 = "      8♣  9♣ 10♣  J♣";        // DONE
+        String row2 = "        5♣  6♣  7♣";          // DONE
+        String row1 = "          3♣  4♣";            // DONE
+        String row0 = "            2♣";
+        String Draw = "Draw:  4♦,  5♦";
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append(row0).append("\n")
+                .append(row1).append("\n")
+                .append(row2).append("\n")
+                .append(row3).append("\n")
+                .append(row4).append("\n")
+                .append(row5).append("\n")
+                .append(row6).append("\n")
+                .append(Draw);
+        String rendered = sb.toString();
+        System.out.println(rendered);
+        assertEquals(rendered, PS00.toString());
+    }
+
+    // Regular Case
+    @Test
+    public void toString02() {
+        PS00.startGame(DOC52.toList(), false, 7, 2);
+        PS00.remove(6, 3);
+        PS00.remove(6, 0, 6, 6);
+        PS00.remove(6, 1, 6, 5);
+        PS00.remove(6, 2, 6, 4);
+        PS00.remove(5, 0, 5, 5);
+        PS00.remove(5, 1, 5, 4);
+        PS00.remove(5, 2, 5, 3);
+        PS00.remove(4, 0, 4, 2);
+        PS00.remove(4, 1);
+
+        String row6 = ""; // DONE
+        String row5 = "  ";    // DONE
+        String row4 = "                2♥  3♥";      // DONE
+        String row3 = "      8♣  9♣ 10♣  J♣";        // DONE
+        String row2 = "        5♣  6♣  7♣";          // DONE
+        String row1 = "          3♣  4♣";            // DONE
+        String row0 = "            2♣";
+        String Draw = "Draw:  4♦,  5♦";
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append(row0).append("\n")
+                .append(row1).append("\n")
+                .append(row2).append("\n")
+                .append(row3).append("\n")
+                .append(row4).append("\n")
+                .append(row5).append("\n")
+                .append(row6).append("\n")
+                .append(Draw);
+        String rendered = sb.toString();
+        System.out.println(rendered);
+        assertEquals(rendered, PS00.toString());
+    }
 }
