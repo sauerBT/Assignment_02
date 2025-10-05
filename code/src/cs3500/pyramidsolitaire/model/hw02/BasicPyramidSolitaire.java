@@ -291,7 +291,18 @@ public class BasicPyramidSolitaire implements PyramidSolitaireModel<Card> {
 
     // TODO
     @Override
-    public String toString() { return this.pyramid.toString(); }
+    public String toString() {
+        if (!this.isGameStarted()) {
+            return "";
+        } else if (this.isGameOver() && (this.getScore() == 0)) { // game is over and pyramid is empty
+            return "You win!";
+        } else if (this.isGameOver() && (this.getScore() > 0)) { // game is over and pyramid is NOT empty
+            return "Game over. Score: " + this.getScore();
+        } else {
+            return this.pyramid.toString() + "\n" +
+                    this.sideDeck.toString();
+        }
+    }
 
     // TODO
     @Override
